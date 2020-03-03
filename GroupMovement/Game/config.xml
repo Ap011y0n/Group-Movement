@@ -1,0 +1,76 @@
+<!-- Config file for the game -->
+
+<config>
+   <app framerate_cap="60">
+    <title>Game Development Testbed</title>
+    <organization>UPC</organization>
+  </app>
+	
+  <renderer>
+    <vsync value="false"/>
+  </renderer>
+
+  <window>
+    <resolution width="1024" height="768" scale="1"/>
+    <fullscreen value="false"/>
+    <borderless value="false"/>
+    <resizable value="false"/>
+    <fullscreen_window value="false"/>
+  </window>
+
+  <gui>
+    <atlas file="gui/ui.png"/>
+  </gui>
+
+  <audio>
+    <music>
+      <folder>audio/music/</folder>
+      <volumemusic value="1.0"/>
+    </music>
+    <fx>
+      <folder>audio/fx/</folder>
+      <volumefx value="1.0"/>
+    </fx>
+  </audio>
+  
+  <file_system>
+    <path>data.zip</path>
+  </file_system>
+
+  <map>
+    <folder>maps/</folder>
+  </map>
+
+  <entity>
+    <player>
+     <moveFx source="move.wav"/>
+     <deathFx source="death.wav"/>
+     <jumpFx source="jump.wav"/>
+     <winFx source="win.wav"/>
+     <dashFx source="dash.wav"/>
+     <initialPosition x="100" y="500"/>
+     <gravity value="11"/>
+     <speedX value="7"/>
+     <speedY value="22"/>
+     <acceleration value="20"/>
+     <speedBar value="0.1"/>
+     <maxBarWidth value="40"/>
+     <playerHeight value="50"/>
+     <playerWidth value="25"/>
+     <playerCentre value="10"/>
+    </player>
+    <slime>
+      <gravity value="4.91"/>
+      <speed x="1.5" y="2"/>
+      <range x="300" y="100"/>
+    </slime>
+    <wizard>
+      <speed x="1.5" y="2"/>
+      <range x="400" y="100"/>
+    </wizard>
+  </entity>
+
+   <scene>
+     <map name="maplevel1.tmx"/>
+   </scene>
+</config>
