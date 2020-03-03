@@ -84,7 +84,7 @@ public:
 
 	void Clear()
 	{
-		delete[] data;
+		num_elements = 0;
 	}
 
 	bool Insert(const VALUE& element, unsigned int position)

@@ -43,7 +43,7 @@ public:
 	Animation* current_animation = nullptr;
 	//Animation idle;
 	int attackrange;
-	p2DynArray<iPoint>* path;
+	
 
 	int counter = 0;
 

@@ -25,7 +25,7 @@ public:
 	void SetMap(uint width, uint height, uchar* data);
 
 	
-	p2DynArray<iPoint>* CreatePath(const iPoint& origin, const iPoint& destination);
+	int CreatePath(const iPoint& origin, const iPoint& destination);
 
 	
 	const p2DynArray<iPoint>* GetLastPath() const;
@@ -52,7 +52,6 @@ struct PathList;
 struct PathNode
 {
 	PathNode();
-	~PathNode();
 	PathNode(int g, int h, const iPoint& pos, PathNode* parent);
 	PathNode(const PathNode& node);
 	uint FindWalkableAdjacents(PathList& list_to_fill);

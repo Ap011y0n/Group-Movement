@@ -56,10 +56,9 @@ bool Test_1::Update(float dt)
 
 	origin = App->map->WorldToMap(position.x, position.y);
 
-	if(path!= nullptr)path->Clear();
-	path = App->pathfinding->CreatePath(origin, mouse);
+	App->pathfinding->CreatePath(origin, mouse);
 	
-	//path = App->pathfinding->GetLastPath();
+	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 
 	for (uint i = 0; i < path->Count(); ++i)
 	{

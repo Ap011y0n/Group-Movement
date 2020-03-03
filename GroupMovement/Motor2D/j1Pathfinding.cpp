@@ -105,11 +105,6 @@ PathNode::PathNode(int g, int h, const iPoint& pos, PathNode* parent) : g(g), h(
 PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), parent(node.parent)
 {}
 
-PathNode::~PathNode() 
-{
-	parent = nullptr;
-}
-
 
 uint PathNode::FindWalkableAdjacents(PathList& list_to_fill)
 {
@@ -136,22 +131,6 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill)
 	if (App->pathfinding->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
-	cell.create(pos.x + 1, pos.y + 1);
-	/*if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -2, cell, this));
-
-	cell.create(pos.x + 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -2, cell, this));
-
-	cell.create(pos.x - 1, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -2, cell, this));
-
-	cell.create(pos.x - 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -2, cell, this));*/
-
 	return list_to_fill.list.count();
 }
 
@@ -170,17 +149,18 @@ int PathNode::CalculateF(const iPoint& destination)
 	return g + h;
 }
 
- 
-p2DynArray<iPoint>* j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
+
+int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	BROFILER_CATEGORY("Pathfinding", Profiler::Color::Gold);
-	p2DynArray<iPoint>* new_path = new p2DynArray<iPoint>;
+
 	// TODO 1: if origin or destination are not walkable, return -1
 	if (IsWalkable(origin) == false || IsWalkable(destination) == false) {
-		return NULL;
+		return -1;
 	}
 	// TODO 2: Create two lists: open, close
 
+	last_path.Clear();
 
 	PathList open; PathList closed;
 	// Add the origin tile to open
@@ -201,14 +181,12 @@ p2DynArray<iPoint>* j1PathFinding::CreatePath(const iPoint& origin, const iPoint
 			PathNode* iterator = current_node;
 
 			for (iterator; iterator->pos != origin; iterator = iterator->parent) {
-				new_path->PushBack(iterator->pos);
+				last_path.PushBack(iterator->pos);
 			}
-			new_path->PushBack(origin);
+			last_path.PushBack(origin);
 
-			new_path->Flip();
-			open.list.clear();
-			closed.list.clear();
-			return new_path;
+			last_path.Flip();
+			return 0;
 
 		}
 
@@ -235,7 +213,8 @@ p2DynArray<iPoint>* j1PathFinding::CreatePath(const iPoint& origin, const iPoint
 				}
 			}
 		}
-		
+
+
 	}
 
 }
