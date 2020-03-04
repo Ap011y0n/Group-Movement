@@ -66,7 +66,8 @@ bool Test_1::Update(float dt)
 		if(i == 0)
 			LOG("%d %d", nextPoint.x, nextPoint.y);
 		{
-			App->render->Blit(App->scene->debug_tex, nextPoint.x, nextPoint.y);
+			//App->render->Blit(App->scene->debug_tex, nextPoint.x, nextPoint.y);
+			App->render->DrawQuad({ nextPoint.x+14, nextPoint.y+14, 6, 6 }, 200, 0, 0, 100);
 		}
 	}
 

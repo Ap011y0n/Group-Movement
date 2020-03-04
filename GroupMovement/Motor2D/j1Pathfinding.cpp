@@ -96,13 +96,13 @@ p2List_item<PathNode>* PathList::GetNodeLowestScore() const
 }
 
 
-PathNode::PathNode() : g(-1), h(-1), pos(-1, -1), parent(NULL)
+PathNode::PathNode() : g(-1), h(-1), pos(-1, -1), parent(NULL), isdiagonal(false)
 {}
 
-PathNode::PathNode(int g, int h, const iPoint& pos, PathNode* parent) : g(g), h(h), pos(pos), parent(parent)
+PathNode::PathNode(float g, float h, const iPoint& pos, PathNode* parent, bool isdiagonal) : g(g), h(h), pos(pos), parent(parent), isdiagonal(isdiagonal)
 {}
 
-PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), parent(node.parent)
+PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), parent(node.parent), isdiagonal(node.parent)
 {}
 
 
@@ -110,6 +110,25 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill)
 {
 	iPoint cell;
 	uint before = list_to_fill.list.count();
+
+	cell.create(pos.x + 1, pos.y + 1);
+	if (App->pathfinding->IsWalkable(cell))
+		list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
+
+	// south
+	cell.create(pos.x + 1, pos.y - 1);
+	if (App->pathfinding->IsWalkable(cell))
+		list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
+
+	// east
+	cell.create(pos.x - 1, pos.y + 1);
+	if (App->pathfinding->IsWalkable(cell))
+		list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
+
+	// west
+	cell.create(pos.x - 1, pos.y - 1);
+	if (App->pathfinding->IsWalkable(cell))
+		list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
 
 	// north
 	cell.create(pos.x, pos.y + 1);
@@ -135,15 +154,21 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill)
 }
 
 
-int PathNode::Score() const
+float PathNode::Score() const
 {
 	return g + h;
 }
 
 
-int PathNode::CalculateF(const iPoint& destination)
+float PathNode::CalculateF(const iPoint& destination)
 {
-	g = parent->g + 1;
+	if (!isdiagonal)
+	{
+		g = parent->g + 1;
+	}
+	else {
+		g = parent->g + 1.7;
+	}
 	h = pos.DistanceTo(destination);
 
 	return g + h;
