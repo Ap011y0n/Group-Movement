@@ -24,6 +24,9 @@ bool j1GroupMov::Awake(pugi::xml_node& config) {
 }
 
 bool j1GroupMov::Start() {
+	Center.pos.x = 0;
+	Center.pos.y = 0;
+
 	return true;
 
 }
@@ -47,6 +50,9 @@ bool j1GroupMov::Update(float dt) {
 	}
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
+		int totalSelected = 0;
+		Center.pos.x = Center.pos.y = 0;
+
 		p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
 		while (entities_list)
 		{
@@ -73,11 +79,21 @@ bool j1GroupMov::Update(float dt) {
 					entities_list->data->isSelected = true;
 				}
 			}
+			
+			if (entities_list->data->isSelected)
+			{
+				totalSelected++;
+				Center.pos.x += x;
+				Center.pos.y += y;
+			}
 			entities_list = entities_list->next;
 		}
+
+		Center.pos.x = Center.pos.x / totalSelected;
+		Center.pos.y = Center.pos.y / totalSelected;
 	}
 	
-
+	App->render->DrawCircle(Center.pos.x, Center.pos.y, 15, 0, 0, 255, 50);
 	//App->pathfinding->CreatePath(origin, mouse);
 
 //	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();

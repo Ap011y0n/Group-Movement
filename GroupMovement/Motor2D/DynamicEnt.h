@@ -9,6 +9,7 @@
 
 
 
+
 class DynamicEnt : public j1Entity
 {
 public:
@@ -50,6 +51,7 @@ public:
 	int vision;
 	int damage;
 	int armor;
+	
 };
 
 #endif // __j1Entity_H__

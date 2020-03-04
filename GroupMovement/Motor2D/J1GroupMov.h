@@ -9,6 +9,12 @@
 #include <list>
 
 using namespace std;
+struct MassCenter
+{
+
+
+	iPoint				pos;
+};
 
 class j1GroupMov : public j1Module
 {
@@ -24,7 +30,7 @@ public:
 	
 public:
 	list<j1Entity> selectedEnts;
-
+	MassCenter Center;
 };
 
 #endif
