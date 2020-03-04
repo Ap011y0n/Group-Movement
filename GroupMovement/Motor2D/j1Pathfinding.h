@@ -52,13 +52,14 @@ struct PathList;
 struct PathNode
 {
 	PathNode();
-	PathNode(float g, float h, const iPoint& pos, PathNode* parent);
+	PathNode(float g, float h, const iPoint& pos, PathNode* parent, bool isdiagonal = false);
 	PathNode(const PathNode& node);
 	uint FindWalkableAdjacents(PathList& list_to_fill);
 	float Score() const;
 	float CalculateF(const iPoint& destination);
 	float g;
 	float h;
+	bool is_Diagonal;
 	iPoint pos;
 	PathNode* parent; 
 };
