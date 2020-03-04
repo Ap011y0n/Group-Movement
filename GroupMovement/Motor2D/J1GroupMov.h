@@ -6,8 +6,9 @@
 #include "j1Module.h"
 #include "p2List.h"
 #include "p2Point.h"
+#include <list>
 
-
+using namespace std;
 
 class j1GroupMov : public j1Module
 {
@@ -22,7 +23,8 @@ public:
 
 	
 public:
-	int test = 1;
+	list<j1Entity> selectedEnts;
+
 };
 
 #endif

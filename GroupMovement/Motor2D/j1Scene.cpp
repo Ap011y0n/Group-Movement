@@ -103,13 +103,13 @@ bool j1Scene::Update(float dt)
 	int x, y;
 	App->input->GetMousePosition(x, y);
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 		App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, x, y);
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 		App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_2, x, y-20);
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 		App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, x, y);
 
 	

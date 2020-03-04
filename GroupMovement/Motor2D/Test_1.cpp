@@ -22,6 +22,7 @@ Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
 	position.x = posx;
 	position.y = posy;
 	to_delete = false;
+	isSelected = false;
 	// Load all animations
 }
 
@@ -44,21 +45,25 @@ bool Test_1::Update(float dt)
 	CheckAnimation(dt);
 
 	//App->render->Blit(App->entity->test_1_graphics, position.x + current_animation->pivotx[current_animation->returnCurrentFrame()], position.y + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)), 1.0f);
-	App->render->DrawQuad({ position.x, position.y, 10, 10 }, 0, 200, 0);
+	if (isSelected)
+		App->render->DrawCircle(position.x+5, position.y+5, 10, 0, 200, 0, 200);
+
+	App->render->DrawQuad({ position.x, position.y, 10, 10 }, 200, 200, 0);
 	position.x += speed.x;
 	position.y += speed.y;
 	if (position.x > 800)
 		to_delete = true;
 
-	//static iPoint origin, mouse;
-	//App->input->GetMousePosition(mouse.x, mouse.y);
-	//mouse = App->map->WorldToMap(mouse.x, mouse.y);
 
-	//origin = App->map->WorldToMap(position.x, position.y);
+	static iPoint origin, mouse;
+	App->input->GetMousePosition(mouse.x, mouse.y);
+	mouse = App->map->WorldToMap(mouse.x, mouse.y);
+
+	origin = App->map->WorldToMap(position.x, position.y);
 
 	//App->pathfinding->CreatePath(origin, mouse);
 	//
-	//const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 
 	//for (uint i = 0; i < path->Count(); ++i)
 	//{
@@ -72,25 +77,25 @@ bool Test_1::Update(float dt)
 	//}
 
 
-	//if (path->At(1) != NULL)
-	//{
-	//	//This makes a comparison with the players position to make the correct move
-	//	if (path->At(1)->x < origin.x) {
-	//		position.x -= 2;
-	//	}
+	if (path->At(1) != NULL)
+	{
+		//This makes a comparison with the players position to make the correct move
+		if (path->At(1)->x < origin.x) {
+			position.x -= 2;
+		}
 
-	//	if (path->At(1)->x > origin.x) {
-	//		position.x += 2;
-	//	}
+		if (path->At(1)->x > origin.x) {
+			position.x += 2;
+		}
 
-	//	if (path->At(1)->y < origin.y) {
-	//		position.y -= 2;
-	//	}
+		if (path->At(1)->y < origin.y) {
+			position.y -= 2;
+		}
 
-	//	if (path->At(1)->y > origin.y) {
-	//		position.y += 2;
-	//	}
-	//}
+		if (path->At(1)->y > origin.y) {
+			position.y += 2;
+		}
+	}
 
 	return true;
 }

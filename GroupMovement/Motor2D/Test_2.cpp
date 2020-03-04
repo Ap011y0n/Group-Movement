@@ -36,7 +36,8 @@ bool Test_2::Update(float dt)
 	BROFILER_CATEGORY("UpdateTest_2", Profiler::Color::BlanchedAlmond);
 
 	CheckAnimation(dt);
-
+	if (isSelected)
+		App->render->DrawCircle(position.x + 5, position.y + 5, 10, 0, 200, 0, 200);
 	//App->render->Blit(App->entity->test_1_graphics, position.x + current_animation->pivotx[current_animation->returnCurrentFrame()], position.y + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)), 1.0f);
 	App->render->DrawQuad({ position.x, position.y, 10, 10 }, 200, 0, 0);
 	position.x += speed.x;
