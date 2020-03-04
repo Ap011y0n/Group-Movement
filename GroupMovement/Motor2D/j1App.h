@@ -20,7 +20,7 @@ class j1Fonts;
 class j1EntityManager;
 class j1Entity;
 class j1PathFinding;
-
+class j1GroupMov;
 
 
 class j1App
@@ -100,7 +100,7 @@ public:
 	j1Fonts*			font = NULL;
 	j1EntityManager*	entity;
 	j1PathFinding*		pathfinding;
-
+	j1GroupMov*			movement;
 	
 
 

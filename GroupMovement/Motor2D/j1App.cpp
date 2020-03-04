@@ -16,6 +16,7 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "j1Pathfinding.h"
+#include "J1GroupMov.h"
 
 
 
@@ -37,6 +38,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	entity = new j1EntityManager();
 	pathfinding = new j1PathFinding();
 	font = new j1Fonts();
+	movement = new j1GroupMov();
 	
 
 
@@ -49,6 +51,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(scene);
 	AddModule(pathfinding);
+	AddModule(movement);
 	AddModule(entity);
 	AddModule(font);
 	AddModule(render);

@@ -50,47 +50,47 @@ bool Test_1::Update(float dt)
 	if (position.x > 800)
 		to_delete = true;
 
-	 static iPoint origin, mouse;
-	 App->input->GetMousePosition(mouse.x, mouse.y);
-	mouse = App->map->WorldToMap(mouse.x, mouse.y);
+	//static iPoint origin, mouse;
+	//App->input->GetMousePosition(mouse.x, mouse.y);
+	//mouse = App->map->WorldToMap(mouse.x, mouse.y);
 
-	origin = App->map->WorldToMap(position.x, position.y);
+	//origin = App->map->WorldToMap(position.x, position.y);
 
-	App->pathfinding->CreatePath(origin, mouse);
-	
-	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+	//App->pathfinding->CreatePath(origin, mouse);
+	//
+	//const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 
-	for (uint i = 0; i < path->Count(); ++i)
-	{
-		iPoint nextPoint = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		if(i == 0)
-			LOG("%d %d", nextPoint.x, nextPoint.y);
-		{
-			//App->render->Blit(App->scene->debug_tex, nextPoint.x, nextPoint.y);
-			App->render->DrawQuad({ nextPoint.x+14, nextPoint.y+14, 6, 6 }, 200, 0, 0, 100);
-		}
-	}
+	//for (uint i = 0; i < path->Count(); ++i)
+	//{
+	//	iPoint nextPoint = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+	//	if(i == 0)
+	//		LOG("%d %d", nextPoint.x, nextPoint.y);
+	//	{
+	//		//App->render->Blit(App->scene->debug_tex, nextPoint.x, nextPoint.y);
+	//		App->render->DrawQuad({ nextPoint.x+14, nextPoint.y+14, 6, 6 }, 200, 0, 0, 100);
+	//	}
+	//}
 
 
-	if (path->At(1) != NULL)
-	{
-		//This makes a comparison with the players position to make the correct move
-		if (path->At(1)->x < origin.x) {
-			position.x -= 2;
-		}
+	//if (path->At(1) != NULL)
+	//{
+	//	//This makes a comparison with the players position to make the correct move
+	//	if (path->At(1)->x < origin.x) {
+	//		position.x -= 2;
+	//	}
 
-		if (path->At(1)->x > origin.x) {
-			position.x += 2;
-		}
+	//	if (path->At(1)->x > origin.x) {
+	//		position.x += 2;
+	//	}
 
-		if (path->At(1)->y < origin.y) {
-			position.y -= 2;
-		}
+	//	if (path->At(1)->y < origin.y) {
+	//		position.y -= 2;
+	//	}
 
-		if (path->At(1)->y > origin.y) {
-			position.y += 2;
-		}
-	}
+	//	if (path->At(1)->y > origin.y) {
+	//		position.y += 2;
+	//	}
+	//}
 
 	return true;
 }

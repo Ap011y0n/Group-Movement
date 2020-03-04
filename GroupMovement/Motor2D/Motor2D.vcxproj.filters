@@ -63,6 +63,9 @@
     <ClCompile Include="j1Pathfinding.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="j1GroupMov.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -149,6 +152,9 @@
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
     <ClInclude Include="j1Pathfinding.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="J1GroupMov.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
