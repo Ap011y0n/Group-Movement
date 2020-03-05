@@ -18,6 +18,7 @@ Test_3::Test_3(int posx, int posy) : StaticEnt( StaticEntType::TEST_3)
 	position.x = posx;
 	position.y = posy;
 	to_delete = false;
+	selectable = true;
 	// Load all animations
 }
 

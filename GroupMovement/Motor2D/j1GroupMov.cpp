@@ -7,6 +7,7 @@
 #include "j1Map.h"
 #include "J1GroupMov.h"
 #include "j1Pathfinding.h"
+#include "j1Entity.h"
 
 j1GroupMov::j1GroupMov() {
 	name.create("entity");
@@ -56,42 +57,47 @@ bool j1GroupMov::Update(float dt) {
 		p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
 		while (entities_list)
 		{
-			entities_list->data->isSelected = false;
-			int x = entities_list->data->position.x, y = entities_list->data->position.y;
-
-			if (x > origin.x && x < mouse.x) {
-				if (y < origin.y && y > mouse.y)
-				{
-					entities_list->data->isSelected = true;
-				}
-				else if (y > origin.y && y < mouse.y)
-				{
-					entities_list->data->isSelected = true;
-				}
-			}
-			else if (x < origin.x && x > mouse.x) {
-				if (y < origin.y && y > mouse.y)
-				{
-					entities_list->data->isSelected = true;
-				}
-				else if (y > origin.y && y < mouse.y)
-				{
-					entities_list->data->isSelected = true;
-				}
-			}
-			
-			if (entities_list->data->isSelected)
+			if (entities_list->data->selectable)
 			{
-				if (!RelocateCenter)
-				{
-					Center.pos.x = 0;
-					Center.pos.y = 0;
+
+				entities_list->data->isSelected = false;
+				int x = entities_list->data->position.x, y = entities_list->data->position.y;
+
+				if (x > origin.x && x < mouse.x) {
+					if (y < origin.y && y > mouse.y)
+					{
+						entities_list->data->isSelected = true;
+					}
+					else if (y > origin.y && y < mouse.y)
+					{
+						entities_list->data->isSelected = true;
+					}
 				}
-					
-				RelocateCenter = true;
-				totalSelected++;
-				Center.pos.x += x;
-				Center.pos.y += y;
+				else if (x < origin.x && x > mouse.x) {
+					if (y < origin.y && y > mouse.y)
+					{
+						entities_list->data->isSelected = true;
+					}
+					else if (y > origin.y && y < mouse.y)
+					{
+						entities_list->data->isSelected = true;
+					}
+				}
+
+				if (entities_list->data->isSelected)
+				{
+					if (!RelocateCenter)
+					{
+						Center.pos.x = 0;
+						Center.pos.y = 0;
+					}
+
+					RelocateCenter = true;
+					totalSelected++;
+					Center.pos.x += x;
+					Center.pos.y += y;
+					Center.selected.add(entities_list->data);
+				}
 			}
 			entities_list = entities_list->next;
 		}
@@ -103,6 +109,8 @@ bool j1GroupMov::Update(float dt) {
 			RelocateCenter = false;
 			Center.pos.x = Center.pos.x / totalSelected;
 			Center.pos.y = Center.pos.y / totalSelected;
+
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, Center.pos.x, Center.pos.y);
 		}
 	
 	}

@@ -53,6 +53,7 @@ public:
 	// Colliders
 	Collider* collider;
 	bool to_delete;
+	bool selectable;
 
 };
 

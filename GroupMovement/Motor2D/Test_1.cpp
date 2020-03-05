@@ -23,6 +23,7 @@ Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
 	position.y = posy;
 	to_delete = false;
 	isSelected = false;
+	selectable = true;
 	// Load all animations
 }
 
