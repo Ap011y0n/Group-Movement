@@ -92,13 +92,16 @@ bool j1GroupMov::Update(float dt) {
 						Center.pos.y = 0;
 						selected.clear();
 					}
-
 					RelocateCenter = true;
 					totalSelected++;
 					Center.pos.x += x;
 					Center.pos.y += y;
 					if (currentCenter != NULL)
+					{
+						currentCenter->isSelected = false;
 						currentCenter->ReturnChilds()->clear();
+					}
+
 					selected.add(entities_list->data);
 				}
 			}
@@ -114,6 +117,7 @@ bool j1GroupMov::Update(float dt) {
 			Center.pos.y = Center.pos.y / totalSelected;
 			
 			currentCenter = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, Center.pos.x, Center.pos.y);
+			currentCenter->isSelected = true;
 			p2List_item<j1Entity*>* iterator = selected.start;
 			while (iterator)
 			{

@@ -47,6 +47,9 @@ public:
 	int attackrange;
 	p2List<j1Entity*>	childs;
 
+	iPoint origin, mouse;
+	bool move;
+
 };
 
 #endif // __TEST_1_H__
