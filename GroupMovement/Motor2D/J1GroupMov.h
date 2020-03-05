@@ -31,6 +31,7 @@ public:
 public:
 	list<j1Entity> selectedEnts;
 	MassCenter Center;
+	bool RelocateCenter;
 };
 
 #endif

@@ -26,7 +26,7 @@ bool j1GroupMov::Awake(pugi::xml_node& config) {
 bool j1GroupMov::Start() {
 	Center.pos.x = 0;
 	Center.pos.y = 0;
-
+	RelocateCenter = false;
 	return true;
 
 }
@@ -51,7 +51,7 @@ bool j1GroupMov::Update(float dt) {
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		int totalSelected = 0;
-		Center.pos.x = Center.pos.y = 0;
+	
 
 		p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
 		while (entities_list)
@@ -82,6 +82,13 @@ bool j1GroupMov::Update(float dt) {
 			
 			if (entities_list->data->isSelected)
 			{
+				if (!RelocateCenter)
+				{
+					Center.pos.x = 0;
+					Center.pos.y = 0;
+				}
+					
+				RelocateCenter = true;
 				totalSelected++;
 				Center.pos.x += x;
 				Center.pos.y += y;
@@ -89,9 +96,17 @@ bool j1GroupMov::Update(float dt) {
 			entities_list = entities_list->next;
 		}
 
-		Center.pos.x = Center.pos.x / totalSelected;
-		Center.pos.y = Center.pos.y / totalSelected;
+		if (RelocateCenter) 
+		{
+			//Crear un nuevo centro aqui, o antes, para aprovechar la iteración, sera el target de las entities seleccionadas anteriormente
+			//Ponerle esta posicion, y ponerlo en un puntero de current center, el current center podra usarse para clickar
+			RelocateCenter = false;
+			Center.pos.x = Center.pos.x / totalSelected;
+			Center.pos.y = Center.pos.y / totalSelected;
+		}
+	
 	}
+	
 	
 	App->render->DrawCircle(Center.pos.x, Center.pos.y, 15, 0, 0, 255, 50);
 	//App->pathfinding->CreatePath(origin, mouse);
