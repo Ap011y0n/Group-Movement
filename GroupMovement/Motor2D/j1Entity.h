@@ -55,6 +55,10 @@ public:
 	bool to_delete;
 	bool selectable;
 
+	virtual p2List<j1Entity*>* ReturnChilds();
+	j1Entity* target;
+
+
 };
 
 #endif // __j1Entity_H__

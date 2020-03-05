@@ -42,6 +42,13 @@ bool Test_3::Update(float dt)
 
 	if (position.x > 800)
 		to_delete = true;
+
+	int num = 0;
+
+
+	if (childs.count() == 0)
+		to_delete = true;
+
 	return true;
 }
 
@@ -61,4 +68,9 @@ bool Test_3::CleanUp()
 {
 
 	return true;
+}
+
+p2List<j1Entity*>* Test_3::ReturnChilds()
+{
+	return &childs;
 }

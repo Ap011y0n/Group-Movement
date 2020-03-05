@@ -90,33 +90,43 @@ bool j1GroupMov::Update(float dt) {
 					{
 						Center.pos.x = 0;
 						Center.pos.y = 0;
+						selected.clear();
 					}
 
 					RelocateCenter = true;
 					totalSelected++;
 					Center.pos.x += x;
 					Center.pos.y += y;
-					Center.selected.add(entities_list->data);
+					if (currentCenter != NULL)
+						currentCenter->ReturnChilds()->clear();
+					selected.add(entities_list->data);
 				}
 			}
 			entities_list = entities_list->next;
 		}
 
-		if (RelocateCenter) 
+		if (RelocateCenter)
 		{
 			//Crear un nuevo centro aqui, o antes, para aprovechar la iteración, sera el target de las entities seleccionadas anteriormente
 			//Ponerle esta posicion, y ponerlo en un puntero de current center, el current center podra usarse para clickar
 			RelocateCenter = false;
 			Center.pos.x = Center.pos.x / totalSelected;
 			Center.pos.y = Center.pos.y / totalSelected;
-
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, Center.pos.x, Center.pos.y);
+			
+			currentCenter = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, Center.pos.x, Center.pos.y);
+			p2List_item<j1Entity*>* iterator = selected.start;
+			while (iterator)
+			{
+				currentCenter->ReturnChilds()->add(iterator->data);
+				iterator->data->target = currentCenter;
+				iterator = iterator->next;
+			}
 		}
 	
 	}
 	
 	
-	App->render->DrawCircle(Center.pos.x, Center.pos.y, 15, 0, 0, 255, 50);
+	//App->render->DrawCircle(Center.pos.x, Center.pos.y, 15, 0, 0, 255, 50);
 	//App->pathfinding->CreatePath(origin, mouse);
 
 //	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();

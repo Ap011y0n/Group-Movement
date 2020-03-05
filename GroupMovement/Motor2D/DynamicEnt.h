@@ -47,7 +47,6 @@ public:
 	iPoint speed;
 	entityDirection direction;
 //	SDL_RendererFlip flip = SDL_FLIP_NONE;
-	j1Entity* target;
 	int vision;
 	int damage;
 	int armor;

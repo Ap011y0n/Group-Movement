@@ -14,7 +14,6 @@ struct MassCenter
 
 
 	iPoint				pos;
-	p2List<j1Entity*>	selected;
 };
 
 class j1GroupMov : public j1Module
@@ -33,6 +32,8 @@ public:
 	MassCenter Center;
 	bool RelocateCenter;
 	iPoint pos;
+	p2List<j1Entity*>	selected;
+	j1Entity* currentCenter;
 };
 
 #endif
