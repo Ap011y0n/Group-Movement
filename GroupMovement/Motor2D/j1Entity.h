@@ -57,6 +57,7 @@ public:
 
 	virtual p2List<j1Entity*>* ReturnChilds();
 	j1Entity* target;
+	bool move;
 
 
 };

@@ -42,13 +42,13 @@ bool Test_1::Start()
 bool Test_1::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
+	speed = { 0, 0 };
 
 	CheckAnimation(dt);
 
 	//App->render->Blit(App->entity->test_1_graphics, position.x + current_animation->pivotx[current_animation->returnCurrentFrame()], position.y + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)), 1.0f);
 	
-	position.x += speed.x;
-	position.y += speed.y;
+	
 	if (position.x > 800)
 		to_delete = true;
 
@@ -58,7 +58,7 @@ bool Test_1::Update(float dt)
 
 	origin = App->map->WorldToMap(position.x, position.y);
 
-	if (target != NULL)
+	if (target != NULL && target->move)
 	{
 		int x = target->position.x, y = target->position.y;
 		App->pathfinding->CreatePath(origin, App->map->WorldToMap(x, y));
@@ -70,30 +70,32 @@ bool Test_1::Update(float dt)
 				LOG("%d %d", nextPoint.x, nextPoint.y);
 			{
 				//App->render->Blit(App->scene->debug_tex, nextPoint.x, nextPoint.y);
-				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+				//App->render->DrawQuad({ nextPoint.x, nextPoint.y, 6, 6 }, 200, 0, 0, 100);
 			}
 		}
 		if (path->At(1) != NULL)
 		{
 			//This makes a comparison with the players position to make the correct move
 			if (path->At(1)->x < origin.x) {
-				position.x -= 2;
+				speed.x =- 2;
 			}
 
 			if (path->At(1)->x > origin.x) {
-				position.x += 2;
+				speed.x = 2;
 			}
 
 			if (path->At(1)->y < origin.y) {
-				position.y -= 2;
+				speed.y = -2;
 			}
 
 			if (path->At(1)->y > origin.y) {
-				position.y += 2;
+				speed.y = 2;
 			}
 		}
 	}
 	
+	position.y += speed.y;
+	position.x += speed.x;
 	if (isSelected)
 		App->render->DrawCircle(position.x + 5, position.y + 5, 10, 0, 200, 0, 200);
 
