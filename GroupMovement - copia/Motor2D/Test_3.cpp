@@ -57,7 +57,6 @@ bool Test_3::Update(float dt)
 	{
 		position.x = position.x / childs.size();
 		position.y = position.y / childs.size();
-		LOG("%d, %d",position.x, position.y);
 	}
 	else {
 		to_delete = true;

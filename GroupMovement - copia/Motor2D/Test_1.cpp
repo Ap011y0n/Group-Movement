@@ -11,6 +11,7 @@
 #include "j1Map.h"
 #include "j1Pathfinding.h"
 #include "j1Input.h"
+#include <math.h>
 
 Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
 {
@@ -18,7 +19,9 @@ Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
 
 	actualState = ST_TEST_1_IDLE;
 	speed = { 0, 0 };
-	cost = 1;
+	cost = 5;
+	vision = 15;
+	body = 7;
 	position.x = posx;
 	position.y = posy;
 	to_delete = false;
@@ -43,11 +46,13 @@ bool Test_1::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
 	speed = { 0, 0 };
-
+	pathSpeed = { 0, 0 };
+	separationSpeed = { 0, 0 };
 	CheckAnimation(dt);
 
 	//App->render->Blit(App->entity->test_1_graphics, position.x + current_animation->pivotx[current_animation->returnCurrentFrame()], position.y + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)), 1.0f);
-	
+	origin = App->map->WorldToMap(position.x, position.y);
+
 	
 	if (position.x > 800)
 		to_delete = true;
@@ -63,11 +68,10 @@ bool Test_1::Update(float dt)
 		move = true;
 	}
 
-	origin = App->map->WorldToMap(position.x, position.y);
 
+	//----------------------------------------------------------------Path speed
 	if (move)
 	{
-
 		for (uint i = 0; i < path->Count(); ++i)
 		{
 			iPoint nextPoint = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
@@ -84,33 +88,72 @@ bool Test_1::Update(float dt)
 		{
 			//This makes a comparison with the players position to make the correct move
 			if (path->At(followpath)->x < origin.x) {
-				speed.x -= 2;
+				pathSpeed.x -= 1;
 			}
 
 			if (path->At(followpath)->x > origin.x) {
-				speed.x += 2;
+				pathSpeed.x += 1;
 			}
 
 			if (path->At(followpath)->y < origin.y) {
-				speed.y -= 2;
+				pathSpeed.y -= 1;
 			}
 
 			if (path->At(followpath)->y > origin.y) {
-				speed.y += 2;
+				pathSpeed.y += 1;
 			}
 			if (origin.x == path->At(followpath)->x && origin.y == path->At(followpath)->y)
+			{
 				followpath++;
+			}
+				
 		}
 	}
 
+	//----------------------------------------------------------------Separation speed
+	int neighbours = 0;
+	p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
+	while (entities_list)
+	{
+		if (entities_list->data != this && entities_list->data->selectable)
+		{
+			int x = entities_list->data->position.x;
+			int y = entities_list->data->position.y;
+
+			float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+			if (distance < vision + entities_list->data->body)
+			{
+				neighbours++;
+				separationSpeed.x += position.x - entities_list->data->position.x ;
+				separationSpeed.y += position.y - entities_list->data->position.y;
+			}
+		}
+		entities_list = entities_list->next;
+
+	}
+	if (neighbours != 0)
+	{
+		separationSpeed.x = separationSpeed.x / neighbours;
+		separationSpeed.y = separationSpeed.y / neighbours;
 	
+	float norm = sqrt(pow((separationSpeed.x), 2) + pow((separationSpeed.y), 2));
+	separationSpeed.x = separationSpeed.x / norm;
+	separationSpeed.y = separationSpeed.y / norm;
+	}
+	//----------------------------------------------------------------Path speed
+	speed.x += pathSpeed.x + separationSpeed.x;
+	speed.y += pathSpeed.y + separationSpeed.y;
+
 	position.y += speed.y;
 	position.x += speed.x;
-	if (isSelected)
-		App->render->DrawCircle(position.x + 5, position.y + 5, 10, 0, 200, 0, 200);
-
-	App->render->DrawQuad({ position.x, position.y, 10, 10 }, 200, 200, 0);
 	
+	if (isSelected)
+		App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, 10, 0, 200, 0, 200);
+
+	App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
+	
+	App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, vision, 200, 200, 0, 200);
+	App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, body, 0, 200, 200, 200);
 
 
 	

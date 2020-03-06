@@ -37,7 +37,7 @@ public:
 public:
 
 	// Position
-	iPoint position;
+	fPoint position;
 
 	int hp;
 	bool isSelected;
@@ -61,8 +61,10 @@ public:
 	virtual list<j1Entity*>* ReturnChilds();
 	j1Entity* target;
 	bool move;
-
-
+	int vision;
+	int body;
+	fPoint speed, pathSpeed, separationSpeed;
+	
 };
 
 #endif // __j1Entity_H__
