@@ -46,7 +46,7 @@ public:
 	
 	iPoint origin, mouse;
 	int counter = 0;
-	const p2DynArray<iPoint>* path;
+	p2DynArray<iPoint> path;
 	int followpath;
 
 };

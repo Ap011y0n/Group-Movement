@@ -63,7 +63,13 @@ bool Test_1::Update(float dt)
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		mouse = App->map->WorldToMap(mouse.x, mouse.y);
 		App->pathfinding->CreatePath(origin, mouse);
-		path = App->pathfinding->GetLastPath();
+
+		const p2DynArray<iPoint>* last_path = App->pathfinding->GetLastPath();
+		path.Clear();
+		for (uint i = 0; i < last_path->Count(); ++i)
+		{
+			path.PushBack({last_path->At(i)->x, last_path->At(i)->y});
+		}
 		followpath = 1;
 		move = true;
 	}
@@ -72,9 +78,9 @@ bool Test_1::Update(float dt)
 	//----------------------------------------------------------------Path speed
 	if (move)
 	{
-		for (uint i = 0; i < path->Count(); ++i)
+		for (uint i = 0; i < path.Count(); ++i)
 		{
-			iPoint nextPoint = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+			iPoint nextPoint = App->map->MapToWorld(path.At(i)->x, path.At(i)->y);
 			if (i == followpath)
 			{
 				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 12, 12 }, 200, 0, 0, 100);
@@ -84,25 +90,25 @@ bool Test_1::Update(float dt)
 
 			}
 		}
-		if (path->At(followpath) != NULL)
+		if (path.At(followpath) != NULL)
 		{
 			//This makes a comparison with the players position to make the correct move
-			if (path->At(followpath)->x < origin.x) {
+			if (path.At(followpath)->x < origin.x) {
 				pathSpeed.x -= 1;
 			}
 
-			if (path->At(followpath)->x > origin.x) {
+			if (path.At(followpath)->x > origin.x) {
 				pathSpeed.x += 1;
 			}
 
-			if (path->At(followpath)->y < origin.y) {
+			if (path.At(followpath)->y < origin.y) {
 				pathSpeed.y -= 1;
 			}
 
-			if (path->At(followpath)->y > origin.y) {
+			if (path.At(followpath)->y > origin.y) {
 				pathSpeed.y += 1;
 			}
-			if (origin.x == path->At(followpath)->x && origin.y == path->At(followpath)->y)
+			if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
 			{
 				followpath++;
 			}
@@ -141,8 +147,26 @@ bool Test_1::Update(float dt)
 	separationSpeed.y = separationSpeed.y / norm;
 	}
 	//----------------------------------------------------------------Path speed
-	speed.x += pathSpeed.x + separationSpeed.x;
-	speed.y += pathSpeed.y + separationSpeed.y;
+	speed.x += 2*pathSpeed.x + 1.3*separationSpeed.x;
+	speed.y += 2*pathSpeed.y + 1.3*separationSpeed.y;
+
+	iPoint coord;
+	p2List_item<MapLayer*>* layer_iterator = App->map->data.layers.start;
+	MapLayer* layer = App->map->data.layers.start->data;
+
+	while (layer_iterator != NULL) 
+	{
+		layer = layer_iterator->data;
+		// Map colliders, limit movement
+		if (layer->returnPropValue("Navigation") == 1) {
+			coord = App->map->WorldToMap(position.x + speed.x, position.y);
+			if (layer->Get(coord.x, coord.y) != 0) speed.x = 0;
+
+			coord = App->map->WorldToMap(position.x, position.y + speed.y);
+			if (layer->Get(coord.x, coord.y) != 0) speed.y = 0;
+		}
+		layer_iterator = layer_iterator->next;
+	}
 
 	position.y += speed.y;
 	position.x += speed.x;
@@ -151,9 +175,8 @@ bool Test_1::Update(float dt)
 		App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, 10, 0, 200, 0, 200);
 
 	App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
-	
-	App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, vision, 200, 200, 0, 200);
-	App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, body, 0, 200, 200, 200);
+	//App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, vision, 200, 200, 0, 200);
+	//App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, body, 0, 200, 200, 200);
 
 
 	
