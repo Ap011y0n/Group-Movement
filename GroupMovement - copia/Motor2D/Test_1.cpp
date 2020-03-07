@@ -173,10 +173,16 @@ bool Test_1::Update(float dt)
 		// Map colliders, limit movement
 		if (layer->returnPropValue("Navigation") == 1) {
 			coord = App->map->WorldToMap(position.x + speed.x, position.y);
-			if (layer->Get(coord.x, coord.y) != 0) speed.x = 0;
-
-			coord = App->map->WorldToMap(position.x, position.y + speed.y);
-			if (layer->Get(coord.x, coord.y) != 0) speed.y = 0;
+			if(coord.x < 10000 && coord.x > -10000)
+			{
+				if (layer->Get(coord.x, coord.y) != 0) speed.x = 0;
+			}
+			if (coord.x < 10000 && coord.x > -10000)
+			{
+				coord = App->map->WorldToMap(position.x, position.y + speed.y);
+				if (layer->Get(coord.x, coord.y) != 0) speed.y = 0;
+			
+			}
 		}
 		layer_iterator = layer_iterator->next;
 	}

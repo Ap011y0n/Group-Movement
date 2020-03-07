@@ -104,7 +104,10 @@ bool j1Scene::Update(float dt)
 	App->input->GetMousePosition(x, y);
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
 		App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, x, y);
+		LOG("%d", counter++);
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 		App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_2, x, y-20);
