@@ -30,7 +30,7 @@ public:
 	
 public:
 	MassCenter Center;
-	bool RelocateCenter;
+	bool NewGroup;
 	iPoint pos;
 	p2List<j1Entity*>	selected;
 	j1Entity* currentCenter;

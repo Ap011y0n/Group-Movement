@@ -41,65 +41,33 @@ bool Test_3::Update(float dt)
 	CheckAnimation(dt);
 
 	//App->render->Blit(App->entity->test_1_graphics, position.x + current_animation->pivotx[current_animation->returnCurrentFrame()], position.y + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)), 1.0f);
+	position = { 0,0 };
 
-
+	j1Entity* it;
+	list<j1Entity*>::iterator childs_list;
+	
+	for (childs_list = childs.begin(); childs_list != childs.end(); ++childs_list) {
+		it = *childs_list;
+		position.x += it->position.x;
+		position.y += it->position.y;
+	}
 
 	
-	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	if (!childs.empty())
 	{
-		App->input->GetMousePosition(mouse.x, mouse.y);
-		mouse = App->map->WorldToMap(mouse.x, mouse.y);
-		move = true;
+		position.x = position.x / childs.size();
+		position.y = position.y / childs.size();
 	}
-
-	origin = App->map->WorldToMap(position.x, position.y);
-	if (move)
-	{
-
-
-		App->pathfinding->CreatePath(origin, mouse);
-
-		const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
-		for (uint i = 0; i < path->Count(); ++i)
-		{
-			iPoint nextPoint = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-			if (i == 0)
-			{
-				//App->render->Blit(App->scene->debug_tex, nextPoint.x, nextPoint.y);
-				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
-			}
-		}
-		if (path->At(1) != NULL)
-		{
-			//This makes a comparison with the players position to make the correct move
-			if (path->At(1)->x < origin.x) {
-				position.x -= 2;
-			}
-
-			if (path->At(1)->x > origin.x) {
-				position.x += 2;
-			}
-
-			if (path->At(1)->y < origin.y) {
-				position.y -= 2;
-			}
-
-			if (path->At(1)->y > origin.y) {
-				position.y += 2;
-			}
-		}
-	}
-
-
-
-
-	if (childs.count() == 0)
-		to_delete = true;
-	if(isSelected)
-	App->render->DrawQuad({ position.x, position.y, 20, 20 }, 0, 0, 200);
 	else {
-		App->render->DrawQuad({ position.x, position.y, 20, 20 }, 200, 0, 200);
+		to_delete = true;
 	}
+
+	if(isSelected)
+		App->render->DrawCircle(position.x, position.y, 10, 0, 0, 200, 150);
+	else {
+		App->render->DrawCircle(position.x, position.y, 10, 200, 0, 200, 150);
+	}
+
 	return true;
 }
 
@@ -121,7 +89,7 @@ bool Test_3::CleanUp()
 	return true;
 }
 
-p2List<j1Entity*>* Test_3::ReturnChilds()
+list<j1Entity*>* Test_3::ReturnChilds()
 {
 	return &childs;
 }

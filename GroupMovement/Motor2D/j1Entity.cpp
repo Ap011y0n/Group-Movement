@@ -24,8 +24,8 @@ bool j1Entity::CleanUp()
 	return true;
 }
 
-p2List<j1Entity*>* j1Entity::ReturnChilds()
+list<j1Entity*>* j1Entity::ReturnChilds()
 {
-	p2List<j1Entity*> none;
+	list<j1Entity*> none;
 	return &none;
 }

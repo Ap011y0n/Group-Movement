@@ -37,7 +37,7 @@ public:
 	// Animation
 	void CheckAnimation(float dt);
 
-	p2List<j1Entity*>* ReturnChilds();
+	list<j1Entity*>* ReturnChilds();
 
 public:
 	// Animations
@@ -45,9 +45,9 @@ public:
 	Animation* current_animation = nullptr;
 	//Animation idle;
 	int attackrange;
-	p2List<j1Entity*>	childs;
+	list<j1Entity*>	childs;
 
-	iPoint origin, mouse;
+
 
 };
 

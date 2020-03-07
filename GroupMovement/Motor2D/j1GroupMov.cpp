@@ -27,7 +27,7 @@ bool j1GroupMov::Awake(pugi::xml_node& config) {
 bool j1GroupMov::Start() {
 	Center.pos.x = 0;
 	Center.pos.y = 0;
-	RelocateCenter = false;
+	NewGroup = false;
 	return true;
 
 }
@@ -86,16 +86,12 @@ bool j1GroupMov::Update(float dt) {
 
 				if (entities_list->data->isSelected)
 				{
-					if (!RelocateCenter)
+					if (!NewGroup)
 					{
-						Center.pos.x = 0;
-						Center.pos.y = 0;
 						selected.clear();
 					}
-					RelocateCenter = true;
-					totalSelected++;
-					Center.pos.x += x;
-					Center.pos.y += y;
+					NewGroup = true;
+					
 					if (currentCenter != NULL)
 					{
 						currentCenter->isSelected = false;
@@ -108,20 +104,16 @@ bool j1GroupMov::Update(float dt) {
 			entities_list = entities_list->next;
 		}
 
-		if (RelocateCenter)
+		if (NewGroup)
 		{
-			//Crear un nuevo centro aqui, o antes, para aprovechar la iteración, sera el target de las entities seleccionadas anteriormente
-			//Ponerle esta posicion, y ponerlo en un puntero de current center, el current center podra usarse para clickar
-			RelocateCenter = false;
-			Center.pos.x = Center.pos.x / totalSelected;
-			Center.pos.y = Center.pos.y / totalSelected;
-			
-			currentCenter = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, Center.pos.x, Center.pos.y);
+			NewGroup = false;
+						
+			currentCenter = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, 0, 0);
 			currentCenter->isSelected = true;
 			p2List_item<j1Entity*>* iterator = selected.start;
 			while (iterator)
 			{
-				currentCenter->ReturnChilds()->add(iterator->data);
+				currentCenter->ReturnChilds()->push_back(iterator->data);
 				iterator->data->target = currentCenter;
 				iterator = iterator->next;
 			}

@@ -44,7 +44,7 @@ public:
 public:
 
 
-	iPoint speed;
+
 	entityDirection direction;
 //	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	int vision;

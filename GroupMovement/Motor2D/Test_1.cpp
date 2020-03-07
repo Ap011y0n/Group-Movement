@@ -11,6 +11,7 @@
 #include "j1Map.h"
 #include "j1Pathfinding.h"
 #include "j1Input.h"
+#include <math.h>
 
 Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
 {
@@ -18,7 +19,9 @@ Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
 
 	actualState = ST_TEST_1_IDLE;
 	speed = { 0, 0 };
-	cost = 1;
+	cost = 5;
+	vision = 15;
+	body = 7;
 	position.x = posx;
 	position.y = posy;
 	to_delete = false;
@@ -43,64 +46,156 @@ bool Test_1::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
 	speed = { 0, 0 };
-
+	pathSpeed = { 0, 0 };
+	separationSpeed = { 0, 0 };
+	cohesion = { 0, 0 };
 	CheckAnimation(dt);
 
 	//App->render->Blit(App->entity->test_1_graphics, position.x + current_animation->pivotx[current_animation->returnCurrentFrame()], position.y + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)), 1.0f);
-	
+	origin = App->map->WorldToMap(position.x, position.y);
+
 	
 	if (position.x > 800)
 		to_delete = true;
 
 
-	static iPoint origin;
-
-
-	origin = App->map->WorldToMap(position.x, position.y);
-
-	if (target != NULL && target->move)
+	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		int x = target->position.x, y = target->position.y;
-		App->pathfinding->CreatePath(origin, App->map->WorldToMap(x, y));
-		const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
-		for (uint i = 0; i < path->Count(); ++i)
+		App->input->GetMousePosition(mouse.x, mouse.y);
+		mouse = App->map->WorldToMap(mouse.x, mouse.y);
+		App->pathfinding->CreatePath(origin, mouse);
+
+		const p2DynArray<iPoint>* last_path = App->pathfinding->GetLastPath();
+		path.Clear();
+		for (uint i = 0; i < last_path->Count(); ++i)
 		{
-			iPoint nextPoint = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-			if (i == 0)
-				LOG("%d %d", nextPoint.x, nextPoint.y);
+			path.PushBack({last_path->At(i)->x, last_path->At(i)->y});
+		}
+		followpath = 1;
+		move = true;
+	}
+
+
+	//----------------------------------------------------------------Path speed
+	if (move)
+	{
+		for (uint i = 0; i < path.Count(); ++i)
+		{
+			iPoint nextPoint = App->map->MapToWorld(path.At(i)->x, path.At(i)->y);
+			if (i == followpath)
 			{
-				//App->render->Blit(App->scene->debug_tex, nextPoint.x, nextPoint.y);
-				//App->render->DrawQuad({ nextPoint.x, nextPoint.y, 6, 6 }, 200, 0, 0, 100);
+				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 12, 12 }, 200, 0, 0, 100);
+			}
+			else {
+				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+
 			}
 		}
-		if (path->At(1) != NULL)
+		if (path.At(followpath) != NULL)
 		{
 			//This makes a comparison with the players position to make the correct move
-			if (path->At(1)->x < origin.x) {
-				speed.x =- 2;
+			if (path.At(followpath)->x < origin.x) {
+				pathSpeed.x -= 1;
 			}
 
-			if (path->At(1)->x > origin.x) {
-				speed.x = 2;
+			if (path.At(followpath)->x > origin.x) {
+				pathSpeed.x += 1;
 			}
 
-			if (path->At(1)->y < origin.y) {
-				speed.y = -2;
+			if (path.At(followpath)->y < origin.y) {
+				pathSpeed.y -= 1;
 			}
 
-			if (path->At(1)->y > origin.y) {
-				speed.y = 2;
+			if (path.At(followpath)->y > origin.y) {
+				pathSpeed.y += 1;
 			}
+			if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
+			{
+				followpath++;
+			}
+				
 		}
 	}
+
+	//----------------------------------------------------------------Separation speed
+	int neighbours = 0;
+	p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
+	while (entities_list)
+	{
+		if (entities_list->data != this && entities_list->data->selectable)
+		{
+			int x = entities_list->data->position.x;
+			int y = entities_list->data->position.y;
+
+			float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+			if (distance < vision + entities_list->data->body)
+			{
+				neighbours++;
+				separationSpeed.x += position.x - entities_list->data->position.x ;
+				separationSpeed.y += position.y - entities_list->data->position.y;
+			}
+		}
+		entities_list = entities_list->next;
+
+	}
+	if (neighbours != 0)
+	{
+		separationSpeed.x = separationSpeed.x / neighbours;
+		separationSpeed.y = separationSpeed.y / neighbours;
 	
+	float norm = sqrt(pow((separationSpeed.x), 2) + pow((separationSpeed.y), 2));
+	separationSpeed.x = separationSpeed.x / norm;
+	separationSpeed.y = separationSpeed.y / norm;
+	}
+	//---------------------------------------------------------------- Cohesion speed
+	if(target != nullptr)
+	{/*
+		cohesion.x = target->position.x - position.x;
+		cohesion.y = target->position.y - position.y;
+		float norm = sqrt(pow((cohesion.x), 2) + pow((cohesion.y), 2));
+		cohesion.x = cohesion.x / norm;
+		cohesion.y = cohesion.y / norm;*/
+	}
+	
+
+	//----------------------------------------------------------------Cohesion speed
+	speed.x += 2*pathSpeed.x + 1.3*separationSpeed.x + 0.2*cohesion.x;
+	speed.y += 2*pathSpeed.y + 1.3*separationSpeed.y + 0.2*cohesion.y;
+	
+
+	iPoint coord;
+	p2List_item<MapLayer*>* layer_iterator = App->map->data.layers.start;
+	MapLayer* layer = App->map->data.layers.start->data;
+
+	while (layer_iterator != NULL) 
+	{
+		layer = layer_iterator->data;
+		// Map colliders, limit movement
+		if (layer->returnPropValue("Navigation") == 1) {
+			coord = App->map->WorldToMap(position.x + speed.x, position.y);
+			if(coord.x < 10000 && coord.x > -10000)
+			{
+				if (layer->Get(coord.x, coord.y) != 0) speed.x = 0;
+			}
+			if (coord.x < 10000 && coord.x > -10000)
+			{
+				coord = App->map->WorldToMap(position.x, position.y + speed.y);
+				if (layer->Get(coord.x, coord.y) != 0) speed.y = 0;
+			
+			}
+		}
+		layer_iterator = layer_iterator->next;
+	}
+
 	position.y += speed.y;
 	position.x += speed.x;
-	if (isSelected)
-		App->render->DrawCircle(position.x + 5, position.y + 5, 10, 0, 200, 0, 200);
-
-	App->render->DrawQuad({ position.x, position.y, 10, 10 }, 200, 200, 0);
 	
+	if (isSelected)
+		App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, 10, 0, 200, 0, 200);
+
+	App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
+	//App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, vision, 200, 200, 0, 200);
+	//App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, body, 0, 200, 200, 200);
 
 
 	

@@ -4,6 +4,9 @@
 #include "p2Point.h"
 #include "p2Log.h"
 #include "j1App.h"
+#include <list>
+
+using namespace std;
 
 struct SDL_Texture;
 
@@ -34,7 +37,7 @@ public:
 public:
 
 	// Position
-	iPoint position;
+	fPoint position;
 
 	int hp;
 	bool isSelected;
@@ -55,11 +58,13 @@ public:
 	bool to_delete;
 	bool selectable;
 
-	virtual p2List<j1Entity*>* ReturnChilds();
+	virtual list<j1Entity*>* ReturnChilds();
 	j1Entity* target;
 	bool move;
-
-
+	int vision;
+	int body;
+	fPoint speed, pathSpeed, separationSpeed, cohesion;
+	
 };
 
 #endif // __j1Entity_H__

@@ -44,8 +44,10 @@ public:
 	//Animation idle;
 	int attackrange;
 	
-
+	iPoint origin, mouse;
 	int counter = 0;
+	p2DynArray<iPoint> path;
+	int followpath;
 
 };
 
