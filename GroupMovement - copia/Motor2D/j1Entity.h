@@ -63,7 +63,7 @@ public:
 	bool move;
 	int vision;
 	int body;
-	fPoint speed, pathSpeed, separationSpeed;
+	fPoint speed, pathSpeed, separationSpeed, cohesion;
 	
 };
 

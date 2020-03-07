@@ -48,6 +48,7 @@ bool Test_1::Update(float dt)
 	speed = { 0, 0 };
 	pathSpeed = { 0, 0 };
 	separationSpeed = { 0, 0 };
+	cohesion = { 0, 0 };
 	CheckAnimation(dt);
 
 	//App->render->Blit(App->entity->test_1_graphics, position.x + current_animation->pivotx[current_animation->returnCurrentFrame()], position.y + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)), 1.0f);
@@ -146,9 +147,21 @@ bool Test_1::Update(float dt)
 	separationSpeed.x = separationSpeed.x / norm;
 	separationSpeed.y = separationSpeed.y / norm;
 	}
-	//----------------------------------------------------------------Path speed
-	speed.x += 2*pathSpeed.x + 1.3*separationSpeed.x;
-	speed.y += 2*pathSpeed.y + 1.3*separationSpeed.y;
+	//---------------------------------------------------------------- Cohesion speed
+	if(target != nullptr)
+	{/*
+		cohesion.x = target->position.x - position.x;
+		cohesion.y = target->position.y - position.y;
+		float norm = sqrt(pow((cohesion.x), 2) + pow((cohesion.y), 2));
+		cohesion.x = cohesion.x / norm;
+		cohesion.y = cohesion.y / norm;*/
+	}
+	
+
+	//----------------------------------------------------------------Cohesion speed
+	speed.x += 2*pathSpeed.x + 1.3*separationSpeed.x + 0.2*cohesion.x;
+	speed.y += 2*pathSpeed.y + 1.3*separationSpeed.y + 0.2*cohesion.y;
+	
 
 	iPoint coord;
 	p2List_item<MapLayer*>* layer_iterator = App->map->data.layers.start;
