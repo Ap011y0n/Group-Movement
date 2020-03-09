@@ -159,7 +159,7 @@ bool Test_1::Update(float dt)
 	separationSpeed.x = separationSpeed.x / norm;
 	separationSpeed.y = separationSpeed.y / norm;
 	}
-	//App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, vision, 200, 200, 0, 200);
+	//App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, collrange, 200, 200, 0, 200);
 	//App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, body, 0, 200, 200, 200);
 
 	//---------------------------------------------------------------- Cohesion speed
