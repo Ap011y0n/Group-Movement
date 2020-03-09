@@ -20,7 +20,7 @@ Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
 	actualState = ST_TEST_1_IDLE;
 	speed = { 0, 0 };
 	cost = 5;
-	vision = 15;
+	vision = 20;
 	collrange = 10;
 	body = 7;
 	position.x = posx;
@@ -111,7 +111,10 @@ bool Test_1::Update(float dt)
 		
 	}
 
-	//----------------------------------------------------------------Separation speed
+	j1Entity* it;
+	list<j1Entity*>::iterator neighbours_it;
+
+	//----------------------------------------------------------------Save neighbours in two lists
 
 	p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
 	closer_entity_list.clear();
@@ -127,8 +130,7 @@ bool Test_1::Update(float dt)
 			if (distance < collrange + entities_list->data->body)
 			{
 				colliding_entity_list.push_back(entities_list->data);
-				separationSpeed.x += position.x - entities_list->data->position.x ;
-				separationSpeed.y += position.y - entities_list->data->position.y;
+				
 			}
 			if (distance < vision + entities_list->data->body)
 			{
@@ -138,7 +140,17 @@ bool Test_1::Update(float dt)
 		entities_list = entities_list->next;
 
 	}
-	if (colliding_entity_list.size() > 0)
+
+	//---------------------------------------------------------------- Separation Speed
+
+	for (neighbours_it = colliding_entity_list.begin(); neighbours_it != colliding_entity_list.end(); ++neighbours_it) {
+		it = *neighbours_it;
+		separationSpeed.x += position.x - it->position.x;
+		separationSpeed.y += position.y - it->position.y;
+	}
+	
+
+	if (!colliding_entity_list.empty())
 	{
 		separationSpeed.x = separationSpeed.x / colliding_entity_list.size();
 		separationSpeed.y = separationSpeed.y / colliding_entity_list.size();
@@ -147,10 +159,12 @@ bool Test_1::Update(float dt)
 	separationSpeed.x = separationSpeed.x / norm;
 	separationSpeed.y = separationSpeed.y / norm;
 	}
+	//App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, vision, 200, 200, 0, 200);
+	//App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, body, 0, 200, 200, 200);
+
 	//---------------------------------------------------------------- Cohesion speed
-	j1Entity* it;
-	list<j1Entity*>::iterator neighbours_it;
-	fPoint MassCenter{ position.x+5, position.y+ 5 };
+	
+	fPoint MassCenter{ position.x, position.y };
 
 	for (neighbours_it = closer_entity_list.begin(); neighbours_it != closer_entity_list.end(); ++neighbours_it) {
 		it = *neighbours_it;
@@ -164,8 +178,8 @@ bool Test_1::Update(float dt)
 		MassCenter.x = MassCenter.x / (closer_entity_list.size()+1);
 		MassCenter.y = MassCenter.y / (closer_entity_list.size()+1);
 
-		cohesion.x = (int)(position.x - MassCenter.x);
-		cohesion.y = (int)(position.y - MassCenter.y);
+		cohesion.x = position.x - MassCenter.x;
+		cohesion.y = position.y - MassCenter.y;
 		float norm = sqrt(pow((cohesion.x), 2) + pow((cohesion.y), 2));
 
 		if (cohesion.x < 11 && cohesion.x > -11)
@@ -186,19 +200,15 @@ bool Test_1::Update(float dt)
 		
 			cohesion.y = -1 * cohesion.y / norm;
 		}
-		
-		
-		
-		
-	
 	}
 	
-	App->render->DrawCircle((int)MassCenter.x, (int)MassCenter.y, vision, 200, 200, 0, 200);
+	//App->render->DrawCircle((int)MassCenter.x, (int)MassCenter.y, vision, 200, 200, 0, 200);
 
-	//----------------------------------------------------------------Cohesion speed
-	speed.x += 2*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesion.x;
-	speed.y += 2*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesion.y;
+	//---------------------------------------------------------------- Add all speeds
+	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesion.x;
+	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesion.y;
 	
+	//------------------------------------------------------------------Use a collision system
 
 	iPoint coord;
 	p2List_item<MapLayer*>* layer_iterator = App->map->data.layers.start;
@@ -207,7 +217,6 @@ bool Test_1::Update(float dt)
 	while (layer_iterator != NULL) 
 	{
 		layer = layer_iterator->data;
-		// Map colliders, limit movement
 		if (layer->returnPropValue("Navigation") == 1) {
 			coord = App->map->WorldToMap(position.x + speed.x, position.y);
 			if(coord.x < 10000 && coord.x > -10000)
@@ -227,15 +236,11 @@ bool Test_1::Update(float dt)
 	position.y += speed.y;
 	position.x += speed.x;
 	
+
 	if (isSelected)
 		App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, 10, 0, 200, 0, 200);
 
 	App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
-	//App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, vision, 200, 200, 0, 200);
-	//App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, body, 0, 200, 200, 200);
-
-
-	
 
 	return true;
 }
