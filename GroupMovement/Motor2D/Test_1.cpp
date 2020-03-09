@@ -203,6 +203,7 @@ bool Test_1::Update(float dt)
 	
 	//App->render->DrawCircle((int)MassCenter.x, (int)MassCenter.y, vision, 200, 200, 0, 200);
 	//---------------------------------------------------------------- Alignment speed NOT RECOMMENDED FOR OUR PROJECT
+	// in case you have a velocity (direction) vector for your entitites, you may change speed.x for your "velocity.x
 	fPoint directionSpeed{ 0,0 };
 	for (neighbours_it = close_entity_list.begin(); neighbours_it != close_entity_list.end(); ++neighbours_it) {
 		it = *neighbours_it;
