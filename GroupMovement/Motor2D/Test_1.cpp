@@ -117,7 +117,7 @@ bool Test_1::Update(float dt)
 	//----------------------------------------------------------------Save neighbours in two lists
 
 	p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
-	closer_entity_list.clear();
+	close_entity_list.clear();
 	colliding_entity_list.clear();
 	while (entities_list)
 	{
@@ -134,7 +134,7 @@ bool Test_1::Update(float dt)
 			}
 			if (distance < vision + entities_list->data->body)
 			{
-				closer_entity_list.push_back(entities_list->data);
+				close_entity_list.push_back(entities_list->data);
 			}
 		}
 		entities_list = entities_list->next;
@@ -166,17 +166,17 @@ bool Test_1::Update(float dt)
 	
 	fPoint MassCenter{ position.x, position.y };
 
-	for (neighbours_it = closer_entity_list.begin(); neighbours_it != closer_entity_list.end(); ++neighbours_it) {
+	for (neighbours_it = close_entity_list.begin(); neighbours_it != close_entity_list.end(); ++neighbours_it) {
 		it = *neighbours_it;
 		MassCenter.x += it->position.x;
 		MassCenter.y += it->position.y;
 	}
 
 
-	if (!closer_entity_list.empty())
+	if (!close_entity_list.empty())
 	{
-		MassCenter.x = MassCenter.x / (closer_entity_list.size()+1);
-		MassCenter.y = MassCenter.y / (closer_entity_list.size()+1);
+		MassCenter.x = MassCenter.x / (close_entity_list.size()+1);
+		MassCenter.y = MassCenter.y / (close_entity_list.size()+1);
 
 		cohesion.x = position.x - MassCenter.x;
 		cohesion.y = position.y - MassCenter.y;
@@ -197,16 +197,38 @@ bool Test_1::Update(float dt)
 		}
 		else
 		{
-		
 			cohesion.y = -1 * cohesion.y / norm;
 		}
 	}
 	
 	//App->render->DrawCircle((int)MassCenter.x, (int)MassCenter.y, vision, 200, 200, 0, 200);
+	//---------------------------------------------------------------- Alignment speed NOT RECOMMENDED FOR OUR PROJECT
+	fPoint directionSpeed{ 0,0 };
+	for (neighbours_it = close_entity_list.begin(); neighbours_it != close_entity_list.end(); ++neighbours_it) {
+		it = *neighbours_it;
+		directionSpeed.x += it->speed.x;
+		directionSpeed.y += it->speed.x;
+
+		
+	}
+	if (!close_entity_list.empty())
+	{
+		directionSpeed.x = directionSpeed.x / close_entity_list.size();
+		directionSpeed.y = directionSpeed.y / close_entity_list.size();
+		float norm = sqrt(pow((directionSpeed.x), 2) + pow((directionSpeed.y), 2));
+		if (norm != 0)
+		{
+			directionSpeed.x = directionSpeed.x / norm;
+			directionSpeed.y = directionSpeed.y / norm;
+		}
+		
+
+	}
 
 	//---------------------------------------------------------------- Add all speeds
-	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesion.x;
-	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesion.y;
+
+	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesion.x + 0*directionSpeed.x;
+	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesion.y + 0*directionSpeed.y;
 	
 	//------------------------------------------------------------------Use a collision system
 
