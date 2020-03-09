@@ -48,7 +48,8 @@ public:
 	int counter = 0;
 	p2DynArray<iPoint> path;
 	int followpath;
-
+	list<j1Entity*> closer_entity_list;
+	list<j1Entity*> colliding_entity_list;
 };
 
 #endif // __TEST_1_H__

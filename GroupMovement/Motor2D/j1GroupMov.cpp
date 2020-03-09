@@ -92,12 +92,12 @@ bool j1GroupMov::Update(float dt) {
 					}
 					NewGroup = true;
 					
-					if (currentCenter != NULL)
+					/*if (currentCenter != NULL)
 					{
 						currentCenter->isSelected = false;
 						currentCenter->ReturnChilds()->clear();
 					}
-
+*/
 					selected.add(entities_list->data);
 				}
 			}
@@ -108,7 +108,7 @@ bool j1GroupMov::Update(float dt) {
 		{
 			NewGroup = false;
 						
-			currentCenter = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, 0, 0);
+			/*currentCenter = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, 0, 0);
 			currentCenter->isSelected = true;
 			p2List_item<j1Entity*>* iterator = selected.start;
 			while (iterator)
@@ -116,7 +116,7 @@ bool j1GroupMov::Update(float dt) {
 				currentCenter->ReturnChilds()->push_back(iterator->data);
 				iterator->data->target = currentCenter;
 				iterator = iterator->next;
-			}
+			}*/
 		}
 	
 	}

@@ -21,6 +21,7 @@ Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
 	speed = { 0, 0 };
 	cost = 5;
 	vision = 15;
+	collrange = 10;
 	body = 7;
 	position.x = posx;
 	position.y = posy;
@@ -36,9 +37,6 @@ Test_1::~Test_1()
 bool Test_1::Start()
 {
 	
-
-	
-
 	return true;
 }
 
@@ -51,12 +49,9 @@ bool Test_1::Update(float dt)
 	cohesion = { 0, 0 };
 	CheckAnimation(dt);
 
-	//App->render->Blit(App->entity->test_1_graphics, position.x + current_animation->pivotx[current_animation->returnCurrentFrame()], position.y + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)), 1.0f);
 	origin = App->map->WorldToMap(position.x, position.y);
 
 	
-	if (position.x > 800)
-		to_delete = true;
 
 
 	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -72,12 +67,11 @@ bool Test_1::Update(float dt)
 			path.PushBack({last_path->At(i)->x, last_path->At(i)->y});
 		}
 		followpath = 1;
-		move = true;
 	}
 
 
 	//----------------------------------------------------------------Path speed
-	if (move)
+	if (path.At(followpath) != NULL)
 	{
 		for (uint i = 0; i < path.Count(); ++i)
 		{
@@ -91,8 +85,8 @@ bool Test_1::Update(float dt)
 
 			}
 		}
-		if (path.At(followpath) != NULL)
-		{
+		
+		
 			//This makes a comparison with the players position to make the correct move
 			if (path.At(followpath)->x < origin.x) {
 				pathSpeed.x -= 1;
@@ -114,12 +108,14 @@ bool Test_1::Update(float dt)
 				followpath++;
 			}
 				
-		}
+		
 	}
 
 	//----------------------------------------------------------------Separation speed
-	int neighbours = 0;
+
 	p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
+	closer_entity_list.clear();
+	colliding_entity_list.clear();
 	while (entities_list)
 	{
 		if (entities_list->data != this && entities_list->data->selectable)
@@ -128,39 +124,80 @@ bool Test_1::Update(float dt)
 			int y = entities_list->data->position.y;
 
 			float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
-			if (distance < vision + entities_list->data->body)
+			if (distance < collrange + entities_list->data->body)
 			{
-				neighbours++;
+				colliding_entity_list.push_back(entities_list->data);
 				separationSpeed.x += position.x - entities_list->data->position.x ;
 				separationSpeed.y += position.y - entities_list->data->position.y;
+			}
+			if (distance < vision + entities_list->data->body)
+			{
+				closer_entity_list.push_back(entities_list->data);
 			}
 		}
 		entities_list = entities_list->next;
 
 	}
-	if (neighbours != 0)
+	if (colliding_entity_list.size() > 0)
 	{
-		separationSpeed.x = separationSpeed.x / neighbours;
-		separationSpeed.y = separationSpeed.y / neighbours;
+		separationSpeed.x = separationSpeed.x / colliding_entity_list.size();
+		separationSpeed.y = separationSpeed.y / colliding_entity_list.size();
 	
 	float norm = sqrt(pow((separationSpeed.x), 2) + pow((separationSpeed.y), 2));
 	separationSpeed.x = separationSpeed.x / norm;
 	separationSpeed.y = separationSpeed.y / norm;
 	}
 	//---------------------------------------------------------------- Cohesion speed
-	if(target != nullptr)
-	{/*
-		cohesion.x = target->position.x - position.x;
-		cohesion.y = target->position.y - position.y;
+	j1Entity* it;
+	list<j1Entity*>::iterator neighbours_it;
+	fPoint MassCenter{ position.x+5, position.y+ 5 };
+
+	for (neighbours_it = closer_entity_list.begin(); neighbours_it != closer_entity_list.end(); ++neighbours_it) {
+		it = *neighbours_it;
+		MassCenter.x += it->position.x;
+		MassCenter.y += it->position.y;
+	}
+
+
+	if (!closer_entity_list.empty())
+	{
+		MassCenter.x = MassCenter.x / (closer_entity_list.size()+1);
+		MassCenter.y = MassCenter.y / (closer_entity_list.size()+1);
+
+		cohesion.x = (int)(position.x - MassCenter.x);
+		cohesion.y = (int)(position.y - MassCenter.y);
 		float norm = sqrt(pow((cohesion.x), 2) + pow((cohesion.y), 2));
-		cohesion.x = cohesion.x / norm;
-		cohesion.y = cohesion.y / norm;*/
+
+		if (cohesion.x < 11 && cohesion.x > -11)
+		{
+			cohesion.x = 0;
+		}
+		else
+		{
+		
+			cohesion.x = -1 * cohesion.x / norm;
+		}
+		if (cohesion.y < 11 && cohesion.y > -11)
+		{
+			cohesion.y = 0;
+		}
+		else
+		{
+		
+			cohesion.y = -1 * cohesion.y / norm;
+		}
+		
+		
+		
+		
+	
 	}
 	
+	App->render->DrawCircle((int)MassCenter.x, (int)MassCenter.y, vision, 200, 200, 0, 200);
 
 	//----------------------------------------------------------------Cohesion speed
-	speed.x += 2*pathSpeed.x + 1.3*separationSpeed.x + 0.2*cohesion.x;
-	speed.y += 2*pathSpeed.y + 1.3*separationSpeed.y + 0.2*cohesion.y;
+	speed.x += 2*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesion.x;
+	speed.y += 2*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesion.y;
 	
 
 	iPoint coord;

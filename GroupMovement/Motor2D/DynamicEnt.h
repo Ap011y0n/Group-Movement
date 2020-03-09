@@ -47,7 +47,9 @@ public:
 
 	entityDirection direction;
 //	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	int collrange;
 	int vision;
+
 	int damage;
 	int armor;
 	
