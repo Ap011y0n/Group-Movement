@@ -34,12 +34,14 @@ bool DynamicEnt::CleanUp()
 void DynamicEnt::CheckCollisions(fPoint* speed)
 {
 	iPoint coord;
-	p2List_item<MapLayer*>* layer_iterator = App->map->data.layers.start;
-	MapLayer* layer = App->map->data.layers.start->data;
+	
+	list<MapLayer*>::iterator Layer_list;
+	MapLayer* layer;
 
-	while (layer_iterator != NULL)
+
+	for (Layer_list = App->map->data.layers.begin(); Layer_list != App->map->data.layers.end(); ++Layer_list)
 	{
-		layer = layer_iterator->data;
+		layer = *Layer_list;
 		if (layer->returnPropValue("Navigation") == 1) {
 			coord = App->map->WorldToMap((int)(position.x + speed->x), (int)position.y);
 			if (layer->Get(coord.x, coord.y) != 0) speed->x = 0;
@@ -48,6 +50,5 @@ void DynamicEnt::CheckCollisions(fPoint* speed)
 			if (layer->Get(coord.x, coord.y) != 0) speed->y = 0;
 
 		}
-		layer_iterator = layer_iterator->next;
 	}
 }

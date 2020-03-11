@@ -35,6 +35,7 @@ bool j1EntityManager::Start()
 
 bool j1EntityManager::CleanUp()
 {
+	
 	list<j1Entity*>::iterator entities_list;
 	j1Entity* it;
 

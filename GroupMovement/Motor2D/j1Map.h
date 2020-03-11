@@ -6,6 +6,9 @@
 #include "p2Point.h"
 #include "j1Module.h"
 #define MAX_PROPERTIES 3
+#include <list>
+
+using namespace std;
 
 struct Properties
 {
@@ -82,8 +85,8 @@ struct MapData
 	int					tile_height;
 	SDL_Color			background_color;
 	MapTypes			type;
-	p2List<TileSet*>	tilesets;
-	p2List<MapLayer*>	layers;
+	list<TileSet*>	tilesets;
+	list<MapLayer*>	layers;
 	p2SString			music;
 };
 
@@ -115,7 +118,7 @@ public:
 	//Convert world coord to map coord
 	iPoint WorldToMap(int x, int y) const;
 
-	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer);
 private:
 
 	bool LoadMap();

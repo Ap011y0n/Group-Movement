@@ -51,6 +51,7 @@ public:
 public:
 	list<j1Entity*> entities;
 
+
 	// Load entities textures
 	p2SString test_1;
 	SDL_Texture* test_1_graphics;
