@@ -107,8 +107,6 @@ bool j1GroupMov::Update(float dt) {
 		}
 	
 	}
-	
-	
 
 	return true;
 }
@@ -118,4 +116,30 @@ bool j1GroupMov::PostUpdate(float dt) {
 }
 bool j1GroupMov::CleanUp() {
 	return true;
+}
+
+fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoint position) {
+	j1Entity* it;
+	list<j1Entity*>::iterator neighbours_it;
+	fPoint separationSpeed = { 0,0 };
+
+	for (neighbours_it = colliding_entity_list.begin(); neighbours_it != colliding_entity_list.end(); ++neighbours_it) {
+		it = *neighbours_it;
+		separationSpeed.x += position.x - it->position.x;
+		separationSpeed.y += position.y - it->position.y;
+	}
+
+		separationSpeed.x = separationSpeed.x / colliding_entity_list.size();
+		separationSpeed.y = separationSpeed.y / colliding_entity_list.size();
+
+		float norm = sqrt(pow((separationSpeed.x), 2) + pow((separationSpeed.y), 2));
+
+		if (norm != 0)
+		{
+			separationSpeed.x = separationSpeed.x / norm;
+			separationSpeed.y = separationSpeed.y / norm;
+		}
+
+	
+	return separationSpeed;
 }

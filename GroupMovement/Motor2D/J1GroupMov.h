@@ -26,6 +26,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate(float dt);
 	bool CleanUp();
+	fPoint GetSeparationSpeed(list<j1Entity*>, fPoint);
 
 	
 public:

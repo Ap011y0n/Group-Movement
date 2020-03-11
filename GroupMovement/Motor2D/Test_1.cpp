@@ -11,6 +11,7 @@
 #include "j1Map.h"
 #include "j1Pathfinding.h"
 #include "j1Input.h"
+#include "J1GroupMov.h"
 #include <math.h>
 
 Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
@@ -49,7 +50,7 @@ bool Test_1::Update(float dt)
 	CheckAnimation(dt);
 
 	origin = App->map->WorldToMap(position.x, position.y);
-
+	
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
 		to_delete = true;
 
@@ -68,8 +69,8 @@ bool Test_1::Update(float dt)
 		followpath = 1;
 	}
 
-
 	//----------------------------------------------------------------Path speed
+
 	if (path.At(followpath) != NULL)
 	{
 		for (uint i = 0; i < path.Count(); ++i)
@@ -86,21 +87,20 @@ bool Test_1::Update(float dt)
 		}
 		
 		
-			//This makes a comparison with the players position to make the correct move
 			if (path.At(followpath)->x < origin.x) {
-				pathSpeed.x -= 1;
+				pathSpeed.x =- 1;
 			}
 
 			if (path.At(followpath)->x > origin.x) {
-				pathSpeed.x += 1;
+				pathSpeed.x =+ 1;
 			}
 
 			if (path.At(followpath)->y < origin.y) {
-				pathSpeed.y -= 1;
+				pathSpeed.y =- 1;
 			}
 
 			if (path.At(followpath)->y > origin.y) {
-				pathSpeed.y += 1;
+				pathSpeed.y = 1;
 			}
 			if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
 			{
@@ -113,55 +113,14 @@ bool Test_1::Update(float dt)
 	j1Entity* it;
 	list<j1Entity*>::iterator neighbours_it;
 
-	//----------------------------------------------------------------Save neighbours in two lists
+	//TODO ----------------------------------------------------------------Save neighbours in two lists
 
-	p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
-	close_entity_list.clear();
-	colliding_entity_list.clear();
-	while (entities_list)
-	{
-		if (entities_list->data != this && entities_list->data->selectable)
-		{
-			int x = entities_list->data->position.x;
-			int y = entities_list->data->position.y;
+	SaveNeighbours(&close_entity_list, &colliding_entity_list);
 
-			float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
-			if (distance < collrange + entities_list->data->body)
-			{
-				colliding_entity_list.push_back(entities_list->data);
-				
-			}
-			if (distance < vision + entities_list->data->body)
-			{
-				close_entity_list.push_back(entities_list->data);
-			}
-		}
-		entities_list = entities_list->next;
-
-	}
-
-	//---------------------------------------------------------------- Separation Speed
-	
-	for (neighbours_it = colliding_entity_list.begin(); neighbours_it != colliding_entity_list.end(); ++neighbours_it) {
-		it = *neighbours_it;
-		separationSpeed.x += position.x - it->position.x;
-		separationSpeed.y += position.y - it->position.y;
-	}
-	
-
+	// TODO ---------------------------------------------------------------- Separation Speed
 	if (!colliding_entity_list.empty())
 	{
-		separationSpeed.x = separationSpeed.x / colliding_entity_list.size();
-		separationSpeed.y = separationSpeed.y / colliding_entity_list.size();
-	
-	float norm = sqrt(pow((separationSpeed.x), 2) + pow((separationSpeed.y), 2));
-
-	if(norm != 0)
-		{
-			separationSpeed.x = separationSpeed.x / norm;
-			separationSpeed.y = separationSpeed.y / norm;
-		}
-	
+		separationSpeed = App->movement->GetSeparationSpeed(colliding_entity_list, position);
 	}
 	else
 	{
@@ -292,4 +251,33 @@ bool Test_1::CleanUp()
 	colliding_entity_list.clear();
 	path.Clear();
 	return true;
+}
+
+void  Test_1::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>* colliding_entity_list)
+{
+
+	p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
+	close_entity_list->clear();
+	colliding_entity_list->clear();
+	while (entities_list)
+	{
+		if (entities_list->data != this && entities_list->data->selectable)
+		{
+			int x = entities_list->data->position.x;
+			int y = entities_list->data->position.y;
+
+			float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+			if (distance < collrange + entities_list->data->body)
+			{
+				colliding_entity_list->push_back(entities_list->data);
+
+			}
+			if (distance < vision + entities_list->data->body)
+			{
+				close_entity_list->push_back(entities_list->data);
+			}
+		}
+		entities_list = entities_list->next;
+
+	}
 }
