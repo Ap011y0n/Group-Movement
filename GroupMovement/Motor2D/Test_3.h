@@ -37,17 +37,12 @@ public:
 	// Animation
 	void CheckAnimation(float dt);
 
-	list<j1Entity*>* ReturnChilds();
-
 public:
 	// Animations
 	states_test_3	actualState;
 	Animation* current_animation = nullptr;
 	//Animation idle;
 	int attackrange;
-	list<j1Entity*>	childs;
-
-
 
 };
 

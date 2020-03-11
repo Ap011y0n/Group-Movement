@@ -54,7 +54,6 @@ public:
 	p2List<p2SString> levels;
 	SDL_Texture* Hello;
 	SDL_Texture* debug_tex;
-	int counter = 0;
 	
 };
 

@@ -17,7 +17,6 @@ Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
 {
 	name.create("test_1");
 
-	actualState = ST_TEST_1_IDLE;
 	speed = { 0, 0 };
 	cost = 5;
 	vision = 20;
@@ -241,17 +240,13 @@ bool Test_1::Update(float dt)
 	{
 		layer = layer_iterator->data;
 		if (layer->returnPropValue("Navigation") == 1) {
-			coord = App->map->WorldToMap(position.x + speed.x, position.y);
-			if(coord.x < 10000 && coord.x > -10000)
-			{
+			coord = App->map->WorldToMap((int)(position.x + speed.x), (int)position.y);
+			
 				if (layer->Get(coord.x, coord.y) != 0) speed.x = 0;
-			}
-			if (coord.x < 10000 && coord.x > -10000)
-			{
-				coord = App->map->WorldToMap(position.x, position.y + speed.y);
+			
+				coord = App->map->WorldToMap((int)position.x, (int)(position.y + speed.y));
 				if (layer->Get(coord.x, coord.y) != 0) speed.y = 0;
 			
-			}
 		}
 		layer_iterator = layer_iterator->next;
 	}

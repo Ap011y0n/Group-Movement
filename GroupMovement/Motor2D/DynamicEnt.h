@@ -13,14 +13,6 @@
 class DynamicEnt : public j1Entity
 {
 public:
-	enum entityDirection
-	{
-		UP,
-		DOWN,
-		FRONT,
-		DIAGONALUP,
-		DIAGONALDOWN,
-	};
 
 	enum DynamicEntityType
 	{
@@ -45,13 +37,17 @@ public:
 
 
 
-	entityDirection direction;
-//	SDL_RendererFlip flip = SDL_FLIP_NONE;
+protected:
+	int followpath;
 	int collrange;
 	int vision;
 
-	int damage;
-	int armor;
+
+	iPoint origin, mouse;
+	p2DynArray<iPoint> path;
+	list<j1Entity*> close_entity_list;
+	list<j1Entity*> colliding_entity_list;
+
 	
 };
 
