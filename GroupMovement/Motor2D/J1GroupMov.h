@@ -27,6 +27,7 @@ public:
 	bool PostUpdate(float dt);
 	bool CleanUp();
 	fPoint GetSeparationSpeed(list<j1Entity*>, fPoint);
+	fPoint GetCohesionSpeed(list<j1Entity*>, fPoint);
 
 	
 public:

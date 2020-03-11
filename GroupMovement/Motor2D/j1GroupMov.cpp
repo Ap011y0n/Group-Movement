@@ -118,7 +118,8 @@ bool j1GroupMov::CleanUp() {
 	return true;
 }
 
-fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoint position) {
+fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoint position) 
+{
 	j1Entity* it;
 	list<j1Entity*>::iterator neighbours_it;
 	fPoint separationSpeed = { 0,0 };
@@ -142,4 +143,45 @@ fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoi
 
 	
 	return separationSpeed;
+}
+
+fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint position)
+{
+	fPoint cohesionSpeed = { 0,0 };
+	fPoint MassCenter{ position.x, position.y };
+	j1Entity* it;
+	list<j1Entity*>::iterator neighbours_it;
+
+	for (neighbours_it = close_entity_list.begin(); neighbours_it != close_entity_list.end(); ++neighbours_it) {
+		it = *neighbours_it;
+		MassCenter.x += it->position.x;
+		MassCenter.y += it->position.y;
+	}
+
+		MassCenter.x = MassCenter.x / (close_entity_list.size() + 1);
+		MassCenter.y = MassCenter.y / (close_entity_list.size() + 1);
+
+		cohesionSpeed.x = position.x - MassCenter.x;
+		cohesionSpeed.y = position.y - MassCenter.y;
+
+		float norm = sqrt(pow((cohesionSpeed.x), 2) + pow((cohesionSpeed.y), 2));
+
+		if (cohesionSpeed.x < 11 && cohesionSpeed.x > -11)
+		{
+			cohesionSpeed.x = 0;
+		}
+		else
+		{
+			cohesionSpeed.x = -1 * cohesionSpeed.x / norm;
+		}
+		if (cohesionSpeed.y < 11 && cohesionSpeed.y > -11)
+		{
+			cohesionSpeed.y = 0;
+		}
+		else
+		{
+			cohesionSpeed.y = -1 * cohesionSpeed.y / norm;
+		}
+	
+	return cohesionSpeed;
 }

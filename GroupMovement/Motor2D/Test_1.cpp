@@ -132,69 +132,16 @@ bool Test_1::Update(float dt)
 	
 
 	//---------------------------------------------------------------- Cohesion speed
-	
-	fPoint MassCenter{ position.x, position.y };
-
-	for (neighbours_it = close_entity_list.begin(); neighbours_it != close_entity_list.end(); ++neighbours_it) {
-		it = *neighbours_it;
-		MassCenter.x += it->position.x;
-		MassCenter.y += it->position.y;
-	}
-
-
 	if (!close_entity_list.empty())
 	{
-		MassCenter.x = MassCenter.x / (close_entity_list.size()+1);
-		MassCenter.y = MassCenter.y / (close_entity_list.size()+1);
-
-		cohesionSpeed.x = position.x - MassCenter.x;
-		cohesionSpeed.y = position.y - MassCenter.y;
-		float norm = sqrt(pow((cohesionSpeed.x), 2) + pow((cohesionSpeed.y), 2));
-
-		if (cohesionSpeed.x < 11 && cohesionSpeed.x > -11)
-		{
-			cohesionSpeed.x = 0;
-		}
-		else
-		{
-		
-			cohesionSpeed.x = -1 * cohesionSpeed.x / norm;
-		}
-		if (cohesionSpeed.y < 11 && cohesionSpeed.y > -11)
-		{
-			cohesionSpeed.y = 0;
-		}
-		else
-		{
-			cohesionSpeed.y = -1 * cohesionSpeed.y / norm;
-		}
+		cohesionSpeed = App->movement->GetCohesionSpeed(close_entity_list, position);
 	}
-	
-	//App->render->DrawCircle((int)MassCenter.x, (int)MassCenter.y, vision, 200, 200, 0, 200);
-	//---------------------------------------------------------------- Alignment speed NOT RECOMMENDED FOR OUR PROJECT
-	// in case you have a velocity (direction) vector for your entitites, you may change speed.x for your "velocity.x
-	/*fPoint directionSpeed{ 0,0 };
-	for (neighbours_it = close_entity_list.begin(); neighbours_it != close_entity_list.end(); ++neighbours_it) {
-		it = *neighbours_it;
-		directionSpeed.x += it->speed.x;
-		directionSpeed.y += it->speed.x;
-
-		
-	}
-	if (!close_entity_list.empty())
+	else
 	{
-		directionSpeed.x = directionSpeed.x / close_entity_list.size();
-		directionSpeed.y = directionSpeed.y / close_entity_list.size();
-		float norm = sqrt(pow((directionSpeed.x), 2) + pow((directionSpeed.y), 2));
-		if (norm != 0)
-		{
-			directionSpeed.x = directionSpeed.x / norm;
-			directionSpeed.y = directionSpeed.y / norm;
-		}
-		
-
+		cohesionSpeed.x = 0;
+		cohesionSpeed.y = 0;
 	}
-	*/
+
 	//---------------------------------------------------------------- Add all speeds
 
 	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesionSpeed.x + 0*directionSpeed.x;
