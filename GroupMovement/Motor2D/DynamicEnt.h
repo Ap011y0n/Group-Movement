@@ -32,6 +32,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void CheckCollisions(fPoint* speed);
+
 public:
 
 
@@ -41,7 +43,7 @@ protected:
 	int collrange;
 	int vision;
 	bool move;
-	fPoint speed, pathSpeed;
+	fPoint speed;
 	iPoint origin, mouse;
 	p2DynArray<iPoint> path;
 	list<j1Entity*> close_entity_list;

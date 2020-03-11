@@ -42,27 +42,38 @@ bool Test_1::Start()
 bool Test_1::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
+	
+	//Speed is resetted to 0 each iteration
 	speed = { 0, 0 };
-	pathSpeed = { 0, 0 };
-
 	origin = App->map->WorldToMap(position.x, position.y);
 	
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
 		to_delete = true;
 
+	// TODO 1 ------------------------------------------------------------------
+	// If this entity is selected, it will create a path to the mouse position
+	// We need to store a path in this entity dynamic array: path
+	// First, order the pathfinding module to create a path with origin and mouse (destination);
+	// Luckily for you i already created a method in pathfinding module that can do the trick
+	// Just use SavePath() fucntion, and proceed to the next path
+
 	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		mouse = App->map->WorldToMap(mouse.x, mouse.y);
-		//----------------------TODO
+	
 		App->pathfinding->CreatePath(origin, mouse);
 		App->pathfinding->SavePath(&path);
-		//-------------------
+
 		followpath = 1;			//Don't mind me, i'm just tracking the path
 	}
 
-	//----------------------------------------------------------------Path speed
+	// TODO 2 ----------------------------------------------------------------
+	// We need to give a speed to the entity to actually follow the path. All the logic is done,
+	// just use the fPoint  PathSpeed and give it positive or negative value dependig on witch tile
+	// is the next in the path. 
 
+	fPoint pathSpeed{ 0,0 };
 	if (path.At(followpath) != NULL)
 	{
 		for (uint i = 0; i < path.Count(); ++i)
@@ -103,11 +114,18 @@ bool Test_1::Update(float dt)
 	j1Entity* it;
 	list<j1Entity*>::iterator neighbours_it;
 
-	//TODO ----------------------------------------------------------------Save neighbours in two lists
+	// TODO 3 ----------------------------------------------------------------
+	// Before we calculate the other speeds, we need to store this entity neighbours in two lists. 
+	// Close neighbours (those which are near this entity) and colliding, thos which are in contact with this entity
+	// To do that, we'll use three radius, vision, body and collrange;
+	// Use SaveNeighbours function, and pass the two lists as reference
 
 	SaveNeighbours(&close_entity_list, &colliding_entity_list);
 
-	// TODO ---------------------------------------------------------------- Separation Speed
+	//TODO 4 ---------------------------------------------------------------- 
+	// Now we should be are ready to get a new speed in the formula. The separation speed
+	// Create an fPoint, just like PathSpeed, to store this new values.
+	// Use GetSeparationSpeed method from movement module, and call it if there's at least one member in colliding list, if not, separationSpeed should be 0
 	fPoint separationSpeed;
 
 	if (!colliding_entity_list.empty())
@@ -123,7 +141,9 @@ bool Test_1::Update(float dt)
 //	App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, body, 0, 200, 200, 200);
 	
 
-	//TODO ---------------------------------------------------------------- Cohesion speed
+	// TODO 5 ---------------------------------------------------------------- 
+	// Cohesion speed
+	// Just like before, but using GetCohesionSpeed method, close list and another fPoint
 	fPoint cohesionSpeed;
 	if (!close_entity_list.empty())
 	{
@@ -135,7 +155,9 @@ bool Test_1::Update(float dt)
 		cohesionSpeed.y = 0;
 	}
 
-	//TODO ---------------------------------------------------------------- Direction speed
+	// OPTIONAL TODO ---------------------------------------------------------------- 
+	// Direction speed
+	// We'll use another fpoint, another method (GetDirectionSpeed()) and the close list
 	fPoint directionSpeed;
 	/*if (!close_entity_list.empty())
 	{
@@ -148,12 +170,19 @@ bool Test_1::Update(float dt)
 	}
 	*/
 
-	//TODO ---------------------------------------------------------------- Add all speeds
+	//TODO 2 ---------------------------------------------------------------- 
+	// We need to add all new speed to the speed vector. Add pathSpeed, but everytime you calculate another speed
+	// add it here
+	// To obtain different results, try using some constants to multiply each speed
 
 	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesionSpeed.x + 0*directionSpeed.x;
 	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesionSpeed.y + 0*directionSpeed.y;
 
-	//------------------------------------------------------------------Use a preventive collision system
+	// TODO 6 ------------------------------------------------------------------
+	// If you got this far, congratulations, now your entities react between themselves
+	// But don't forget about walls, use a preventive collision system, so in case it is needed
+	// total speed value should be set to 0.
+	// I provided you a simple collision detection method in DynamicEnt class, just call it with the speed fpoint
 
 	CheckCollisions(&speed);
 
@@ -182,12 +211,16 @@ bool Test_1::CleanUp()
 	close_entity_list.clear();
 	colliding_entity_list.clear();
 	path.Clear();
+	name.Clear();
 	return true;
 }
 
 void Test_1::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>* colliding_entity_list)
 {
-
+	//	TODO 3 -------------------------------------------------
+	//  First, clear both lists before adding new members to them
+	//  Then we should be iterating all entities in entity manager except for this entity
+	//	Using the formulas, store those in vision range to close list, and those in collision range in colliding list
 	p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
 	close_entity_list->clear();
 	colliding_entity_list->clear();
@@ -214,23 +247,3 @@ void Test_1::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>*
 	}
 }
 
-void Test_1::CheckCollisions(fPoint* speed)
-{
-	iPoint coord;
-	p2List_item<MapLayer*>* layer_iterator = App->map->data.layers.start;
-	MapLayer* layer = App->map->data.layers.start->data;
-
-	while (layer_iterator != NULL)
-	{
-		layer = layer_iterator->data;
-		if (layer->returnPropValue("Navigation") == 1) {
-			coord = App->map->WorldToMap((int)(position.x + speed->x), (int)position.y);
-			if (layer->Get(coord.x, coord.y) != 0) speed->x = 0;
-
-			coord = App->map->WorldToMap((int)position.x, (int)(position.y + speed->y));
-			if (layer->Get(coord.x, coord.y) != 0) speed->y = 0;
-
-		}
-		layer_iterator = layer_iterator->next;
-	}
-}

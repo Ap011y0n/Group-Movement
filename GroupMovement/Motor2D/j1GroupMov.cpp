@@ -25,9 +25,6 @@ bool j1GroupMov::Awake(pugi::xml_node& config) {
 }
 
 bool j1GroupMov::Start() {
-	Center.pos.x = 0;
-	Center.pos.y = 0;
-	NewGroup = false;
 	return true;
 
 }
@@ -35,8 +32,10 @@ bool j1GroupMov::Update(float dt) {
 
 	static iPoint origin, mouse;
 
-
-
+	// TODO 0 ---------------------- Nothing to do here, just putting you in context
+	// Every time we press leftclick button, we create a rect. The we check all entities with
+	// selectable bool activated. If selectable entity is inside the rectangle, we turn their
+	// isSelected bool to true
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		App->input->GetMousePosition(origin.x, origin.y);
@@ -51,18 +50,15 @@ bool j1GroupMov::Update(float dt) {
 	}
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
-		int totalSelected = 0;
-	
-
 		p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
 		while (entities_list)
 		{
 			if (entities_list->data->selectable)
 			{
-
 				entities_list->data->isSelected = false;
 				int x = entities_list->data->position.x, y = entities_list->data->position.y;
-
+				// We store x and y positions
+				// Now we check if it's inside the rect, so we can "select this entity"
 				if (x > origin.x && x < mouse.x) {
 					if (y < origin.y && y > mouse.y)
 					{
@@ -83,29 +79,9 @@ bool j1GroupMov::Update(float dt) {
 						entities_list->data->isSelected = true;
 					}
 				}
-
-				if (entities_list->data->isSelected)
-				{
-					if (!NewGroup)
-					{
-						selected.clear();
-					}
-					NewGroup = true;
-					
-
-					selected.add(entities_list->data);
-				}
 			}
 			entities_list = entities_list->next;
 		}
-
-		if (NewGroup)
-		{
-			NewGroup = false;
-						
-			
-		}
-	
 	}
 
 	return true;
@@ -120,15 +96,22 @@ bool j1GroupMov::CleanUp() {
 
 fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoint position) 
 {
+	// TODO 4 Iterate all neighbours and add their relative position vectors in a FPoint.
+	// Then divide it by the neighbours number to obtain the average vector
+	// Before normalizing the resulting vector, remember to invert it multiplying by -1.
+	// Do not normalize it if the norm is 0, instead return speed = 0
 	j1Entity* it;
 	list<j1Entity*>::iterator neighbours_it;
 	fPoint separationSpeed = { 0,0 };
 
 	for (neighbours_it = colliding_entity_list.begin(); neighbours_it != colliding_entity_list.end(); ++neighbours_it) {
 		it = *neighbours_it;
-		separationSpeed.x += position.x - it->position.x;
-		separationSpeed.y += position.y - it->position.y;
+		separationSpeed.x +=  it->position.x - position.x;
+		separationSpeed.y +=  it->position.y - position.y;
 	}
+
+		separationSpeed.x *= -1;
+		separationSpeed.y *= -1;
 
 		separationSpeed.x = separationSpeed.x / colliding_entity_list.size();
 		separationSpeed.y = separationSpeed.y / colliding_entity_list.size();
@@ -140,6 +123,11 @@ fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoi
 			separationSpeed.x = separationSpeed.x / norm;
 			separationSpeed.y = separationSpeed.y / norm;
 		}
+		else 
+		{
+			separationSpeed.x = 0;
+			separationSpeed.y = 0;
+		}
 
 	
 	return separationSpeed;
@@ -147,6 +135,13 @@ fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoi
 
 fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint position)
 {
+	// TODO 5 Pretty much like before, we iterate all close neighbours
+	// But there's an addition. We need another fPoint, the MassCenter, which will initially use this 
+	// entity position
+	// To calculate it we add all the neighbours positions and divideto get the average
+	// Now, we can get that cohesion speed, using mass center as reference, calculate a vector that will attract them
+	// Don't forget to normalize it
+	
 	fPoint cohesionSpeed = { 0,0 };
 	fPoint MassCenter{ position.x, position.y };
 	j1Entity* it;
@@ -188,36 +183,36 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 
 fPoint j1GroupMov::GetDirectionSpeed(list<j1Entity*>close_entity_list)
 {
-	
+	//OPTIONAL TODO
+	// We add the direction vectors of our neighbours, then divide it, and then normalize it
+	// It's actually quite simple, the hard part is to use a direction vector in the first place
 	fPoint directionSpeed{ 0,0 };
-	/*j1Entity* it;
-	list<j1Entity*>::iterator neighbours_it;
+	//j1Entity* it;
+	//list<j1Entity*>::iterator neighbours_it;
 
-	for (neighbours_it = close_entity_list.begin(); neighbours_it != close_entity_list.end(); ++neighbours_it) {
+	//for (neighbours_it = close_entity_list.begin(); neighbours_it != close_entity_list.end(); ++neighbours_it) {
 
-		it = *neighbours_it;
+	//	it = *neighbours_it;
 
-		directionSpeed.x += it->direction.x;
+	//	directionSpeed.x += it->direction.x;
 
-		directionSpeed.y += it->direction.x;
-	}
+	//	directionSpeed.y += it->direction.x;
+	//}
 
-	if (!close_entity_list.empty())
+	//	directionSpeed.x = directionSpeed.x / close_entity_list.size();
 
-	{
-		directionSpeed.x = directionSpeed.x / close_entity_list.size();
+	//	directionSpeed.y = directionSpeed.y / close_entity_list.size();
 
-		directionSpeed.y = directionSpeed.y / close_entity_list.size();
+	//	float norm = sqrt(pow((directionSpeed.x), 2) + pow((directionSpeed.y), 2));
 
-		float norm = sqrt(pow((directionSpeed.x), 2) + pow((directionSpeed.y), 2));
+	//	if (norm != 0)
 
-		if (norm != 0)
+	//	{
+	//		directionSpeed.x = directionSpeed.x / norm;
+	//		directionSpeed.y = directionSpeed.y / norm;
+	//	}
 
-		{
-			directionSpeed.x = directionSpeed.x / norm;
-			directionSpeed.y = directionSpeed.y / norm;
-		}
-
-	}*/
+	//
 	return directionSpeed;
 }
+

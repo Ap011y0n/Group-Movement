@@ -9,12 +9,6 @@
 #include <list>
 
 using namespace std;
-struct MassCenter
-{
-
-
-	iPoint				pos;
-};
 
 class j1GroupMov : public j1Module
 {
@@ -29,13 +23,7 @@ public:
 	fPoint GetSeparationSpeed(list<j1Entity*>, fPoint);
 	fPoint GetCohesionSpeed(list<j1Entity*>, fPoint);
 	fPoint GetDirectionSpeed(list<j1Entity*>);
-	
-public:
-	MassCenter Center;
-	bool NewGroup;
-	iPoint pos;
-	p2List<j1Entity*>	selected;
-	j1Entity* currentCenter;
+
 };
 
 #endif
