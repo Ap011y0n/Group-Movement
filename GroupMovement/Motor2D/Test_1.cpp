@@ -288,6 +288,8 @@ void Test_1::CheckAnimation(float dt)
 
 bool Test_1::CleanUp()
 {
-
+	close_entity_list.clear();
+	colliding_entity_list.clear();
+	path.Clear();
 	return true;
 }
