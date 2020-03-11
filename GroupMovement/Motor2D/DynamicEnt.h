@@ -41,7 +41,7 @@ protected:
 	int collrange;
 	int vision;
 	bool move;
-	fPoint speed, pathSpeed, separationSpeed, cohesionSpeed, directionSpeed;
+	fPoint speed, pathSpeed;
 	iPoint origin, mouse;
 	p2DynArray<iPoint> path;
 	list<j1Entity*> close_entity_list;

@@ -28,7 +28,7 @@ public:
 	bool CleanUp();
 	fPoint GetSeparationSpeed(list<j1Entity*>, fPoint);
 	fPoint GetCohesionSpeed(list<j1Entity*>, fPoint);
-
+	fPoint GetDirectionSpeed(list<j1Entity*>);
 	
 public:
 	MassCenter Center;

@@ -44,9 +44,7 @@ bool Test_1::Update(float dt)
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
 	speed = { 0, 0 };
 	pathSpeed = { 0, 0 };
-	separationSpeed = { 0, 0 };
-	cohesionSpeed = { 0, 0 };
-	directionSpeed = { 0, 0 };
+
 	CheckAnimation(dt);
 
 	origin = App->map->WorldToMap(position.x, position.y);
@@ -118,6 +116,8 @@ bool Test_1::Update(float dt)
 	SaveNeighbours(&close_entity_list, &colliding_entity_list);
 
 	// TODO ---------------------------------------------------------------- Separation Speed
+	fPoint separationSpeed;
+
 	if (!colliding_entity_list.empty())
 	{
 		separationSpeed = App->movement->GetSeparationSpeed(colliding_entity_list, position);
@@ -131,7 +131,8 @@ bool Test_1::Update(float dt)
 //	App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, body, 0, 200, 200, 200);
 	
 
-	//---------------------------------------------------------------- Cohesion speed
+	//TODO ---------------------------------------------------------------- Cohesion speed
+	fPoint cohesionSpeed;
 	if (!close_entity_list.empty())
 	{
 		cohesionSpeed = App->movement->GetCohesionSpeed(close_entity_list, position);
@@ -142,11 +143,24 @@ bool Test_1::Update(float dt)
 		cohesionSpeed.y = 0;
 	}
 
-	//---------------------------------------------------------------- Add all speeds
+	//TODO ---------------------------------------------------------------- Direction speed
+	fPoint directionSpeed;
+	/*if (!close_entity_list.empty())
+	{
+		directionSpeed = App->movement->GetDirectionSpeed(close_entity_list);
+	}
+	else
+	{
+		directionSpeed.x = 0;
+		directionSpeed.y = 0;
+	}
+	*/
+
+	//TODO ---------------------------------------------------------------- Add all speeds
 
 	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesionSpeed.x + 0*directionSpeed.x;
 	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesionSpeed.y + 0*directionSpeed.y;
-//	LOG("speed %f PathSpeed %f separationSpeed %f cohesionSpeed %f",speed.x, pathSpeed.x, separationSpeed.x, cohesionSpeed.x);
+
 	//------------------------------------------------------------------Use a collision system
 
 	iPoint coord;

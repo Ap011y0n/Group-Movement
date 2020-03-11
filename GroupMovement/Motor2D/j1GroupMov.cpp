@@ -185,3 +185,39 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 	
 	return cohesionSpeed;
 }
+
+fPoint j1GroupMov::GetDirectionSpeed(list<j1Entity*>close_entity_list)
+{
+	
+	fPoint directionSpeed{ 0,0 };
+	/*j1Entity* it;
+	list<j1Entity*>::iterator neighbours_it;
+
+	for (neighbours_it = close_entity_list.begin(); neighbours_it != close_entity_list.end(); ++neighbours_it) {
+
+		it = *neighbours_it;
+
+		directionSpeed.x += it->direction.x;
+
+		directionSpeed.y += it->direction.x;
+	}
+
+	if (!close_entity_list.empty())
+
+	{
+		directionSpeed.x = directionSpeed.x / close_entity_list.size();
+
+		directionSpeed.y = directionSpeed.y / close_entity_list.size();
+
+		float norm = sqrt(pow((directionSpeed.x), 2) + pow((directionSpeed.y), 2));
+
+		if (norm != 0)
+
+		{
+			directionSpeed.x = directionSpeed.x / norm;
+			directionSpeed.y = directionSpeed.y / norm;
+		}
+
+	}*/
+	return directionSpeed;
+}
