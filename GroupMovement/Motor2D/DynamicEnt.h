@@ -18,7 +18,6 @@ public:
 	{
 		NO_TYPE,
 		TEST_1,
-		TEST_2
 	};
 
 	// Constructor
@@ -41,8 +40,8 @@ protected:
 	int followpath;
 	int collrange;
 	int vision;
-
-
+	bool move;
+	fPoint speed, pathSpeed, separationSpeed, cohesionSpeed, directionSpeed;
 	iPoint origin, mouse;
 	p2DynArray<iPoint> path;
 	list<j1Entity*> close_entity_list;

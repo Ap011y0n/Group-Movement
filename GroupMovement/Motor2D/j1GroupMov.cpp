@@ -92,12 +92,7 @@ bool j1GroupMov::Update(float dt) {
 					}
 					NewGroup = true;
 					
-					/*if (currentCenter != NULL)
-					{
-						currentCenter->isSelected = false;
-						currentCenter->ReturnChilds()->clear();
-					}
-*/
+
 					selected.add(entities_list->data);
 				}
 			}
@@ -108,24 +103,12 @@ bool j1GroupMov::Update(float dt) {
 		{
 			NewGroup = false;
 						
-			/*currentCenter = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, 0, 0);
-			currentCenter->isSelected = true;
-			p2List_item<j1Entity*>* iterator = selected.start;
-			while (iterator)
-			{
-				currentCenter->ReturnChilds()->push_back(iterator->data);
-				iterator->data->target = currentCenter;
-				iterator = iterator->next;
-			}*/
+			
 		}
 	
 	}
 	
 	
-	//App->render->DrawCircle(Center.pos.x, Center.pos.y, 15, 0, 0, 255, 50);
-	//App->pathfinding->CreatePath(origin, mouse);
-
-//	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 
 	return true;
 }

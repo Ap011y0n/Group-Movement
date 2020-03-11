@@ -23,9 +23,3 @@ bool j1Entity::CleanUp()
 
 	return true;
 }
-
-list<j1Entity*>* j1Entity::ReturnChilds()
-{
-	list<j1Entity*> none;
-	return &none;
-}

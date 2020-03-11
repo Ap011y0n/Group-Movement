@@ -18,10 +18,9 @@ Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
 	name.create("test_1");
 
 	speed = { 0, 0 };
-	cost = 5;
 	vision = 20;
-	collrange = 10;
 	body = 7;
+	collrange = 10;
 	position.x = posx;
 	position.y = posy;
 	to_delete = false;
@@ -45,13 +44,14 @@ bool Test_1::Update(float dt)
 	speed = { 0, 0 };
 	pathSpeed = { 0, 0 };
 	separationSpeed = { 0, 0 };
-	cohesion = { 0, 0 };
+	cohesionSpeed = { 0, 0 };
+	directionSpeed = { 0, 0 };
 	CheckAnimation(dt);
 
 	origin = App->map->WorldToMap(position.x, position.y);
 
-	
-
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
+		to_delete = true;
 
 	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
@@ -141,7 +141,7 @@ bool Test_1::Update(float dt)
 	}
 
 	//---------------------------------------------------------------- Separation Speed
-
+	
 	for (neighbours_it = colliding_entity_list.begin(); neighbours_it != colliding_entity_list.end(); ++neighbours_it) {
 		it = *neighbours_it;
 		separationSpeed.x += position.x - it->position.x;
@@ -155,11 +155,22 @@ bool Test_1::Update(float dt)
 		separationSpeed.y = separationSpeed.y / colliding_entity_list.size();
 	
 	float norm = sqrt(pow((separationSpeed.x), 2) + pow((separationSpeed.y), 2));
-	separationSpeed.x = separationSpeed.x / norm;
-	separationSpeed.y = separationSpeed.y / norm;
+
+	if(norm != 0)
+		{
+			separationSpeed.x = separationSpeed.x / norm;
+			separationSpeed.y = separationSpeed.y / norm;
+		}
+	
 	}
-	//App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, collrange, 200, 200, 0, 200);
-	//App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, body, 0, 200, 200, 200);
+	else
+	{
+		separationSpeed.x = 0;
+		separationSpeed.y = 0;
+	}
+//	App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, collrange, 200, 200, 0, 200);
+//	App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, body, 0, 200, 200, 200);
+	
 
 	//---------------------------------------------------------------- Cohesion speed
 	
@@ -177,33 +188,33 @@ bool Test_1::Update(float dt)
 		MassCenter.x = MassCenter.x / (close_entity_list.size()+1);
 		MassCenter.y = MassCenter.y / (close_entity_list.size()+1);
 
-		cohesion.x = position.x - MassCenter.x;
-		cohesion.y = position.y - MassCenter.y;
-		float norm = sqrt(pow((cohesion.x), 2) + pow((cohesion.y), 2));
+		cohesionSpeed.x = position.x - MassCenter.x;
+		cohesionSpeed.y = position.y - MassCenter.y;
+		float norm = sqrt(pow((cohesionSpeed.x), 2) + pow((cohesionSpeed.y), 2));
 
-		if (cohesion.x < 11 && cohesion.x > -11)
+		if (cohesionSpeed.x < 11 && cohesionSpeed.x > -11)
 		{
-			cohesion.x = 0;
+			cohesionSpeed.x = 0;
 		}
 		else
 		{
 		
-			cohesion.x = -1 * cohesion.x / norm;
+			cohesionSpeed.x = -1 * cohesionSpeed.x / norm;
 		}
-		if (cohesion.y < 11 && cohesion.y > -11)
+		if (cohesionSpeed.y < 11 && cohesionSpeed.y > -11)
 		{
-			cohesion.y = 0;
+			cohesionSpeed.y = 0;
 		}
 		else
 		{
-			cohesion.y = -1 * cohesion.y / norm;
+			cohesionSpeed.y = -1 * cohesionSpeed.y / norm;
 		}
 	}
 	
 	//App->render->DrawCircle((int)MassCenter.x, (int)MassCenter.y, vision, 200, 200, 0, 200);
 	//---------------------------------------------------------------- Alignment speed NOT RECOMMENDED FOR OUR PROJECT
 	// in case you have a velocity (direction) vector for your entitites, you may change speed.x for your "velocity.x
-	fPoint directionSpeed{ 0,0 };
+	/*fPoint directionSpeed{ 0,0 };
 	for (neighbours_it = close_entity_list.begin(); neighbours_it != close_entity_list.end(); ++neighbours_it) {
 		it = *neighbours_it;
 		directionSpeed.x += it->speed.x;
@@ -224,12 +235,12 @@ bool Test_1::Update(float dt)
 		
 
 	}
-
+	*/
 	//---------------------------------------------------------------- Add all speeds
 
-	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesion.x + 0*directionSpeed.x;
-	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesion.y + 0*directionSpeed.y;
-	
+	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesionSpeed.x + 0*directionSpeed.x;
+	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesionSpeed.y + 0*directionSpeed.y;
+//	LOG("speed %f PathSpeed %f separationSpeed %f cohesionSpeed %f",speed.x, pathSpeed.x, separationSpeed.x, cohesionSpeed.x);
 	//------------------------------------------------------------------Use a collision system
 
 	iPoint coord;
@@ -241,7 +252,7 @@ bool Test_1::Update(float dt)
 		layer = layer_iterator->data;
 		if (layer->returnPropValue("Navigation") == 1) {
 			coord = App->map->WorldToMap((int)(position.x + speed.x), (int)position.y);
-			
+		//	LOG("coord %d  position %f, speed.x %f",coord.x, position.x, speed.x);
 				if (layer->Get(coord.x, coord.y) != 0) speed.x = 0;
 			
 				coord = App->map->WorldToMap((int)position.x, (int)(position.y + speed.y));

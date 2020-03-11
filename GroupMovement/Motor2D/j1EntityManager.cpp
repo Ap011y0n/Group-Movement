@@ -1,7 +1,6 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "Test_1.h"
-#include "Test_2.h"
 #include "Test_3.h"
 
 #include "j1App.h"
@@ -92,7 +91,6 @@ j1Entity* j1EntityManager::CreateEntity(DynamicEnt::DynamicEntityType type, int 
 	switch (type)
 	{
 	case DynamicEnt::DynamicEntityType::TEST_1: ret = new Test_1(posx, posy); break;
-	case DynamicEnt::DynamicEntityType::TEST_2: ret = new Test_2(posx, posy); break;
 
 	}
 

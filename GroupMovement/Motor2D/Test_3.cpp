@@ -12,9 +12,7 @@
 Test_3::Test_3(int posx, int posy) : StaticEnt( StaticEntType::TEST_3)
 {
 	name.create("test_1");
-
 	actualState = ST_TEST_3_IDLE;
-	cost = 1;
 	position.x = posx;
 	position.y = posy;
 	to_delete = false;

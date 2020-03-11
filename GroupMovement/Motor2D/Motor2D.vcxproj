@@ -97,7 +97,6 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="StaticEnt.cpp" />
     <ClCompile Include="Test_1.cpp" />
-    <ClCompile Include="Test_2.cpp" />
     <ClCompile Include="Test_3.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +129,6 @@
     <ClInclude Include="DynamicEnt.h" />
     <ClInclude Include="StaticEnt.h" />
     <ClInclude Include="Test_1.h" />
-    <ClInclude Include="Test_2.h" />
     <ClInclude Include="Test_3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

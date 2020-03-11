@@ -34,36 +34,13 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-public:
-
-	// Position
-	fPoint position;
-
-	int hp;
+public: 	
 	bool isSelected;
-
-
-	SDL_Texture* texture;
-	//SDL_Rect Rect;
-
-	int cost;
-	int MaxCreationTime;
-	int CurrentCreationTime;
-
-	// Blit
-	bool blit = false;
-
-	// Colliders
-	Collider* collider;
-	bool to_delete;
 	bool selectable;
-
-	virtual list<j1Entity*>* ReturnChilds();
-	j1Entity* target;
-	bool move;
-	int vision;
+	fPoint position;
+	bool to_delete;
 	int body;
-	fPoint speed, pathSpeed, separationSpeed, cohesion;
+
 	
 };
 
