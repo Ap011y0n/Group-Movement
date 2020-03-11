@@ -161,26 +161,9 @@ bool Test_1::Update(float dt)
 	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesionSpeed.x + 0*directionSpeed.x;
 	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesionSpeed.y + 0*directionSpeed.y;
 
-	//------------------------------------------------------------------Use a collision system
+	//------------------------------------------------------------------Use a preventive collision system
 
-	iPoint coord;
-	p2List_item<MapLayer*>* layer_iterator = App->map->data.layers.start;
-	MapLayer* layer = App->map->data.layers.start->data;
-
-	while (layer_iterator != NULL) 
-	{
-		layer = layer_iterator->data;
-		if (layer->returnPropValue("Navigation") == 1) {
-			coord = App->map->WorldToMap((int)(position.x + speed.x), (int)position.y);
-		//	LOG("coord %d  position %f, speed.x %f",coord.x, position.x, speed.x);
-				if (layer->Get(coord.x, coord.y) != 0) speed.x = 0;
-			
-				coord = App->map->WorldToMap((int)position.x, (int)(position.y + speed.y));
-				if (layer->Get(coord.x, coord.y) != 0) speed.y = 0;
-			
-		}
-		layer_iterator = layer_iterator->next;
-	}
+	CheckCollisions(&speed);
 
 	position.y += speed.y;
 	position.x += speed.x;
@@ -214,7 +197,7 @@ bool Test_1::CleanUp()
 	return true;
 }
 
-void  Test_1::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>* colliding_entity_list)
+void Test_1::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>* colliding_entity_list)
 {
 
 	p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
@@ -240,5 +223,26 @@ void  Test_1::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>
 		}
 		entities_list = entities_list->next;
 
+	}
+}
+
+void Test_1::CheckCollisions(fPoint* speed)
+{
+	iPoint coord;
+	p2List_item<MapLayer*>* layer_iterator = App->map->data.layers.start;
+	MapLayer* layer = App->map->data.layers.start->data;
+
+	while (layer_iterator != NULL)
+	{
+		layer = layer_iterator->data;
+		if (layer->returnPropValue("Navigation") == 1) {
+			coord = App->map->WorldToMap((int)(position.x + speed->x), (int)position.y);
+			if (layer->Get(coord.x, coord.y) != 0) speed->x = 0;
+
+			coord = App->map->WorldToMap((int)position.x, (int)(position.y + speed->y));
+			if (layer->Get(coord.x, coord.y) != 0) speed->y = 0;
+
+		}
+		layer_iterator = layer_iterator->next;
 	}
 }
