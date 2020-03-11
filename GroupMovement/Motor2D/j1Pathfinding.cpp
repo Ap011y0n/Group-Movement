@@ -245,3 +245,13 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	}
 
 }
+
+void j1PathFinding::SavePath(p2DynArray<iPoint>* path)
+{
+	const p2DynArray<iPoint>* last_path = App->pathfinding->GetLastPath();
+	path->Clear();
+	for (uint i = 0; i < last_path->Count(); ++i)
+	{
+		path->PushBack({ last_path->At(i)->x, last_path->At(i)->y });
+	}
+}

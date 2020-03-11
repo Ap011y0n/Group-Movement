@@ -45,8 +45,6 @@ bool Test_1::Update(float dt)
 	speed = { 0, 0 };
 	pathSpeed = { 0, 0 };
 
-	CheckAnimation(dt);
-
 	origin = App->map->WorldToMap(position.x, position.y);
 	
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
@@ -56,15 +54,11 @@ bool Test_1::Update(float dt)
 	{
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		mouse = App->map->WorldToMap(mouse.x, mouse.y);
+		//----------------------TODO
 		App->pathfinding->CreatePath(origin, mouse);
-
-		const p2DynArray<iPoint>* last_path = App->pathfinding->GetLastPath();
-		path.Clear();
-		for (uint i = 0; i < last_path->Count(); ++i)
-		{
-			path.PushBack({last_path->At(i)->x, last_path->At(i)->y});
-		}
-		followpath = 1;
+		App->pathfinding->SavePath(&path);
+		//-------------------
+		followpath = 1;			//Don't mind me, i'm just tracking the path
 	}
 
 	//----------------------------------------------------------------Path speed
@@ -83,8 +77,6 @@ bool Test_1::Update(float dt)
 
 			}
 		}
-		
-		
 			if (path.At(followpath)->x < origin.x) {
 				pathSpeed.x =- 1;
 			}
@@ -184,10 +176,6 @@ bool Test_1::PostUpdate(float dt)
 	return true;
 }
 
-void Test_1::CheckAnimation(float dt)
-{
-
-}
 
 bool Test_1::CleanUp()
 {

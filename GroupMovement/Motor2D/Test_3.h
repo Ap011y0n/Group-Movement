@@ -8,12 +8,6 @@
 #include "j1Entity.h"
 #include "StaticEnt.h"
 
-enum states_test_3
-{
-	ST_TEST_3_IDLE,
-	ST_TEST_3_MOVE,
-	ST_TEST_3_DEAD
-};
 
 class Test_3 : public StaticEnt
 {
@@ -35,11 +29,9 @@ public:
 
 	bool CleanUp();
 	// Animation
-	void CheckAnimation(float dt);
 
 public:
 	// Animations
-	states_test_3	actualState;
 	Animation* current_animation = nullptr;
 	//Animation idle;
 	int attackrange;

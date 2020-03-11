@@ -28,7 +28,6 @@ public:
 
 	bool CleanUp();
 	// Animation
-	void CheckAnimation(float dt);
 
 	void SaveNeighbours(list<j1Entity*>*, list<j1Entity*>*);
 
