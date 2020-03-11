@@ -9,7 +9,9 @@
 #include "j1Entity.h"
 #include "DynamicEnt.h"
 #include "StaticEnt.h"
+#include <list>
 
+using namespace std;
 
 struct SDL_Texture;
 
@@ -47,7 +49,7 @@ public:
 	bool DeleteEntity(j1Entity* entity);
 
 public:
-	p2List<j1Entity*> entities;
+	list<j1Entity*> entities;
 
 	// Load entities textures
 	p2SString test_1;

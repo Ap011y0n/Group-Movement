@@ -181,11 +181,9 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	BROFILER_CATEGORY("Pathfinding", Profiler::Color::Gold);
 
-	// TODO 1: if origin or destination are not walkable, return -1
 	if (IsWalkable(origin) == false || IsWalkable(destination) == false) {
 		return -1;
 	}
-	// TODO 2: Create two lists: open, close
 
 	last_path.Clear();
 
@@ -199,10 +197,9 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	while (open.GetNodeLowestScore() != NULL)
 	{
 		p2List_item<PathNode>* lowest = open.GetNodeLowestScore();
-		// TODO 3: Move the lowest score cell from open list to the closed list
 		p2List_item<PathNode>* node = closed.list.add(lowest->data);
 		open.list.del(lowest);
-		// TODO 4: If we just added the destination, we are done!
+
 		if (node->data.pos == destination) {
 
 			PathNode* iterator = &node->data;
@@ -217,10 +214,9 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 		}
 
-		// TODO 5: Fill a list of all adjancent nodes
 		PathList adjList;
 		uint limit = node->data.FindWalkableAdjacents(adjList);
-		// TODO 6: Iterate adjancent nodes:
+
 		for (uint i = 0; i < limit; i++) {
 			
 			if ((closed.Find(adjList.list[i].pos)) == NULL) {

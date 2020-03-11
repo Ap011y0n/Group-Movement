@@ -229,7 +229,6 @@ void j1App::FinishUpdate()
 	
 	App->win->SetTitle(title);
 
-	// TODO 2: Use SDL_Delay to make sure you get your capped framerate
 	delaytimer.Start();
 	
 	int delay = 1 * 1000 / framerate - last_frame_ms;

@@ -221,29 +221,29 @@ void Test_1::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>*
 	//  First, clear both lists before adding new members to them
 	//  Then we should be iterating all entities in entity manager except for this entity
 	//	Using the formulas, store those in vision range to close list, and those in collision range in colliding list
-	p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
-	close_entity_list->clear();
+	list<j1Entity*>::iterator entities_list;
+	j1Entity* it;
 	colliding_entity_list->clear();
-	while (entities_list)
-	{
-		if (entities_list->data != this && entities_list->data->selectable)
+	close_entity_list->clear();
+
+	for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
+		it = *entities_list;
+		if (it != this && it->selectable)
 		{
-			int x = entities_list->data->position.x;
-			int y = entities_list->data->position.y;
+			int x = it->position.x;
+			int y = it->position.y;
 
 			float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
-			if (distance < collrange + entities_list->data->body)
+			if (distance < collrange + it->body)
 			{
-				colliding_entity_list->push_back(entities_list->data);
+				colliding_entity_list->push_back(it);
 
 			}
-			if (distance < vision + entities_list->data->body)
+			if (distance < vision + it->body)
 			{
-				close_entity_list->push_back(entities_list->data);
+				close_entity_list->push_back(it);
 			}
 		}
-		entities_list = entities_list->next;
-
 	}
 }
 

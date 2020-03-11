@@ -32,7 +32,7 @@ bool j1GroupMov::Update(float dt) {
 
 	static iPoint origin, mouse;
 
-	// TODO 0 ---------------------- Nothing to do here, just putting you in context
+	// TODO 0 ---------------------- Nothing to do here, just getting you in context
 	// Every time we press leftclick button, we create a rect. The we check all entities with
 	// selectable bool activated. If selectable entity is inside the rectangle, we turn their
 	// isSelected bool to true
@@ -50,37 +50,38 @@ bool j1GroupMov::Update(float dt) {
 	}
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
-		p2List_item<j1Entity*>* entities_list = App->entity->entities.start;
-		while (entities_list)
-		{
-			if (entities_list->data->selectable)
+		list<j1Entity*>::iterator entities_list;
+		j1Entity* it;
+		for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
+			it = *entities_list;
+
+			if (it->selectable)
 			{
-				entities_list->data->isSelected = false;
-				int x = entities_list->data->position.x, y = entities_list->data->position.y;
+				it->isSelected = false;
+				int x = it->position.x, y = it->position.y;
 				// We store x and y positions
 				// Now we check if it's inside the rect, so we can "select this entity"
-				if (x > origin.x && x < mouse.x) {
+				if (x > origin.x&& x < mouse.x) {
 					if (y < origin.y && y > mouse.y)
 					{
-						entities_list->data->isSelected = true;
+						it->isSelected = true;
 					}
-					else if (y > origin.y && y < mouse.y)
+					else if (y > origin.y&& y < mouse.y)
 					{
-						entities_list->data->isSelected = true;
+						it->isSelected = true;
 					}
 				}
 				else if (x < origin.x && x > mouse.x) {
 					if (y < origin.y && y > mouse.y)
 					{
-						entities_list->data->isSelected = true;
+						it->isSelected = true;
 					}
-					else if (y > origin.y && y < mouse.y)
+					else if (y > origin.y&& y < mouse.y)
 					{
-						entities_list->data->isSelected = true;
+						it->isSelected = true;
 					}
 				}
 			}
-			entities_list = entities_list->next;
 		}
 	}
 
