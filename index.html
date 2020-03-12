@@ -12,12 +12,14 @@ But first, we have to understand how to set up a movement system. Before adding 
 
 Most RTS use A* (A-star), a best-first search, meaning that it is formulated in terms of weighted graphs: starting from a specific starting node of a graph, it aims to find a path to the given goal node having the smallest cost (least distance travelled, shortest time, etc.).
 Normally, videogames use one of two types of grids for thosE graphs.
-<dt><img src="https://raw.githubusercontent.com/Ap011y0n/2d-Platformer/master/WebpageContents/albert.jpg" height = "120" width = "160" ></img> </dt>
 <dl>
 <h3> Regular Grids. </h3>
 <dt>- 2D square grid. </dt>
+	<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/e7cfb2b5366bb86adebac8c37e4baa23.png?raw=true" height = "495" width = "375" ></img> </dt>
 <dt>- 2D hexagonal grid. </dt>
+<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/101d2b7597da979c1d80aac733ed0c51.png?raw=true" height = "495" width = "375" ></img> </dt>
 <dt>- 2D triangular grid. </dt>
+<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/2aeb58f7a734eba48b01b19116705c85.png?raw=true" height = "495" width = "375" ></img> </dt>
 </dl>
 <dl>   
 <h3> Irregular Grids.  </h3>
@@ -29,14 +31,10 @@ Normally, videogames use one of two types of grids for thosE graphs.
 We can divide the movement behaviour in three approaches depending on how do we want our units or entities to behave, if as an individual or as a part of a group. Which are the following:
 
 <dl>
-  <dt>- Flow-based Approach:</dt>
-It focus on the crowd as a whole rather than its components. individuals do not have any distinctive behaviors, and won’t be affected by any input from their surroundings or their behaviour.
-  <dt>- Entity-based Approach: </dt>
-Entities do not have the capacity to think for themselves. All movements are determined by the global laws being enforced on them. 
-  <dt>- Agent-based Approach: </dt>
-    </dl>
-Each agent of a crowd is given a degree of intelligence; they can react to each situation on their own based on a set of decision rules. Information used to decide on an action is obtained locally from the agent's’ surroundings. 
-
+  <dt>- Flow-based Approach:</dt> It focus on the crowd as a whole rather than its components. individuals do not have any distinctive behaviors, and won’t be affected by any input from their surroundings or their behaviour.
+  <dt>- Entity-based Approach: </dt> Entities do not have the capacity to think for themselves. All movements are determined by the global laws being enforced on them. 
+  <dt>- Agent-based Approach: </dt> Each agent of a crowd is given a degree of intelligence; they can react to each situation on their own based on a set of decision rules. Information used to decide on an action is obtained locally from the agent's’ surroundings. 
+   </dl>
 <h2> Approaches used in videogames </h2>
 
 <h3>Age of empires (1997) </h3>
