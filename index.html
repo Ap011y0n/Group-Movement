@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-v1
+v4
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
@@ -11,7 +11,7 @@ In RTS games we’ll be moving a bunch of units across the map. This differs fro
 But first, we have to understand how to set up a movement system. Before adding a movement system, we need a pathfinding algorithm, so our units will actually find a path they can follow, and start moving. 
 
 Most RTS use A* (A-star), a best-first search, meaning that it is formulated in terms of weighted graphs: starting from a specific starting node of a graph, it aims to find a path to the given goal node having the smallest cost (least distance travelled, shortest time, etc.).
-Normally, videogames use one of two types of grids for thos graphs.
+Normally, videogames use one of two types of grids for thosE graphs.
 
   <h3> Regular Grids. </h3>
 <dl>
@@ -82,29 +82,6 @@ https://www.hindawi.com/journals/ijcgt/2015/736138/
 Starcraft 2 uses an AI pathfinding technique called flocking or swarm AI, the goal is to get a coordinated such as with a school of fish or a flock of birds. 
 This type of movement is the direct evolution of the movement in starcraft 1, each unit is still responsive to its environment, but in a more dynamic and natural way.
 Starcraft 2 uses an advanced algorithm that finds the fewest amount of waypoints and allows autonomous steering behaviour for units to smoothly hug their way around obstacles and other units. This differ from the grid based movement of StarCraft 
-This method, Flocking, is what we are going to use for our engine.
-<h2> Flocking </h2>
-
-Flocking is an appropriate method proposed by Craig Reynolds in 1986, with his artificial life program called “Boids”, which can be used to simulate natural group movement in computer games like swarms of birds, schools of fishes, military units, or crowds. 
-
-As with most artificial life simulations, Boids is an example of emergent behavior; that is, the complexity of Boids arises from the interaction of individual agents (the boids, in this case) adhering to a set of simple rules.
-
-- Separation: Pushes units(boids) apart by maintaining distance from nearby flock mates. Each boid takes into account their position to another flock member in their sorrounds and then receives a repulsive force in the opposite direction. This simulates a sort of collision system between the boids within the flock.
-
-- Cohesion: Keeps boids together as a group, it will drag the boids to the mass center of the group, to do that we have to calculate the direction to the average position of the flock mates and steer in that direction.
-
- - Alignment: Steer towards the average heading of local flockmates, boids will head in the same direction with similar velocities.
-
-
-These three vectors added, result in the final speed of each boid, so when they move along other boids, it will give the sensation of natural group.
-
-<h3> Another concepts that can be taken into into account </h3>
-
-- Units in a group just move at the same speed. Usually, this sort of organization moves the group at the maximum speed of its slowest unit, but sometimes it's better to let a slow unit move a little faster when it's in a group (see Figure 1 below). Designers generally give units a slow movement speed for a reason, though; altering that speed can often create unbalanced game play by allowing a powerful unit to move around the map too quickly.
-- Units in a group move at the same speed and take the same path. This sort of organization prevents half of the group's units from walking one way around the forest while the other half takes a completely different route (see Figure 2 below). Later, we'll look at an easy way to implement this sort of organization.
-
-- Units in a group move at the same speed, take the same path, and arrive at the same time. This organization exhibits the most complex behavior that we'll apply to our group definition. In addition to combining the previous two options, it also requires that units farther ahead wait for other units to catch up and possibly allows slower units to get a temporary speed boost in order to catch up.
-
 
 This method, Flocking, is what we are going to use for our engine.
 <h2> Flocking </h2>
@@ -130,3 +107,40 @@ These three vectors added, result in the final speed of each boid, so when they 
 
 <dt>- Units in a group move at the same speed, take the same path, and arrive at the same time. This organization exhibits the most complex behavior that we'll apply to our group definition. In addition to combining the previous two options, it also requires that units farther ahead wait for other units to catch up and possibly allows slower units to get a temporary speed boost in order to catch up.</dt>
 </dl>
+
+<h2> My approach to flocking </h2>
+I'll try follow this process in a simple way, except for the Alignment part. In 2d RTS, where units follow 8 directions, it's not necessary to use a direction vector. I will however study how to apply it even tho we'll probably won't end using it.
+<h3> Flowchart </h3>
+
+<dl>- First, we'll need to select all troops when they receive a certain input. This, like in most, if not all the RTS will be clicking left mouse button and dragging to create a selection rectangle. All the units inside that rectangle will now be tagged as selected.
+</dl>
+After that we create a path for those troops when a right click is detected.
+<dl> Now we calculate 3 different speeds:
+  </dl>
+
+<dl>
+  <dt>- The Path speed </dt>
+    </dl>
+Needed to actually follow the path<dl>
+ <dl>
+  <dt>- The Separation speed </dt>
+    </dl>
+The Separation speed, wich will make our troops repel between themselves
+<dl>
+  <dt>- The Cohesion Speed </dt>
+    </dl>
+  Which is useful to make our troops act more like one entity instead of random bodys colliding with each other.
+<dl>After that, we'll add all those speeds to the total speed of the entity, and the resulting value will be applied to the unit.
+  </dl>
+  Last but not least, we'll use a preemptive collision(with the environment) system, that will reset the speed value to 0 to avoid colliding with walls.
+
+<h2> Handout </h2>
+<h3> TODO 0 </h3>
+<h3> TODO 1 </h3>
+<h3> TODO 2 </h3>
+<h3> TODO 3 </h3>
+<h3> TODO 4 </h3>
+<h3> TODO 5 </h3>
+<h3> OPTIONAL TODO </h3>
+<h3> TODO 6 </h3>
+
