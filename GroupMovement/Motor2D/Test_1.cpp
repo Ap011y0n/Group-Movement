@@ -55,7 +55,7 @@ bool Test_1::Update(float dt)
 	// We need to store a path in this entity dynamic array: path
 	// First, order the pathfinding module to create a path with origin and mouse (destination);
 	// Luckily for you i already created a method in pathfinding module that can do the trick
-	// Just use SavePath() function, and proceed to the next path
+	// Just use SavePath() fucntion, and proceed to the next path
 
 	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
@@ -111,18 +111,20 @@ bool Test_1::Update(float dt)
 		
 	}
 
+	j1Entity* it;
+	list<j1Entity*>::iterator neighbours_it;
 
 	// TODO 3 ----------------------------------------------------------------
 	// Before we calculate the other speeds, we need to store this entity neighbours in two lists. 
-	// Close neighbours (those which are near this entity) and colliding (those which are in contact with this entity)
-	// To do that, we'll use three radius; vision, body and collrange;
+	// Close neighbours (those which are near this entity) and colliding, thos which are in contact with this entity
+	// To do that, we'll use three radius, vision, body and collrange;
 	// Use SaveNeighbours function, and pass the two lists as reference
 
 	SaveNeighbours(&close_entity_list, &colliding_entity_list);
 
 	//TODO 4 ---------------------------------------------------------------- 
 	// Now we should be are ready to get a new speed in the formula. The separation speed
-	// Create an fPoint, just like PathSpeed, to store this new values. We'll use colliding neighbours list
+	// Create an fPoint, just like PathSpeed, to store this new values.
 	// Use GetSeparationSpeed method from movement module, and call it if there's at least one member in colliding list, if not, separationSpeed should be 0
 	fPoint separationSpeed;
 
@@ -141,7 +143,7 @@ bool Test_1::Update(float dt)
 
 	// TODO 5 ---------------------------------------------------------------- 
 	// Cohesion speed
-	// Just like before, but using GetCohesionSpeed() function, close list and another fPoint
+	// Just like before, but using GetCohesionSpeed method, close list and another fPoint
 	fPoint cohesionSpeed;
 	if (!close_entity_list.empty())
 	{
