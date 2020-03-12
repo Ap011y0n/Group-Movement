@@ -97,11 +97,11 @@ These three vectors added, result in the final speed of each boid, so when they 
 
 <h3> Another concepts that can be taken into into account </h3>
 <dl>
-- Units in a group just move at the same speed. Usually, this sort of organization moves the group at the maximum speed of its slowest unit, but sometimes it's better to let a slow unit move a little faster when it's in a group (see Figure 1 below). Designers generally give units a slow movement speed for a reason, though; altering that speed can often create unbalanced game play by allowing a powerful unit to move around the map too quickly.</dt>
-
-- Units in a group move at the same speed and take the same path. This sort of organization prevents half of the group's units from walking one way around the forest while the other half takes a completely different route (see Figure 2 below). Later, we'll look at an easy way to implement this sort of organization.</dt>
-
-- Units in a group move at the same speed, take the same path, and arrive at the same time. This organization exhibits the most complex behavior that we'll apply to our group definition. In addition to combining the previous two options, it also requires that units farther ahead wait for other units to catch up and possibly allows slower units to get a temporary speed boost in order to catch up.</dt>
+- Units in a group just move at the same speed. Usually, this sort of organization moves the group at the maximum speed of its slowest unit, but sometimes it's better to let a slow unit move a little faster when it's in a group (see Figure 1 below). Designers generally give units a slow movement speed for a reason, though; altering that speed can often create unbalanced game play by allowing a powerful unit to move around the map too quickly.
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/moveatsamespeed.png?raw=true" height = "184" width = "350" ></img> </dt>
+- Units in a group move at the same speed and take the same path. This sort of organization prevents half of the group's units from walking one way around the forest while the other half takes a completely different route (see Figure 2 below). Later, we'll look at an easy way to implement this sort of organization.
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/take%20same%20path.png?raw=true" height = "288" width = "350" ></img> </dt>
+- Units in a group move at the same speed, take the same path, and arrive at the same time. This organization exhibits the most complex behavior that we'll apply to our group definition. In addition to combining the previous two options, it also requires that units farther ahead wait for other units to catch up and possibly allows slower units to get a temporary speed boost in order to catch up.
 </dl>
 
 <h2> My approach to flocking </h2>
