@@ -412,7 +412,7 @@ bool j1App::LoadGameNow()
 		root = data.child("game_state");
 
 		list<j1Module*>::iterator item_list;
-		j1Module* it;
+		j1Module* it = NULL;
 
 		for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
 			it = *item_list;
@@ -466,7 +466,7 @@ bool j1App::SavegameNow()
 	root = data.append_child("game_state");
 
 	list<j1Module*>::iterator item_list;
-	j1Module* it;
+	j1Module* it = NULL;
 
 	for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
 		it = *item_list;
