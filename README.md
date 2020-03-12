@@ -16,8 +16,8 @@ To actually use the application you need to know the following commands
 * Right click on mouse to send them to a location
 * Close the application with the [x]
 # Programs used
-IDE: Microsoft Visual Studio 2019 (language C++)
-SDL 2.0, STL, pugixml 1.8
-Brofiler
-Adobe Photoshop cs6
-Tiled
+* *IDE: Microsoft Visual Studio 2019 (language C++)
+* *SDL 2.0, STL, pugixml 1.8
+* *Brofiler
+* *Adobe Photoshop cs6
+* *Tiled
