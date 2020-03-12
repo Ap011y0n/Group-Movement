@@ -179,17 +179,20 @@ WARNING! Do not normalize it if the norm is 0, instead return speed = 0
 	
 <h3> TODO 5 </h3>
 The other speed we'll be actually using is cohesion speed. So in order to get it we'll use a similar method like in separation speed.
-Use close neighbours lists and GetCohesionSpeed().
+<dl> Use close neighbours lists and GetCohesionSpeed().
 Again, iterate the neighbours in the list, and this time store all positions, including the entity calling this.
-Also divide it by the total neighbours + 1 (remember we also use the entity who calls this)
+Also divide it by the total neighbours + 1 (remember we also use the entity who calls this).
 Normalize it and return it.
-
+</dl>
+<dl> 
 Before normalizing though, i recommend capping this distance in case it's inside a certain interval. So they won't attract eachother to collision range.
 Lets say if our colision range is 10, and the distance vector is inside -11 and 11, set cohesion speed to 0. After doing this, normalize it. Still be careful about dividing by 0.
-
+</dl>
 <h3> OPTIONAL TODO </h3>
-This todo will show you how to calculate the alignment speed in case you need one. We'll do the same as the other two, first call the function GetDirectionSpeed(), then in that function we'll store all the velocity vectors of our close entities.
+This todo will show you how to calculate the alignment speed in case you need one. 
+<dl> We'll do the same as the other two, first call the function GetDirectionSpeed(), then in that function we'll store all the velocity vectors of our close entities.
 Then we can divide by the number of close entities and normalize it.In this way, all entities will have a similar movement.
+</dl>
 <h3> TODO 6 </h3>
 If you got this far, congratulations, now your entities react between themselves
 <dl> But don't forget about walls, use a preventive collision system, so in case it is needed total speed value should be set to 0.</dl>
