@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "j1Module.h"
 #include <list>
+
 #define MAX_PROPERTIES 3
 
 using namespace std;

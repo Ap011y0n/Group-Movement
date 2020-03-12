@@ -3,6 +3,9 @@
 
 #include "j1Module.h"
 #include "p2List.h"
+#include <list>
+
+using namespace std;
 
 struct SDL_Texture;
 struct SDL_Surface;
@@ -33,7 +36,7 @@ public:
 
 public:
 
-	p2List<SDL_Texture*>	textures;
+	list<SDL_Texture*>	textures;
 };
 
 
