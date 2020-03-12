@@ -117,11 +117,22 @@ I'll try follow this process in a simple way, except for the Alignment part. In 
 After that we create a path for those troops when a right click is detected.
 <dl> Now we calculate 3 different speeds:
   </dl>
-the pathspeed (needed to actually follow the path)
-the cohesion speed, wich will make our troops repel between themselves
-And the cohesion speed, which is useful to make our troops act more like one entity instead of random bodys colliding with each other.
-After that, we'll add all those speeds to the total speed of the entity, and the resulting value will be applied to the unit.
-Last but not least, we'll use a preemptive collision(with the environment) system, that will reset the speed value to 0 to avoid colliding with walls.
+
+<dl>
+  <dt>- The Path speed </dt>
+    </dl>
+Needed to actually follow the path<dl>
+ <dl>
+  <dt>- The Separation speed </dt>
+    </dl>
+The Separation speed, wich will make our troops repel between themselves
+<dl>
+  <dt>- The Cohesion Speed </dt>
+    </dl>
+  Which is useful to make our troops act more like one entity instead of random bodys colliding with each other.
+<dl>After that, we'll add all those speeds to the total speed of the entity, and the resulting value will be applied to the unit.
+  </dl>
+  Last but not least, we'll use a preemptive collision(with the environment) system, that will reset the speed value to 0 to avoid colliding with walls.
 
 <h2> Handout </h2>
 <h3> TODO 0 </h3>
