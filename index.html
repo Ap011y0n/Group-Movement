@@ -34,8 +34,11 @@ https://www.youtube.com/watch?v=Uxodm9fKbyo
 <h3> Star craft </h3>
 
 When a unit is issued a move command, their current location and the destination are sent to the pathfinding algorithm which spits out an array of path coordinates. The unit then moves along the path, but it only goes 1 square at a time. Each time it travels to a new square, it asks “is the next square along the path occupied?” If the answer is “no,” the unit keeps moving along the path. If the answer is “yes,” the unit waits a fraction of a second, and checks again. If the path is still occupied after a certain time increment, a new path is generated from the algorithm and the unit walks around the square that was unwalkable.
+Spam clicking (Another circumstance in which the path is re-calculated is when a new move command is issued while the unit is en route. This behavior has given rise to spam-clicking. The path is literally re-calculated each time you click, so technically a unit is finding the most efficient path at the point of time closest to the click. Because the grid (remember the starcraft map is just 1 big grid) which marks the walkable and unwalkable areas is constantly changing, so also are the results of the pathfinding algorithm. And the older those results are, the less efficient they will be. Hence: spam-clicking!)
 
-Variations: Strike Tactics:
+If the path the algorithm spits out is most accurate when it is newly created, why didn’t Blizzard automatically recalculate the path instead of only recalculating it on click or when a unit bangs into another? Because these calculations are expensive, even by modern computing standards. Depending on the size of the grid, and the algorithm used calculating hundreds of paths for hundreds of units 10 times a second adds up. Thus algorithms like A* are only run when needed, on click or when a unit gets stuck.
+
+<h3> Variations: Strike Tactics: </h3>
 Instead of units constantly checking if the node they are about to walk to is occupied, the units simply maintain relative distance from each other when they walk, (similar to flocking, we’ll talk about that later).
 https://www.youtube.com/watch?v=ptDfYoNae8E
 http://striketactics.net/devblog/starcraft-1-pathfinding-technical-analysis
@@ -51,3 +54,6 @@ https://www.hindawi.com/journals/ijcgt/2015/736138/
 Starcraft 2 uses an AI pathfinding technique called flocking or swarm AI, the goal is to get a coordinated such as with a school of fish or a flock of birds. 
 This type of movement is the direct evolution of the movement in starcraft 1, each unit is still responsive to its environment, but in a more dynamic and natural way.
 Starcraft 2 uses an advanced algorithm that finds the fewest amount of waypoints and allows autonomous steering behaviour for units to smoothly hug their way around obstacles and other units. This differ from the grid based movement of StarCraft 
+
+This method, Flocking, is what we are going to use for our engine.
+
