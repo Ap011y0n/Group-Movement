@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-v9
+v10
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
@@ -156,26 +156,27 @@ Now it's time to save it, luckily for you i already created a method in pathfind
   Then go to the second mark, where you'll need add the pathspeed we just calculated to the total speed. This speed will later be added to the unit position.
 You can multiply the pathspeed and every other speed we add here by a constant, to obtain different results and behaviours.
   <h3> TODO 3 </h3>
-  Before we calculate the other speeds, we need to store this entity neighbours in two lists. 
-	Close neighbours (those which are near this entity), and colliding neighbours (those which are in contact with this entity)
-  To do that, we'll use threedifferent radius for our entity; vision, body and collrange;
-	Use SaveNeighbours function, and pass the two lists as reference.
+<dl>  Before we calculate the other speeds, we need to store this entity neighbours in two lists: </dl>
+<dl> Close neighbours (those which are near this entity), and colliding neighbours (those which are in contact with this entity) </dl>
+  To do that, we'll use threedifferent radius for our entity; vision, body and collrange. </dl>
+Use SaveNeighbours function, and pass the two lists as reference.
+<dl>
   First we clear both lists before we add new members to them.
   Then we iterate all entities in entity manager, except for this entity.
   Use this formula to calculate the distance between entities
-
-  square root ((position.x-x)^2 + (position.y-y)^2)
-  
-  Now we look for thos which are in collision range and store them in the colliding list:
+</dl>
+   <dl> square root ((position.x-x)^2 + (position.y-y)^2)
+ </dl>
+  Now we look for those which are in collision range and store them in the colliding list:
   Check if the distance we calculated is less than the collision range radius + the body of the other entity
   Same goes for the close, but instead of using the collision range radius use vision radious
 <h3> TODO 4 </h3>
   Now you are ready to get the second speed, the separation one.
-Create another fpoint, just like we did with path speed. Theres a function in movement module called GetSeparationSpeed(), use it.
+ <dl> Create another fpoint, just like we did with path speed. Theres a function in movement module called GetSeparationSpeed(), use it.
 Also, we'll be using Iterate all colliding neighbours and add their relative position vectors in a FPoint. (iterator.position.x - position.x)
 Then divide it by the neighbours number to obtain the average vector.
 Before normalizing the resulting vector, remember to invert it multiplying by -1. We want a force that goes from the other entities to our entity, not reverse.
-<dt> <dl> WARNING! Do not normalize it if the norm is 0, instead return speed = 0
+</dt> <dt> <dl> WARNING! Do not normalize it if the norm is 0, instead return speed = 0
 </dl>	</dt>
 <h3> TODO 5 </h3>
 The other speed we'll be actually using is cohesion speed. So in order to get it we'll use a similar method like in separation speed.
