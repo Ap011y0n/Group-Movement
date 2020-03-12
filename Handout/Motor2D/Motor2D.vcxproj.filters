@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="j1Main.cpp" />
+    <ClCompile Include="j1App.cpp" />
+    <ClCompile Include="j1Scene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="j1PerfTimer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Timer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Audio.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Input.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Map.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Textures.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Window.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Render.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="p2Log.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="PugiXml\src\pugixml.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityManager.cpp">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Entity.cpp">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Test_1.cpp">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicEnt.cpp">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticEnt.cpp">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Test_3.cpp">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Pathfinding.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1GroupMov.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="j1App.h" />
+    <ClInclude Include="j1Module.h" />
+    <ClInclude Include="j1Scene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1PerfTimer.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Timer.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Audio.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Input.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Map.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Textures.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Window.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Render.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Log.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="p2List.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="p2DynArray.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Defs.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Point.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="p2SString.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugixml.hpp">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityManager.h">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Entity.h">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Test_1.h">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicEnt.h">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticEnt.h">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Test_3.h">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Pathfinding.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="J1GroupMov.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{cec924b1-93fd-4a3d-b9a4-064c9412ba77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{368b5bf7-9517-4db0-95b0-53a1049bb956}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{3eafaa3d-5225-4675-a4b5-2f968e3cf856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{253b558e-a197-4021-be1d-4cc56a99b27a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Gui">
+      <UniqueIdentifier>{d4fdf8b2-029b-4a9c-b43e-f2c4d2c7999f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\EntitySystem">
+      <UniqueIdentifier>{39fc0b56-37af-4d6a-8f1b-ee97b9e360d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\EntitySystem\Entities">
+      <UniqueIdentifier>{4d15984d-efbd-40d7-8a32-60084243cd7d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
