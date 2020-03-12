@@ -196,8 +196,13 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 	while (open.GetNodeLowestScore() != NULL)
 	{
+		
+
 		p2List_item<PathNode>* lowest = open.GetNodeLowestScore();
 		p2List_item<PathNode>* node = closed.list.add(lowest->data);
+
+		list<PathNode*>::iterator PathNode_list;
+
 		open.list.del(lowest);
 
 		if (node->data.pos == destination) {

@@ -5,8 +5,8 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
-#define MAX_PROPERTIES 3
 #include <list>
+#define MAX_PROPERTIES 3
 
 using namespace std;
 

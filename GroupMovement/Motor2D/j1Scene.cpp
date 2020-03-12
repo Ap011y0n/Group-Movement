@@ -33,7 +33,6 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	for (map = config.child("map"); map; map = map.next_sibling("map")) {
 		p2SString lvlname;
 		lvlname.create(map.attribute("name").as_string());
-		levels.add(lvlname.GetString());
 	}
 	
 	bool ret = true;

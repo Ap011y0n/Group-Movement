@@ -8,7 +8,9 @@
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
 
+#include <list>
 
+using namespace std;
 
 class j1PathFinding : public j1Module
 {

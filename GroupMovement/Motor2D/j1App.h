@@ -6,6 +6,9 @@
 #include "j1PerfTimer.h"
 #include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
+#include <list>
+
+using namespace std;
 
 #define MAXTEXT 100
 // Modules
@@ -86,7 +89,7 @@ private:
 
 	// Load / Save
 	bool LoadGameNow();
-	bool SavegameNow() const;
+	bool SavegameNow();
 public:
 
 	// Modules
@@ -115,7 +118,7 @@ public:
 
 private:
 
-	p2List<j1Module*>	modules;
+	list<j1Module*>		modules;
 	uint				frames;
 	int					argc;
 	char**				args;
