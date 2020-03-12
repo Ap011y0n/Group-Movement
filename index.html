@@ -137,12 +137,14 @@ What this code will do is the following:</dl>
 selectable bool activated. If selectable entity is inside the rectangle, we turn their isSelected bool to true.
  </dl>
 	<h3> expected result </h3>
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/5ggz1D_79SM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <h3> TODO 1 </h3>
 <dl> Here we'll check if this entity is selected, if true, it will create a path to the mouse position   
 In order to follow that path, we need to store it in this entity dynamic array: path </dl>
 First, order the pathfinding module to create a path with origin(unit position) and destination (mouse position) with CreatePath(origin, destination).
 Now it's time to save it, luckily for you i already created a method in pathfinding module that can do the trick, so you just need to call it by it's name, SavePath(path);
 <h3> expected result </h3>
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/6llT0p1qoIE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <h3> TODO 2 </h3>
  <dl>   Now we'll start calculating speeds. Let's begin with pathfinding speed.</dl>  
   The process it's almost finished, it will look for the next tile in the path, to find it's coordinates.
@@ -152,6 +154,7 @@ Now it's time to save it, luckily for you i already created a method in pathfind
 You can multiply the pathspeed and every other speed we add here by a constant, to obtain different results and behaviours.
  </dl>  
 	<h3> expected result </h3>
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/3fzSdCpx5Dk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 	<h3> TODO 3 </h3>
 <dl>  Before we calculate the other speeds, we need to store this entity neighbours in two lists: </dl>
 <dl> Close neighbours (those which are near this entity), and colliding neighbours (those which are in contact with this entity) </dl>
@@ -168,6 +171,7 @@ Use SaveNeighbours function, and pass the two lists as reference.
   Check if the distance we calculated is less than the collision range radius + the body of the other entity
   Same goes for the close, but instead of using the collision range radius use vision radious
 	<h3> expected result </h3>
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/Vorn3iqRjtc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <h3> TODO 4 </h3>
   Now you are ready to get the second speed, the separation one.
  <dl> Create another fpoint, just like we did with path speed. Theres a function in movement module called GetSeparationSpeed(), use it.
@@ -177,6 +181,7 @@ Before normalizing the resulting vector, remember to invert it multiplying by -1
 </dt> <dt> <dl> WARNING! Do not normalize it if the norm is 0, instead return speed = 0
 </dl>	</dt>
 	<h3> expected result </h3>
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/jQhCgfyq57I" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <h3> TODO 5 </h3>
 The other speed we'll be actually using is cohesion speed. So in order to get it we'll use a similar method like in separation speed.
 <dl> Use close neighbours lists and GetCohesionSpeed().
@@ -189,18 +194,21 @@ Before normalizing though, i recommend capping this distance in case it's inside
 Lets say if our colision range is 10, and the distance vector is inside -11 and 11, set cohesion speed to 0. After doing this, normalize it. Still be careful about dividing by 0.
 </dl>
 <h3> expected result </h3>
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/bigQS8ouV4c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <h3> OPTIONAL TODO </h3>
 This todo will show you how to calculate the alignment speed in case you need one. 
 <dl> We'll do the same as the other two, first call the function GetDirectionSpeed(), then in that function we'll store all the velocity vectors of our close entities.
 Then we can divide by the number of close entities and normalize it.In this way, all entities will have a similar movement.
 </dl>
 <h3> expected result </h3>
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/0tfKLJQB9e4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <h3> TODO 6 </h3>
 If you got this far, congratulations, now your entities react between themselves
 <dl> But don't forget about walls, use a preventive collision system, so in case it is needed total speed value should be set to 0.</dl>
 <dl> I provided you a simple collision detection method in DynamicEnt class, just call CheckCollisions(). It will ask for the speed fPoint, be sure to send it as reference.
 </dl>
 <h3> expected result </h3>
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/yTrlSKTYW0k" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <h2> Optional Homework </h2>
 I propose you three new areas to study.
 <dl> 1- Try to prevent all the entities overlapping when they arrive at the target position. (Solved in my solution)
