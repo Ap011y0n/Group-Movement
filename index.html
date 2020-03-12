@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-v6
+v15
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
@@ -12,38 +12,27 @@ But first, we have to understand how to set up a movement system. Before adding 
 
 Most RTS use A* (A-star), a best-first search, meaning that it is formulated in terms of weighted graphs: starting from a specific starting node of a graph, it aims to find a path to the given goal node having the smallest cost (least distance travelled, shortest time, etc.).
 Normally, videogames use one of two types of grids for thosE graphs.
-
-  <h3> Regular Grids. </h3>
+<dt><img src="https://raw.githubusercontent.com/Ap011y0n/2d-Platformer/master/WebpageContents/albert.jpg" height = "120" width = "160" ></img> </dt>
 <dl>
-  <dt>- 2D square grid. 
-</dt>
-    <dt>- 2D hexagonal grid. 
-</dt>
-  <dt>- 2D triangular grid. 
-</dt>
-  </dl>
-   <h3> Irregular Grids.  </h3>
-<dl>
-</dt>
-  <dt>- Visibility graphs. 
-</dt>
-    <dt>- Meshes navigation. 
-</dt>
-  <dt>- Waypoints. 
-</dt>
+<h3> Regular Grids. </h3>
+<dt>- 2D square grid. </dt>
+<dt>- 2D hexagonal grid. </dt>
+<dt>- 2D triangular grid. </dt>
+</dl>
+<dl>   
+<h3> Irregular Grids.  </h3>
+<dt>- Visibility graphs. </dt>
+<dt>- Meshes navigation. </dt>
+<dt>- Waypoints. </dt>
 </dl>
 
 We can divide the movement behaviour in three approaches depending on how do we want our units or entities to behave, if as an individual or as a part of a group. Which are the following:
 
 <dl>
   <dt>- Flow-based Approach:</dt>
-    </dl>
 It focus on the crowd as a whole rather than its components. individuals do not have any distinctive behaviors, and won’t be affected by any input from their surroundings or their behaviour.
-<dl>
   <dt>- Entity-based Approach: </dt>
-    </dl>
 Entities do not have the capacity to think for themselves. All movements are determined by the global laws being enforced on them. 
-<dl>
   <dt>- Agent-based Approach: </dt>
     </dl>
 Each agent of a crowd is given a degree of intelligence; they can react to each situation on their own based on a set of decision rules. Information used to decide on an action is obtained locally from the agent's’ surroundings. 
@@ -51,61 +40,56 @@ Each agent of a crowd is given a degree of intelligence; they can react to each 
 <h2> Approaches used in videogames </h2>
 
 <h3>Age of empires (1997) </h3>
-In age of empires, troops move to the position where the player sent them by using A* algorithm, but they gather into a formation, and then move as an entity. This formations are flexible, and depend on which and how many units are moving as a group.
+<dl> In age of empires, troops move to the position where the player sent them by using A* algorithm, but they gather into a formation, and then move as an entity. This formations are flexible, and depend on which and how many units are moving as a group. </dl>
+They upgraded the movement and pathfinding from Age of Empires 1 in its extended edition, in order to do that, a high-level pathfinder computes general routes across the world map, ignoring such trivial things as people walking, which were handled by lower-level pathfinders that could thread a path through a closely packed group of units.
 
-For the pathfinding problems, nothing less than an all-out blitz was ordered up. The game engine’s movement system was redesigned and no fewer than three separate pathfinding and two obstruction systems were developed, requiring five different people working on them at various times. A high-level pathfinder computes general routes across the world map, ignoring such trivial things as people walking, which were handled by lower-level pathfinders that could thread a path through a closely packed group of units. In the end, we were so successful in ridding the movement problems that hampered AoE that reviewers and players couldn’t help but take notice and acknowledge the improvement.
-
-http://richg42.blogspot.com/2018/02/on-age-des-pathingmovement.html
-
-https://www.youtube.com/watch?v=Uxodm9fKbyo
 
 <h3> Star craft </h3>
 
 When a unit is issued a move command, their current location and the destination are sent to the pathfinding algorithm which spits out an array of path coordinates. The unit then moves along the path, but it only goes 1 square at a time. Each time it travels to a new square, it asks “is the next square along the path occupied?” If the answer is “no,” the unit keeps moving along the path. If the answer is “yes,” the unit waits a fraction of a second, and checks again. If the path is still occupied after a certain time increment, a new path is generated from the algorithm and the unit walks around the square that was unwalkable.
-Spam clicking (Another circumstance in which the path is re-calculated is when a new move command is issued while the unit is en route. This behavior has given rise to spam-clicking. The path is literally re-calculated each time you click, so technically a unit is finding the most efficient path at the point of time closest to the click. Because the grid (remember the starcraft map is just 1 big grid) which marks the walkable and unwalkable areas is constantly changing, so also are the results of the pathfinding algorithm. And the older those results are, the less efficient they will be. Hence: spam-clicking!)
-
+<dl> <dt> Spam clicking </dt> (Another circumstance in which the path is re-calculated is when a new move command is issued while the unit is en route. This behavior has given rise to spam-clicking. The path is literally re-calculated each time you click, so technically a unit is finding the most efficient path at the point of time closest to the click. Because the grid (remember the starcraft map is just 1 big grid) which marks the walkable and unwalkable areas is constantly changing, so also are the results of the pathfinding algorithm. And the older those results are, the less efficient they will be. Hence: spam-clicking!)
+</dl>
 If the path the algorithm spits out is most accurate when it is newly created, why didn’t Blizzard automatically recalculate the path instead of only recalculating it on click or when a unit bangs into another? Because these calculations are expensive, even by modern computing standards. Depending on the size of the grid, and the algorithm used calculating hundreds of paths for hundreds of units 10 times a second adds up. Thus algorithms like A* are only run when needed, on click or when a unit gets stuck.
 
 <h3> Variations: Strike Tactics: </h3>
 Instead of units constantly checking if the node they are about to walk to is occupied, the units simply maintain relative distance from each other when they walk, (similar to flocking, we’ll talk about that later).
-https://www.youtube.com/watch?v=ptDfYoNae8E
-http://striketactics.net/devblog/starcraft-1-pathfinding-technical-analysis
 
 <h3> Dawn of War </h3>
 
 Much like Starcraft 1, in Dawn of war, units will stop if there is something in their path, waiting for it to leave or recalculating their paths. The difference is that troops in this game form part of a squad. This means that when a unit moves, it will always try to be as close as possible to their squad members.
 Dawn of war also introduced a behaviour system, where you could order your squads to attack at sight and chase them, hold the position, attack all enemies in the area but don’t chase them, focus on the buildings or don’t attack at all.
-http://warhammer-guide.ru/wiki/Dawn_of_War_Stances.html
-https://www.hindawi.com/journals/ijcgt/2015/736138/
+
 
 <h3> StarCraft 2 </h3>
+<dl>
 Starcraft 2 uses an AI pathfinding technique called flocking or swarm AI, the goal is to get a coordinated such as with a school of fish or a flock of birds. 
 This type of movement is the direct evolution of the movement in starcraft 1, each unit is still responsive to its environment, but in a more dynamic and natural way.
 Starcraft 2 uses an advanced algorithm that finds the fewest amount of waypoints and allows autonomous steering behaviour for units to smoothly hug their way around obstacles and other units. This differ from the grid based movement of StarCraft 
 
 This method, Flocking, is what we are going to use for our engine.
+</dl>
 <h2> Flocking </h2>
 
 Flocking is an appropriate method proposed by Craig Reynolds in 1986, with his artificial life program called “Boids”, which can be used to simulate natural group movement in computer games like swarms of birds, schools of fishes, military units, or crowds. 
 
 As with most artificial life simulations, Boids is an example of emergent behavior; that is, the complexity of Boids arises from the interaction of individual agents (the boids, in this case) adhering to a set of simple rules.
 <dl>
-  <dt>- Separation: Pushes units(boids) apart by maintaining distance from nearby flock mates. Each boid takes into account their position to another flock member in their sorrounds and then receives a repulsive force in the opposite direction. This simulates a sort of collision system between the boids within the flock.</dt>
+  <dt>- Separation: </dt> Pushes units(boids) apart by maintaining distance from nearby flock mates. Each boid takes into account their position to another flock member in their sorrounds and then receives a repulsive force in the opposite direction. This simulates a sort of collision system between the boids within the flock.
 
-  <dt>- Cohesion: Keeps boids together as a group, it will drag the boids to the mass center of the group, to do that we have to calculate the direction to the average position of the flock mates and steer in that direction.</dt>
+  <dt>- Cohesion: </dt> Keeps boids together as a group, it will drag the boids to the mass center of the group, to do that we have to calculate the direction to the average position of the flock mates and steer in that direction.
 
-  <dt>- Alignment: Steer towards the average heading of local flockmates, boids will head in the same direction with similar velocities.</dt>
+  <dt>- Alignment: </dt> Steer towards the average heading of local flockmates, boids will head in the same direction with similar velocities.
 </dl>
 
 These three vectors added, result in the final speed of each boid, so when they move along other boids, it will give the sensation of natural group.
 
 <h3> Another concepts that can be taken into into account </h3>
 <dl>
-<dt>- Units in a group just move at the same speed. Usually, this sort of organization moves the group at the maximum speed of its slowest unit, but sometimes it's better to let a slow unit move a little faster when it's in a group (see Figure 1 below). Designers generally give units a slow movement speed for a reason, though; altering that speed can often create unbalanced game play by allowing a powerful unit to move around the map too quickly.</dt>
+- Units in a group just move at the same speed. Usually, this sort of organization moves the group at the maximum speed of its slowest unit, but sometimes it's better to let a slow unit move a little faster when it's in a group (see Figure 1 below). Designers generally give units a slow movement speed for a reason, though; altering that speed can often create unbalanced game play by allowing a powerful unit to move around the map too quickly.</dt>
 
-<dt>- Units in a group move at the same speed and take the same path. This sort of organization prevents half of the group's units from walking one way around the forest while the other half takes a completely different route (see Figure 2 below). Later, we'll look at an easy way to implement this sort of organization.</dt>
+- Units in a group move at the same speed and take the same path. This sort of organization prevents half of the group's units from walking one way around the forest while the other half takes a completely different route (see Figure 2 below). Later, we'll look at an easy way to implement this sort of organization.</dt>
 
-<dt>- Units in a group move at the same speed, take the same path, and arrive at the same time. This organization exhibits the most complex behavior that we'll apply to our group definition. In addition to combining the previous two options, it also requires that units farther ahead wait for other units to catch up and possibly allows slower units to get a temporary speed boost in order to catch up.</dt>
+- Units in a group move at the same speed, take the same path, and arrive at the same time. This organization exhibits the most complex behavior that we'll apply to our group definition. In addition to combining the previous two options, it also requires that units farther ahead wait for other units to catch up and possibly allows slower units to get a temporary speed boost in order to catch up.</dt>
 </dl>
 
 <h2> My approach to flocking </h2>
@@ -137,56 +121,83 @@ Wich will make our troops repel between themselves
 
 <h2> Handout </h2>
 <h3> TODO 0 </h3>
-You don't really have to do anything here, it's just to start putting you in context.
-What this code will do is the following:
+<dl> You don't really have to do anything here, it's just to start putting you in context.
+What this code will do is the following:</dl>
 <dl>Every time we press leftclick button, we create a rect. The we check all entities with
 selectable bool activated. If selectable entity is inside the rectangle, we turn their isSelected bool to true.
  </dl>
 <h3> TODO 1 </h3>
-Here we'll check if this entity is selected, if true, it will create a path to the mouse position
-In order to follow that path, we need to store it in this entity dynamic array: path
+<dl> Here we'll check if this entity is selected, if true, it will create a path to the mouse position   
+In order to follow that path, we need to store it in this entity dynamic array: path </dl>
 First, order the pathfinding module to create a path with origin(unit position) and destination (mouse position) with CreatePath(origin, destination).
 Now it's time to save it, luckily for you i already created a method in pathfinding module that can do the trick, so you just need to call it by it's name, SavePath(path);
 
 <h3> TODO 2 </h3>
-  Now we'll start calculating speeds. Let's begin with pathfinding speed.
+ <dl>   Now we'll start calculating speeds. Let's begin with pathfinding speed.</dl>  
   The process it's almost finished, it will look for the next tile in the path, to find it's coordinates.
   Simply try to calculate if the speed in each axis needs to be positive or negative, depending on the coordinates fo the next tile. Don't give it a value too far from 1 and -1, and store it in an fpoint;
-  
+ <dl>   
   Then go to the second mark, where you'll need add the pathspeed we just calculated to the total speed. This speed will later be added to the unit position.
 You can multiply the pathspeed and every other speed we add here by a constant, to obtain different results and behaviours.
-  <h3> TODO 3 </h3>
-  Before we calculate the other speeds, we need to store this entity neighbours in two lists. 
-	Close neighbours (those which are near this entity), and colliding neighbours (those which are in contact with this entity)
-  To do that, we'll use threedifferent radius for our entity; vision, body and collrange;
-	Use SaveNeighbours function, and pass the two lists as reference.
+ </dl>   <h3> TODO 3 </h3>
+<dl>  Before we calculate the other speeds, we need to store this entity neighbours in two lists: </dl>
+<dl> Close neighbours (those which are near this entity), and colliding neighbours (those which are in contact with this entity) </dl>
+  To do that, we'll use threedifferent radius for our entity; vision, body and collrange. </dl>
+Use SaveNeighbours function, and pass the two lists as reference.
+<dl>
   First we clear both lists before we add new members to them.
   Then we iterate all entities in entity manager, except for this entity.
   Use this formula to calculate the distance between entities
-
-  square root ((position.x-x)^2 + (position.y-y)^2)
-  
-  Now we look for thos which are in collision range and store them in the colliding list:
+</dl>
+   <dl> square root ((position.x-x)^2 + (position.y-y)^2)
+ </dl>
+  Now we look for those which are in collision range and store them in the colliding list:
   Check if the distance we calculated is less than the collision range radius + the body of the other entity
   Same goes for the close, but instead of using the collision range radius use vision radious
 <h3> TODO 4 </h3>
   Now you are ready to get the second speed, the separation one.
-Create another fpoint, just like we did with path speed. Theres a function in movement module called GetSeparationSpeed(), use it.
+ <dl> Create another fpoint, just like we did with path speed. Theres a function in movement module called GetSeparationSpeed(), use it.
 Also, we'll be using Iterate all colliding neighbours and add their relative position vectors in a FPoint. (iterator.position.x - position.x)
 Then divide it by the neighbours number to obtain the average vector.
 Before normalizing the resulting vector, remember to invert it multiplying by -1. We want a force that goes from the other entities to our entity, not reverse.
-WARNING! Do not normalize it if the norm is 0, instead return speed = 0
-	
+</dt> <dt> <dl> WARNING! Do not normalize it if the norm is 0, instead return speed = 0
+</dl>	</dt>
 <h3> TODO 5 </h3>
 The other speed we'll be actually using is cohesion speed. So in order to get it we'll use a similar method like in separation speed.
-Use close neighbours lists and GetCohesionSpeed().
+<dl> Use close neighbours lists and GetCohesionSpeed().
 Again, iterate the neighbours in the list, and this time store all positions, including the entity calling this.
-Also divide it by the total neighbours + 1 (remember we also use the entity who calls this)
+Also divide it by the total neighbours + 1 (remember we also use the entity who calls this).
 Normalize it and return it.
-
+</dl>
+<dl> 
 Before normalizing though, i recommend capping this distance in case it's inside a certain interval. So they won't attract eachother to collision range.
 Lets say if our colision range is 10, and the distance vector is inside -11 and 11, set cohesion speed to 0. After doing this, normalize it. Still be careful about dividing by 0.
-
+</dl>
 <h3> OPTIONAL TODO </h3>
+This todo will show you how to calculate the alignment speed in case you need one. 
+<dl> We'll do the same as the other two, first call the function GetDirectionSpeed(), then in that function we'll store all the velocity vectors of our close entities.
+Then we can divide by the number of close entities and normalize it.In this way, all entities will have a similar movement.
+</dl>
 <h3> TODO 6 </h3>
+If you got this far, congratulations, now your entities react between themselves
+<dl> But don't forget about walls, use a preventive collision system, so in case it is needed total speed value should be set to 0.</dl>
+<dl> I provided you a simple collision detection method in DynamicEnt class, just call CheckCollisions(). It will ask for the speed fPoint, be sure to send it as reference.
+</dl>
+<h2> Optional Homework </h2>
+I propose you three new areas to study.
+<dl> 1- Try to prevent all the entities overlapping when they arrive at the target position. (Solved in my solution)
+<dl> 2- Try to prevent some entities taking different paths because of a wall
+<dl> 3- Try to add buildings or static entities. Pathfinding should detect them as not walkable. If an entity encounters a new building in it's path, it should recalculate it's path.
 
+<h2> Performance </h2>
+with more than 100 entities the game is still running at 60 stable fps. 
+<dl>Using a profiler we can go deeper, and observe that, the time consumed by each entity is not relevant at all, when they all sum up it gets a bit noticeable. </dl>
+Each entity adds up 0.04 ms. That's not bad, but in a game where we use a much bigger quantity of entities this could consume a lot of time to process. considering that our entities don't use an animation system, sounds, etc.
+</dl>
+A way we could improve this is by dividing the map in sectors, so the entities would only take into account the other entities in the sector, reducing the time it takes for them to iterate all their equals in search of neighbours. </dl>
+
+<dl>
+Also, we can observe a brutal peak when we use pathfinding, even though it's just in on frame, it can get unpleasant for the player, (we drop from 60 fps). A* it's really useful, but drags some performance problems when called to much times or to calculate giant paths. Methods like Jump point search can fix this, so if you are interested serch about it, it may help you.
+</dl>	
+	
+	
