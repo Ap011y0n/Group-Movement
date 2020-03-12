@@ -1,26 +1,29 @@
 ---
 layout: default
 ---
-<h3> Group Movement in RTS </h3>
-Intro to the problem
+<h2> Group Movement in RTS </h2>
+<h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
 
-
+<h2> Approaches </h2>
 But first, we have to divide the movement behaviour in three approaches depending on how do we want our units or entities to behave, if as an individual or as a part of a group.
 We can start talking about these three approaches:
 
-Flow-based Approach 
+<dl>
+  <dt>- Flow-based Approach: 
 It focus on the crowd as a whole rather than its components. individuals do not have any distinctive behaviors, and won’t be affected by any input from their surroundings or their behaviour.
-
-Entity-based Approach çEntities do not have the capacity to think for themselves. All movements are determined by the global laws being enforced on them. 
-
-Agent-based Approach
+</dt>
+  <dt>- Entity-based Approach: Entities do not have the capacity to think for themselves. All movements are determined by the global laws being enforced on them. 
+</dt>
+  <dt>- Agent-based Approach:
 Each agent of a crowd is given a degree of intelligence; they can react to each situation on their own based on a set of decision rules. Information used to decide on an action is obtained locally from the agent's’ surroundings. 
+</dt>
+</dl>
 
-Approaches used in videogames
-Formations:
-Age of empires (1997):
-in age of empires, troops move to the position where the player sent them by using A* algorithm, but they gather into a formation, and then move as an entity. This formations are flexible, and depend on which and how many units are moving as a group.
+<h2> Approaches used in videogames </h2>
+
+<h3>Age of empires (1997) </h3>
+In age of empires, troops move to the position where the player sent them by using A* algorithm, but they gather into a formation, and then move as an entity. This formations are flexible, and depend on which and how many units are moving as a group.
 
 For the pathfinding problems, nothing less than an all-out blitz was ordered up. The game engine’s movement system was redesigned and no fewer than three separate pathfinding and two obstruction systems were developed, requiring five different people working on them at various times. A high-level pathfinder computes general routes across the world map, ignoring such trivial things as people walking, which were handled by lower-level pathfinders that could thread a path through a closely packed group of units. In the end, we were so successful in ridding the movement problems that hampered AoE that reviewers and players couldn’t help but take notice and acknowledge the improvement.
 
@@ -28,8 +31,8 @@ http://richg42.blogspot.com/2018/02/on-age-des-pathingmovement.html
 
 https://www.youtube.com/watch?v=Uxodm9fKbyo
 
+<h3> Star craft </h3>
 
-Star craft
 When a unit is issued a move command, their current location and the destination are sent to the pathfinding algorithm which spits out an array of path coordinates. The unit then moves along the path, but it only goes 1 square at a time. Each time it travels to a new square, it asks “is the next square along the path occupied?” If the answer is “no,” the unit keeps moving along the path. If the answer is “yes,” the unit waits a fraction of a second, and checks again. If the path is still occupied after a certain time increment, a new path is generated from the algorithm and the unit walks around the square that was unwalkable.
 
 Variations: Strike Tactics:
@@ -37,13 +40,14 @@ Instead of units constantly checking if the node they are about to walk to is oc
 https://www.youtube.com/watch?v=ptDfYoNae8E
 http://striketactics.net/devblog/starcraft-1-pathfinding-technical-analysis
 
-Dawn of War
+<h3> Dawn of War </h3>
+
 Much like Starcraft 1, in Dawn of war, units will stop if there is something in their path, waiting for it to leave or recalculating their paths. The difference is that troops in this game form part of a squad. This means that when a unit moves, it will always try to be as close as possible to their squad members.
 Dawn of war also introduced a behaviour system, where you could order your squads to attack at sight and chase them, hold the position, attack all enemies in the area but don’t chase them, focus on the buildings or don’t attack at all.
 http://warhammer-guide.ru/wiki/Dawn_of_War_Stances.html
 https://www.hindawi.com/journals/ijcgt/2015/736138/
 
-StarCraft 2 Flocking
+<h3> StarCraft 2 </h3>
 Starcraft 2 uses an AI pathfinding technique called flocking or swarm AI, the goal is to get a coordinated such as with a school of fish or a flock of birds. 
 This type of movement is the direct evolution of the movement in starcraft 1, each unit is still responsive to its environment, but in a more dynamic and natural way.
 Starcraft 2 uses an advanced algorithm that finds the fewest amount of waypoints and allows autonomous steering behaviour for units to smoothly hug their way around obstacles and other units. This differ from the grid based movement of StarCraft 
