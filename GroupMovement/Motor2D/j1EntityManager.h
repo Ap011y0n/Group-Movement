@@ -3,6 +3,7 @@
 	
 #include "PugiXml/src/pugixml.hpp"
 #include "j1Module.h"
+#include "p2List.h"
 #include "p2Point.h"
 #include "p2DynArray.h"
 #include "j1Entity.h"

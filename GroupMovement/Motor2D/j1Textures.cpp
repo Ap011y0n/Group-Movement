@@ -83,6 +83,8 @@ SDL_Texture* const j1Textures::Load(const char* path)
 // Unload texture
 bool j1Textures::UnLoad(SDL_Texture* texture)
 {
+	p2List_item<SDL_Texture*>* item;
+
 	list<SDL_Texture*>::iterator textures_list;
 	SDL_Texture* it;
 

@@ -2,6 +2,7 @@
 #define __j1TEXTURES_H__
 
 #include "j1Module.h"
+#include "p2List.h"
 #include <list>
 
 using namespace std;
