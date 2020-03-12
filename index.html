@@ -5,12 +5,12 @@ layout: default
 <a href="https://www.citm.upc.edu/ing/estudis/graus-videojocs">Bachelor’s Degree in
 Video Games by UPC at CITM</a>. This content is generated for the second year’s
 subject Project 2, under supervision of lecturer <a href="https://www.linkedin.com/in/mgarrigo">Marc Garrigó</a>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/IZpgMnu_lAk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
-In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
-
+<dl>In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
+</dl>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/IZpgMnu_lAk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <h2> Approaches </h2>
 
 But first, we have to understand how to set up a movement system. Before adding a movement system, we need a pathfinding algorithm, so our units will actually find a path they can follow, and start moving. 
@@ -228,9 +228,9 @@ A way we could improve this is by dividing the map in sectors, so the entities w
 <dl>
 Also, we can observe a brutal peak when we use pathfinding, even though it's just in on frame, it can get unpleasant for the player, (we drop from 60 fps). A* it's really useful, but drags some performance problems when called to much times or to calculate giant paths. Methods like Jump point search can fix this, so if you are interested serch about it, it may help you.
 </dl>	
-<dl>
 	
-<dt>Useful links</dt>
+<h3>Useful links</h3>
+<dl>
 https://en.wikipedia.org/wiki/Crowd_simulation
 http://richg42.blogspot.com/2018/02/on-age-des-pathingmovement.html
 http://striketactics.net/devblog/starcraft-1-pathfinding-technical-analysis
