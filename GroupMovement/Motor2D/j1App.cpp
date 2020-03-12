@@ -62,21 +62,21 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 j1App::~j1App()
 {
 	// release modules
-	list<j1Module*>::reverse_iterator item;
-	item = modules.rbegin();
+	p2List_item<j1Module*>* item = modules.end;
 
-	while (item != modules.rend())
+	while(item != NULL)
 	{
-		delete* item;
-		item++;
+		RELEASE(item->data);
+		item = item->prev;
 	}
+
 	modules.clear();
 }
 
 void j1App::AddModule(j1Module* module)
 {
 	module->Init();
-	modules.push_back(module);
+	modules.add(module);
 }
 
 // Called before render is available
@@ -107,15 +107,14 @@ bool j1App::Awake()
 
 	if(ret == true)
 	{
+		p2List_item<j1Module*>* item;
+		item = modules.start;
 
-		list<j1Module*>::iterator item_list;
-		j1Module* it;
-
-		for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
-			it = *item_list;
-				ret = it->Awake(config.child(it->name.GetString()));	
+		while(item != NULL && ret == true)
+		{
+			ret = item->data->Awake(config.child(item->data->name.GetString()));
+			item = item->next;
 		}
-
 	}
 
 	PERF_PEEK(ptimer);
@@ -128,15 +127,14 @@ bool j1App::Start()
 {
 	PERF_START(ptimer);
 	bool ret = true;
+	p2List_item<j1Module*>* item;
+	item = modules.start;
 
-	list<j1Module*>::iterator item_list;
-	j1Module* it;
-
-	for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
-		it = *item_list;
-		ret = it->Start();
+	while(item != NULL && ret == true)
+	{
+		ret = item->data->Start();
+		item = item->next;
 	}
-
 	startup_time.Start();
 
 	PERF_PEEK(ptimer);
@@ -241,23 +239,20 @@ void j1App::FinishUpdate()
 bool j1App::PreUpdate()
 {
 	bool ret = true;
-
-	list<j1Module*>::iterator item_list;
-	j1Module* it;
+	p2List_item<j1Module*>* item;
+	item = modules.start;
 	j1Module* pModule = NULL;
 
-	for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
-		it = *item_list;
-		
-		pModule = it;
+	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	{
+		pModule = item->data;
 
-		if (pModule->active == false) {
+		if(pModule->active == false) {
 			continue;
 		}
 
-		ret = it->PreUpdate(dt);
+		ret = item->data->PreUpdate(dt);
 	}
-
 
 	return ret;
 }
@@ -266,21 +261,22 @@ bool j1App::PreUpdate()
 bool j1App::DoUpdate()
 {
 	bool ret = true;
-
-	list<j1Module*>::iterator item_list;
-	j1Module* it;
+	p2List_item<j1Module*>* item;
+	item = modules.start;
 	j1Module* pModule = NULL;
 
-	for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
-		it = *item_list;
+	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	{
+		pModule = item->data;
 
-		pModule = it;
-
-		if (pModule->active == false) {
+		if(pModule->active == false) {
 			continue;
 		}
 
-		ret = it->Update(dt);
+		// send dt as an argument to all updates
+		// you will need to update module parent class
+		// and all modules that use update
+		ret = item->data->Update(dt);
 	}
 
 	return ret;
@@ -290,22 +286,18 @@ bool j1App::DoUpdate()
 bool j1App::PostUpdate()
 {
 	bool ret = true;
-
-
-	list<j1Module*>::iterator item_list;
-	j1Module* it;
+	p2List_item<j1Module*>* item;
 	j1Module* pModule = NULL;
 
-	for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
-		it = *item_list;
+	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	{
+		pModule = item->data;
 
-		pModule = it;
-
-		if (pModule->active == false) {
+		if(pModule->active == false) {
 			continue;
 		}
 
-		ret = it->PostUpdate(dt);
+		ret = item->data->PostUpdate(dt);
 	}
 
 	return ret;
@@ -316,13 +308,13 @@ bool j1App::CleanUp()
 {
 	PERF_START(ptimer);
 	bool ret = true;
-	list<j1Module*>::reverse_iterator item;
-	item = modules.rbegin();
+	p2List_item<j1Module*>* item;
+	item = modules.end;
 
-	while (item != modules.rend() && ret == true)
+	while(item != NULL && ret == true)
 	{
-		ret = (*item)->CleanUp();
-		item++;
+		ret = item->data->CleanUp();
+		item = item->prev;
 	}
 
 	PERF_PEEK(ptimer);
@@ -405,12 +397,18 @@ bool j1App::LoadGameNow()
 		LOG("Loading new Game State from %s...", load_game.GetString());
 		root = data.child("game_state");
 
+<<<<<<< HEAD
 		list<j1Module*>::iterator item_list;
-		j1Module* it;
+		j1Module* it = NULL;
+=======
+		p2List_item<j1Module*>* item = modules.start;
+		ret = true;
+>>>>>>> 9f8e2aae540e927b4b0c22c4927703ef9beb368f
 
-		for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
-			it = *item_list;
-			ret = it->Load(root.child(it->name.GetString()));
+		while(item != NULL && ret == true)
+		{
+			ret = item->data->Load(root.child(item->data->name.GetString()));
+			item = item->next;
 		}
 
 		data.reset();
@@ -420,7 +418,7 @@ bool j1App::LoadGameNow()
 		}
 		else
 		{
-			LOG("...loading process interrupted with error on module %s", (it != NULL) ? it->name.GetString() : "unknown");
+			LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
 		}
 	}
 	else {
@@ -448,7 +446,7 @@ bool j1App::CheckSaveGame()
 }
 
 
-bool j1App::SavegameNow()
+bool j1App::SavegameNow() const
 {
 	bool ret = true;
 	save_game.create("save_game.xml");
@@ -459,15 +457,18 @@ bool j1App::SavegameNow()
 
 	root = data.append_child("game_state");
 
+<<<<<<< HEAD
 	list<j1Module*>::iterator item_list;
-	j1Module* it;
+	j1Module* it = NULL;
+=======
+	p2List_item<j1Module*>* item = modules.start;
+>>>>>>> 9f8e2aae540e927b4b0c22c4927703ef9beb368f
 
-	for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
-		it = *item_list;
-		ret = it->Save(root.append_child(it->name.GetString()));
+	while (item != NULL && ret == true)
+	{
+		ret = item->data->Save(root.append_child(item->data->name.GetString()));
+		item = item->next;
 	}
-
-
 
 	if (ret == true)
 	{
@@ -479,7 +480,7 @@ bool j1App::SavegameNow()
 	
 	}
 	else {
-	LOG("Save process halted from an error in module %s", (it != NULL) ? it->name.GetString() : "unknown");
+	LOG("Save process halted from an error in module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
 	}
 	data.reset();
 	want_to_save = false;
