@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-v5
+v6
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
@@ -154,9 +154,23 @@ Now it's time to save it, luckily for you i already created a method in pathfind
   Simply try to calculate if the speed in each axis needs to be positive or negative, depending on the coordinates fo the next tile. Don't give it a value too far from 1 and -1, and store it in an fpoint;
   
   Then go to the second mark, where you'll need add the pathspeed we just calculated to the total speed. This speed will later be added to the unit position.
-<h3> TODO 3 </h3>
+You can multiply the pathspeed and every other speed we add here by a constant, to obtain different results and behaviours.
+  <h3> TODO 3 </h3>
+  Before we calculate the other speeds, we need to store this entity neighbours in two lists. 
+	Close neighbours (those which are near this entity), and colliding neighbours (those which are in contact with this entity)
+  To do that, we'll use threedifferent radius for our entity; vision, body and collrange;
+	Use SaveNeighbours function, and pass the two lists as reference.
+  First we clear both lists before we add new members to them.
+  Then we iterate all entities in entity manager, except for this entity.
+  Use this formula to calculate the distance between entities
+
+  square root ((position.x-x)^2 + (position.y-y)^2)
   
+  Now we look for thos which are in collision range and store them in the colliding list:
+  Check if the distance we calculated is less than the collision range radius + the body of the other entity
+  Same goes for the close, but instead of using the collision range radius use vision radious
 <h3> TODO 4 </h3>
+  
 <h3> TODO 5 </h3>
 <h3> OPTIONAL TODO </h3>
 <h3> TODO 6 </h3>
