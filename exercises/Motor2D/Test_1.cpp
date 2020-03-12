@@ -90,19 +90,15 @@ bool Test_1::Update(float dt)
 			}
 		}
 			if (path.At(followpath)->x < origin.x) {
-				pathSpeed.x =- 1;
 			}
 
 			if (path.At(followpath)->x > origin.x) {
-				pathSpeed.x =+ 1;
 			}
 
 			if (path.At(followpath)->y < origin.y) {
-				pathSpeed.y =- 1;
 			}
 
 			if (path.At(followpath)->y > origin.y) {
-				pathSpeed.y = 1;
 			}
 			if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
 			{
