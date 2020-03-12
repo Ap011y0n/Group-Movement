@@ -139,7 +139,7 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 	// TODO 5 Pretty much like before, we iterate all close neighbours
 	// But there's an addition. We need another fPoint, the MassCenter, which will initially use this 
 	// entity position
-	// To calculate it we add all the neighbours positions and divideto get the average
+	// To calculate it we add all the neighbours positions and divide to get the average
 	// Now, we can get that cohesion speed, using mass center as reference, calculate a vector that will attract them
 	// Don't forget to normalize it
 	
