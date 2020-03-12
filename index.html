@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-v1
+v2
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
@@ -130,3 +130,11 @@ These three vectors added, result in the final speed of each boid, so when they 
 
 <dt>- Units in a group move at the same speed, take the same path, and arrive at the same time. This organization exhibits the most complex behavior that we'll apply to our group definition. In addition to combining the previous two options, it also requires that units farther ahead wait for other units to catch up and possibly allows slower units to get a temporary speed boost in order to catch up.</dt>
 </dl>
+
+<h2> My approach to flocking </h2>
+I'll try follow this process in a simple way, except for the Alignment part. In 2d RTS, where units follow 8 directions, it's not necessary to use a direction vector. I will however study how to apply it even tho we'll probably won't end using it.
+<h3> Flowchart </h3>
+
+<dt>- First, we'll need to select all troops when they receive a certain input. This, like in most, if not all the RTS will be click and draging to create a selection rectangle. All the units inside that rectangle will now be tagged as selected.
+</dl>
+After that
