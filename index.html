@@ -15,11 +15,11 @@ Normally, videogames use one of two types of grids for thosE graphs.
 <dl>
 <h3> Regular Grids. </h3>
 <dt>- 2D square grid. </dt>
-	<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/e7cfb2b5366bb86adebac8c37e4baa23.png?raw=true" height = "495" width = "375" ></img> </dt>
+	<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/e7cfb2b5366bb86adebac8c37e4baa23.png?raw=true" height = "375" width = "495" ></img> </dt>
 <dt>- 2D hexagonal grid. </dt>
-<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/101d2b7597da979c1d80aac733ed0c51.png?raw=true" height = "495" width = "375" ></img> </dt>
+<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/101d2b7597da979c1d80aac733ed0c51.png?raw=true" height = "375" width = "495" ></img> </dt>
 <dt>- 2D triangular grid. </dt>
-<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/2aeb58f7a734eba48b01b19116705c85.png?raw=true" height = "495" width = "375" ></img> </dt>
+<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/2aeb58f7a734eba48b01b19116705c85.png?raw=true" height = "375" width = "495" ></img> </dt>
 </dl>
 <dl>   
 <h3> Irregular Grids.  </h3>
@@ -192,10 +192,10 @@ with more than 100 entities the game is still running at 60 stable fps.
 <dl>Using a profiler we can go deeper, and observe that, the time consumed by each entity is not relevant at all, when they all sum up it gets a bit noticeable. </dl>
 Each entity adds up 0.04 ms. That's not bad, but in a game where we use a much bigger quantity of entities this could consume a lot of time to process. considering that our entities don't use an animation system, sounds, etc.
 </dl>
-<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/Performance.png?raw=true" height = "844" width = "661" ></img> </dt>
+<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/Performance.png?raw=true" height = "661" width = "844" ></img> </dt>
 
 A way we could improve this is by dividing the map in sectors, so the entities would only take into account the other entities in the sector, reducing the time it takes for them to iterate all their equals in search of neighbours. </dl>
-<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/Performance%20with%20pathfinding.png?raw=true" height = "844" width = "841" ></img> </dt>
+<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/Performance%20with%20pathfinding.png?raw=true" height = "841" width = "844" ></img> </dt>
 
 <dl>
 Also, we can observe a brutal peak when we use pathfinding, even though it's just in on frame, it can get unpleasant for the player, (we drop from 60 fps). A* it's really useful, but drags some performance problems when called to much times or to calculate giant paths. Methods like Jump point search can fix this, so if you are interested serch about it, it may help you.
