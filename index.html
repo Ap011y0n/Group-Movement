@@ -1,6 +1,7 @@
 ---
 layout: default
 ---
+v1
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
@@ -10,7 +11,15 @@ In RTS games we’ll be moving a bunch of units across the map. This differs fro
 But first, we have to understand how to set up a movement system. Before adding a movement system, we need a pathfinding algorithm, so our units will actually find a path they can follow, and start moving. 
 
 Most RTS use A* (A-star), a best-first search, meaning that it is formulated in terms of weighted graphs: starting from a specific starting node of a graph, it aims to find a path to the given goal node having the smallest cost (least distance travelled, shortest time, etc.).
-In order to create those graphs, most RTS, 
+Normally, videogames use one of two types of grids for thos graphs.
+<dl>
+  <dt>- Regular Grids.
+</dt>
+  <dt>- Entity-based Approach. 
+</dt>
+  <dt>- Agent-based Approach.
+</dt>
+</dl>
 
 We can divide the movement behaviour in three approaches depending on how do we want our units or entities to behave, if as an individual or as a part of a group.
 We can start talking about these three approaches:
