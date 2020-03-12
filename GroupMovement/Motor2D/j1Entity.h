@@ -40,6 +40,7 @@ public:
 	fPoint position;
 	bool to_delete;
 	int body;
+	fPoint speed;
 
 	
 };

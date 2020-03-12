@@ -159,7 +159,7 @@ bool Test_1::Update(float dt)
 	// Direction speed
 	// We'll use another fpoint, another method (GetDirectionSpeed()) and the close list
 	fPoint directionSpeed;
-	/*if (!close_entity_list.empty())
+	if (!close_entity_list.empty())
 	{
 		directionSpeed = App->movement->GetDirectionSpeed(close_entity_list);
 	}
@@ -168,16 +168,16 @@ bool Test_1::Update(float dt)
 		directionSpeed.x = 0;
 		directionSpeed.y = 0;
 	}
-	*/
+
 
 	//TODO 2 ---------------------------------------------------------------- 
 	// We need to add all new speed to the speed vector. Add pathSpeed, but everytime you calculate another speed
 	// add it here
 	// To obtain different results, try using some constants to multiply each speed
 
-	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesionSpeed.x + 0*directionSpeed.x;
-	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesionSpeed.y + 0*directionSpeed.y;
-
+	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesionSpeed.x + 0.1*directionSpeed.x;
+	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesionSpeed.y + 0.1*directionSpeed.y;
+	LOG("%f", directionSpeed.x);
 	// TODO 6 ------------------------------------------------------------------
 	// If you got this far, congratulations, now your entities react between themselves
 	// But don't forget about walls, use a preventive collision system, so in case it is needed
