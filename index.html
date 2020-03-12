@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-v12
+v13
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
@@ -37,13 +37,10 @@ We can divide the movement behaviour in three approaches depending on how do we 
 
 <dl>
   <dt>- Flow-based Approach:</dt>
-    </dl>
 It focus on the crowd as a whole rather than its components. individuals do not have any distinctive behaviors, and won’t be affected by any input from their surroundings or their behaviour.
 <dl>
   <dt>- Entity-based Approach: </dt>
-    </dl>
 Entities do not have the capacity to think for themselves. All movements are determined by the global laws being enforced on them. 
-<dl>
   <dt>- Agent-based Approach: </dt>
     </dl>
 Each agent of a crowd is given a degree of intelligence; they can react to each situation on their own based on a set of decision rules. Information used to decide on an action is obtained locally from the agent's’ surroundings. 
@@ -55,9 +52,6 @@ In age of empires, troops move to the position where the player sent them by usi
 
 For the pathfinding problems, nothing less than an all-out blitz was ordered up. The game engine’s movement system was redesigned and no fewer than three separate pathfinding and two obstruction systems were developed, requiring five different people working on them at various times. A high-level pathfinder computes general routes across the world map, ignoring such trivial things as people walking, which were handled by lower-level pathfinders that could thread a path through a closely packed group of units. In the end, we were so successful in ridding the movement problems that hampered AoE that reviewers and players couldn’t help but take notice and acknowledge the improvement.
 
-http://richg42.blogspot.com/2018/02/on-age-des-pathingmovement.html
-
-https://www.youtube.com/watch?v=Uxodm9fKbyo
 
 <h3> Star craft </h3>
 
@@ -68,22 +62,21 @@ If the path the algorithm spits out is most accurate when it is newly created, w
 
 <h3> Variations: Strike Tactics: </h3>
 Instead of units constantly checking if the node they are about to walk to is occupied, the units simply maintain relative distance from each other when they walk, (similar to flocking, we’ll talk about that later).
-https://www.youtube.com/watch?v=ptDfYoNae8E
-http://striketactics.net/devblog/starcraft-1-pathfinding-technical-analysis
 
 <h3> Dawn of War </h3>
 
 Much like Starcraft 1, in Dawn of war, units will stop if there is something in their path, waiting for it to leave or recalculating their paths. The difference is that troops in this game form part of a squad. This means that when a unit moves, it will always try to be as close as possible to their squad members.
 Dawn of war also introduced a behaviour system, where you could order your squads to attack at sight and chase them, hold the position, attack all enemies in the area but don’t chase them, focus on the buildings or don’t attack at all.
-http://warhammer-guide.ru/wiki/Dawn_of_War_Stances.html
-https://www.hindawi.com/journals/ijcgt/2015/736138/
+
 
 <h3> StarCraft 2 </h3>
+<dl>
 Starcraft 2 uses an AI pathfinding technique called flocking or swarm AI, the goal is to get a coordinated such as with a school of fish or a flock of birds. 
 This type of movement is the direct evolution of the movement in starcraft 1, each unit is still responsive to its environment, but in a more dynamic and natural way.
 Starcraft 2 uses an advanced algorithm that finds the fewest amount of waypoints and allows autonomous steering behaviour for units to smoothly hug their way around obstacles and other units. This differ from the grid based movement of StarCraft 
 
 This method, Flocking, is what we are going to use for our engine.
+</dl>
 <h2> Flocking </h2>
 
 Flocking is an appropriate method proposed by Craig Reynolds in 1986, with his artificial life program called “Boids”, which can be used to simulate natural group movement in computer games like swarms of birds, schools of fishes, military units, or crowds. 
