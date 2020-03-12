@@ -11,7 +11,7 @@ In RTS games we’ll be moving a bunch of units across the map. This differs fro
 But first, we have to understand how to set up a movement system. Before adding a movement system, we need a pathfinding algorithm, so our units will actually find a path they can follow, and start moving. 
 
 Most RTS use A* (A-star), a best-first search, meaning that it is formulated in terms of weighted graphs: starting from a specific starting node of a graph, it aims to find a path to the given goal node having the smallest cost (least distance travelled, shortest time, etc.).
-Normally, videogames use one of two types of grids for thos graphs.
+Normally, videogames use one of two types of grids for thosE graphs.
 
   <h3> Regular Grids. </h3>
 <dl>
@@ -117,3 +117,8 @@ I'll try follow this process in a simple way, except for the Alignment part. In 
 After that we create a path for those troops when a right click is detected.
 <dl> Now </dl> we calculate 3 different speeds: 
 the pathspeed (needed to actually follow the path)
+the cohesion speed, wich will make our troops repel between themselves
+And the cohesion speed, which is useful to make our troops act more like one entity instead of random bodys colliding with each other.
+
+After that, we'll add all those speeds to the total speed of the entity, and the resulting value will be applied to the unit.
+Last but not least, we'll use a preemptive collision(with the environment) system, that will reset the speed value to 0 to avoid colliding with walls.
