@@ -200,3 +200,15 @@ I propose you three new areas to study.
 1- Try to prevent all the entities overlapping when they arrive at the target position. (Solved in my solution)
 2- Try to prevent some entities taking different paths because of a wall
 3- Try to add buildings or static entities. Pathfinding should detect them as not walkable. If an entity encounters a new building in it's path, it should recalculate it's path.
+
+<h2> Performance </h2>
+with more than 100 entities the game is still running at 60 stable fps. 
+Using a profiler we can go deeper, and observe that, the time consumed by each entity is not relevant at all, when they all sum up it gets a bit noticeable.
+Each entity adds up 0.04 ms. That's not bad, but in a game where we use a much bigger quantity of entities this could consume a lot of time to process. considering that our entities don't use an animation system, sounds, etc.
+A way we could improve this is by dividing the map in sectors, so the entities would only take into account the other entities in the sector, reducing the time it takes for them to iterate all their equals in search of neighbours
+
+<dl>
+Also, we can observe a brutal peak when we use pathfinding, even though it's just in on frame, it can get unpleasant for the player, (we drop from 60 fps). A* it's really useful, but drags some performance problems when called to much times or to calculate giant paths.
+</dl>	
+	
+	
