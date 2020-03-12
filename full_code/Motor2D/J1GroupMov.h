@@ -23,6 +23,8 @@ public:
 	fPoint GetSeparationSpeed(list<j1Entity*>, fPoint);
 	fPoint GetCohesionSpeed(list<j1Entity*>, fPoint);
 	fPoint GetDirectionSpeed(list<j1Entity*>);
+	list<j1Entity*>	selected;
+	bool NewGroup;
 
 };
 

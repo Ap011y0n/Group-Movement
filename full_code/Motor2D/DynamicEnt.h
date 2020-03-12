@@ -43,7 +43,7 @@ protected:
 	int collrange;
 	int vision;
 	bool move;
-	iPoint origin, mouse;
+	iPoint origin, mouse, relative_target;
 	p2DynArray<iPoint> path;
 	list<j1Entity*> close_entity_list;
 	list<j1Entity*> colliding_entity_list;

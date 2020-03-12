@@ -57,16 +57,67 @@ bool Test_1::Update(float dt)
 	// Luckily for you i already created a method in pathfinding module that can do the trick
 	// Just use SavePath() fucntion, and proceed to the next path
 
+	j1Entity* it;
+
+	list<j1Entity*>::iterator selected_it;
+
+
 	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		mouse = App->map->WorldToMap(mouse.x, mouse.y);
-	
-		App->pathfinding->CreatePath(origin, mouse);
-		App->pathfinding->SavePath(&path);
+		relative_target = { 0,0 };
 
-		followpath = 1;			//Don't mind me, i'm just tracking the path
+		for (selected_it = App->movement->selected.begin(); selected_it != App->movement->selected.end(); ++selected_it) {
+			it = *selected_it;
+			relative_target.x += it->position.x;
+			relative_target.y += it->position.y;
+		}
+		relative_target.x = relative_target.x / App->movement->selected.size();
+		relative_target.y = relative_target.y / App->movement->selected.size();
+		fPoint distance_to_center{ position.x, position.y };
+
+		relative_target.x = position.x - relative_target.x;
+		relative_target.y = position.y - relative_target.y;
+		relative_target = App->map->WorldToMap(relative_target.x, relative_target.y);
+		relative_target += mouse;
+		if ((mouse.x - relative_target.x) > 1)
+		{
+			relative_target.x = mouse.x - 1;
+		}
+		if ((mouse.x - relative_target.x) < -1)
+		{
+			relative_target.x = mouse.x + 1;
+		}
+		if ((mouse.y - relative_target.y) > 1)
+		{
+			relative_target.y = mouse.y - 1;
+		}
+		if ((mouse.y - relative_target.y) < -1)
+		{
+			relative_target.y = mouse.y + 1;
+		}
+		if (App->movement->selected.size() > 10)
+		{
+			if (App->pathfinding->CreatePath(origin, relative_target) == -1)
+			{
+				App->pathfinding->CreatePath(origin, mouse);
+			}
+		}
+		else
+		{
+			App->pathfinding->CreatePath(origin, mouse);
+		}
+
+		const p2DynArray<iPoint>* last_path = App->pathfinding->GetLastPath();
+		path.Clear();
+		for (uint i = 0; i < last_path->Count(); ++i)
+		{
+			path.PushBack({ last_path->At(i)->x, last_path->At(i)->y });
+		}
+		followpath = 1;
 	}
+
 
 	// TODO 2 ----------------------------------------------------------------
 	// We need to give a speed to the entity to actually follow the path. All the logic is done,
@@ -79,13 +130,16 @@ bool Test_1::Update(float dt)
 		for (uint i = 0; i < path.Count(); ++i)
 		{
 			iPoint nextPoint = App->map->MapToWorld(path.At(i)->x, path.At(i)->y);
-			if (i == followpath)
+			if (App->scene->debug)
+			{
+				if (i == followpath)
 			{
 				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 12, 12 }, 200, 0, 0, 100);
 			}
 			else {
 				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
 
+				}
 			}
 		}
 			if (path.At(followpath)->x < origin.x) {
@@ -111,7 +165,7 @@ bool Test_1::Update(float dt)
 		
 	}
 
-	j1Entity* it;
+
 	list<j1Entity*>::iterator neighbours_it;
 
 	// TODO 3 ----------------------------------------------------------------
@@ -137,9 +191,12 @@ bool Test_1::Update(float dt)
 		separationSpeed.x = 0;
 		separationSpeed.y = 0;
 	}
-//	App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, collrange, 200, 200, 0, 200);
-//	App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, body, 0, 200, 200, 200);
-	
+	if (App->scene->debug)
+	{
+		App->render->DrawCircle(position.x + 5, position.y + 5, vision, 200, 0, 0);
+		App->render->DrawCircle(position.x + 5, position.y + 5, collrange, 200, 200, 0);
+		App->render->DrawCircle(position.x + 5, position.y + 5, body, 0, 0, 200);
+	}
 
 	// TODO 5 ---------------------------------------------------------------- 
 	// Cohesion speed

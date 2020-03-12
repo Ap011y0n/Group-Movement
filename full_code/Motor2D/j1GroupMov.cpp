@@ -81,10 +81,24 @@ bool j1GroupMov::Update(float dt) {
 						it->isSelected = true;
 					}
 				}
+				if (it->isSelected)
+				{
+					if (!NewGroup)
+					{
+						selected.clear();
+					}
+					NewGroup = true;
+					selected.push_back(it);
+				}
 			}
 		}
-	}
 
+		if (NewGroup)
+		{
+			NewGroup = false;
+		}
+
+	}
 	return true;
 }
 bool j1GroupMov::PostUpdate(float dt) {

@@ -99,6 +99,12 @@ bool j1Scene::Update(float dt)
 		App->render->camera.y -= 500*dt;
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		App->render->camera.x -= 500*dt;
+	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+		if (debug)debug = false;
+		else {
+			debug = true;
+		}
+
 	int x, y;
 	App->input->GetMousePosition(x, y);
 
