@@ -20,23 +20,23 @@ Normally, videogames use one of two types of grids for thosE graphs.
 <dl>
 <h3> Regular Grids. </h3>
 <dt>- 2D square grid. </dt>
- <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/e7cfb2b5366bb86adebac8c37e4baa23.png?raw=true" height = "375" width = "495" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/grids/e7cfb2b5366bb86adebac8c37e4baa23.png?raw=true" height = "375" width = "495" ></img> </dt>
 <dt>- 2D hexagonal grid. </dt>
- <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/101d2b7597da979c1d80aac733ed0c51.png?raw=true" height = "375" width = "495" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/grids/101d2b7597da979c1d80aac733ed0c51.png?raw=true" height = "375" width = "495" ></img> </dt>
 <dt>- 2D triangular grid. </dt>
- <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/2aeb58f7a734eba48b01b19116705c85.png?raw=true" height = "375" width = "495" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/grids/2aeb58f7a734eba48b01b19116705c85.png?raw=true" height = "375" width = "495" ></img> </dt>
 </dl>
 <dl>   
 <h3> Irregular Grids.  </h3>
 <dt>- Visibility graphs. </dt>
 Visibility graph is a graph of intervisible locations. Each node in the graph represents a point location, and each edge represents a visible connection between them. If the line segment connecting two locations does not pass through any obstacle, an edge is drawn between them in the graph.
- <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/Visibility%20graph.png?raw=true" height = "479" width = "588" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/grids/Visibility%20graph.png?raw=true" height = "479" width = "588" ></img> </dt>
 <dt>- Meshes navigation. </dt>
 A navigation mesh is a collection of two-dimensional convex polygons (a polygon mesh) that define which areas of an environment are traversable by agents. Adjacent polygons are connected to each other in a graph.
- <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/Navigation%20mesh.png?raw=true" height = "529" width = "520" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/grids/Navigation%20mesh.png?raw=true" height = "529" width = "520" ></img> </dt>
 <dt>- Waypoints. </dt>
 A waypoint is an intermediate point or place on a route or line of travel, a stopping point or point at which course is changed.
- <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/Waypoint.jpg?raw=true" height = "457" width = "620" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/grids/Waypoint.jpg?raw=true" height = "457" width = "620" ></img> </dt>
 </dl>
 
 We can divide the movement behaviour in three approaches depending on how do we want our units or entities to behave, if as an individual or as a part of a group. Which are the following:
@@ -86,11 +86,11 @@ Flocking is an appropriate method proposed by Craig Reynolds in 1986, with his a
 As with most artificial life simulations, Boids is an example of emergent behavior; that is, the complexity of Boids arises from the interaction of individual agents (the boids, in this case) adhering to a set of simple rules.
 <dl>
   <dt>- Separation: </dt> Pushes units(boids) apart by maintaining distance from nearby flock mates. Each boid takes into account their position to another flock member in their sorrounds and then receives a repulsive force in the opposite direction. This simulates a sort of collision system between the boids within the flock.
- <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/separation.gif?raw=true" height = "145" width = "217" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/separation.gif?raw=true" height = "145" width = "217" ></img> </dt>
   <dt>- Cohesion: </dt> Keeps boids together as a group, it will drag the boids to the mass center of the group, to do that we have to calculate the direction to the average position of the flock mates and steer in that direction.
- <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/cohesion.gif?raw=true" height = "145" width = "217" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/cohesion.gif?raw=true" height = "145" width = "217" ></img> </dt>
   <dt>- Alignment: </dt> Steer towards the average heading of local flockmates, boids will head in the same direction with similar velocities.
- <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/alignment.gif?raw=true" height = "145" width = "217" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/alignment.gif?raw=true" height = "145" width = "217" ></img> </dt>
 
 </dl>
 
@@ -99,16 +99,16 @@ These three vectors added, result in the final speed of each boid, so when they 
 <h3> Another concepts that can be taken into into account </h3>
 <dl>
 - Units in a group just move at the same speed. Usually, this sort of organization moves the group at the maximum speed of its slowest unit, but sometimes it's better to let a slow unit move a little faster when it's in a group (see Figure 1 below). Designers generally give units a slow movement speed for a reason, though; altering that speed can often create unbalanced game play by allowing a powerful unit to move around the map too quickly.
- <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/moveatsamespeed.png?raw=true" height = "184" width = "350" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/moveatsamespeed.png?raw=true" height = "184" width = "350" ></img> </dt>
 - Units in a group move at the same speed and take the same path. This sort of organization prevents half of the group's units from walking one way around the forest while the other half takes a completely different route (see Figure 2 below). Later, we'll look at an easy way to implement this sort of organization.
- <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/take%20same%20path.png?raw=true" height = "288" width = "350" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/take%20same%20path.png?raw=true" height = "288" width = "350" ></img> </dt>
 - Units in a group move at the same speed, take the same path, and arrive at the same time. This organization exhibits the most complex behavior that we'll apply to our group definition. In addition to combining the previous two options, it also requires that units farther ahead wait for other units to catch up and possibly allows slower units to get a temporary speed boost in order to catch up.
 </dl>
 
 <h2> My approach to flocking </h2>
 I'll try follow this process in a simple way, except for the Alignment part. In 2d RTS, where units follow 8 directions, it's not necessary to use a direction vector. I will however study how to apply it even tho we'll probably won't end using it.
 <h3> Flowchart </h3>
- <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/Flowchart.png?raw=true" height = "781" width = "737" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/Flowchart.png?raw=true" height = "781" width = "737" ></img> </dt>
 
 <dl> First, we'll need to select all troops when they receive a certain input. This, like in most, if not all the RTS will be clicking left mouse button and dragging to create a selection rectangle. All the units inside that rectangle will now be tagged as selected.
 </dl>
@@ -204,10 +204,10 @@ with more than 100 entities the game is still running at 60 stable fps.
 <dl>Using a profiler we can go deeper, and observe that, the time consumed by each entity is not relevant at all, when they all sum up it gets a bit noticeable. </dl>
 Each entity adds up 0.04 ms. That's not bad, but in a game where we use a much bigger quantity of entities this could consume a lot of time to process. considering that our entities don't use an animation system, sounds, etc.
 </dl>
-<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/Performance.png?raw=true" height = "661" width = "844" ></img> </dt>
+<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/Performance.png?raw=true" height = "661" width = "844" ></img> </dt>
 
 A way we could improve this is by dividing the map in sectors, so the entities would only take into account the other entities in the sector, reducing the time it takes for them to iterate all their equals in search of neighbours. </dl>
-<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/Performance%20with%20pathfinding.png?raw=true" height = "841" width = "844" ></img> </dt>
+<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/docs/Performance%20with%20pathfinding.png?raw=true" height = "841" width = "844" ></img> </dt>
 
 <dl>
 Also, we can observe a brutal peak when we use pathfinding, even though it's just in on frame, it can get unpleasant for the player, (we drop from 60 fps). A* it's really useful, but drags some performance problems when called to much times or to calculate giant paths. Methods like Jump point search can fix this, so if you are interested serch about it, it may help you.
