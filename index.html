@@ -170,8 +170,23 @@ You can multiply the pathspeed and every other speed we add here by a constant, 
   Check if the distance we calculated is less than the collision range radius + the body of the other entity
   Same goes for the close, but instead of using the collision range radius use vision radious
 <h3> TODO 4 </h3>
-  
+  Now you are ready to get the second speed, the separation one.
+Create another fpoint, just like we did with path speed. Theres a function in movement module called GetSeparationSpeed(), use it.
+Also, we'll be using Iterate all colliding neighbours and add their relative position vectors in a FPoint. (iterator.position.x - position.x)
+Then divide it by the neighbours number to obtain the average vector.
+Before normalizing the resulting vector, remember to invert it multiplying by -1. We want a force that goes from the other entities to our entity, not reverse.
+WARNING! Do not normalize it if the norm is 0, instead return speed = 0
+	
 <h3> TODO 5 </h3>
+The other speed we'll be actually using is cohesion speed. So in order to get it we'll use a similar method like in separation speed.
+Use close neighbours lists and GetCohesionSpeed().
+Again, iterate the neighbours in the list, and this time store all positions, including the entity calling this.
+Also divide it by the total neighbours + 1 (remember we also use the entity who calls this)
+Normalize it and return it.
+
+Before normalizing though, i recommend capping this distance in case it's inside a certain interval. So they won't attract eachother to collision range.
+Lets say if our colision range is 10, and the distance vector is inside -11 and 11, set cohesion speed to 0. After doing this, normalize it. Still be careful about dividing by 0.
+
 <h3> OPTIONAL TODO </h3>
 <h3> TODO 6 </h3>
 
