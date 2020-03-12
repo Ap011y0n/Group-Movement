@@ -101,34 +101,9 @@ fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoi
 	// Then divide it by the neighbours number to obtain the average vector
 	// Before normalizing the resulting vector, remember to invert it multiplying by -1.
 	// Do not normalize it if the norm is 0, instead return speed = 0
-	j1Entity* it;
-	list<j1Entity*>::iterator neighbours_it;
+
+	//	REMEMBER norm = sqrt(var1^2 + var2^2);
 	fPoint separationSpeed = { 0,0 };
-
-	for (neighbours_it = colliding_entity_list.begin(); neighbours_it != colliding_entity_list.end(); ++neighbours_it) {
-		it = *neighbours_it;
-		separationSpeed.x +=  it->position.x - position.x;
-		separationSpeed.y +=  it->position.y - position.y;
-	}
-
-		separationSpeed.x *= -1;
-		separationSpeed.y *= -1;
-
-		separationSpeed.x = separationSpeed.x / colliding_entity_list.size();
-		separationSpeed.y = separationSpeed.y / colliding_entity_list.size();
-
-		float norm = sqrt(pow((separationSpeed.x), 2) + pow((separationSpeed.y), 2));
-
-		if (norm != 0)
-		{
-			separationSpeed.x = separationSpeed.x / norm;
-			separationSpeed.y = separationSpeed.y / norm;
-		}
-		else 
-		{
-			separationSpeed.x = 0;
-			separationSpeed.y = 0;
-		}
 
 	
 	return separationSpeed;
@@ -144,41 +119,7 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 	// Don't forget to normalize it
 	
 	fPoint cohesionSpeed = { 0,0 };
-	fPoint MassCenter{ position.x, position.y };
-	j1Entity* it;
-	list<j1Entity*>::iterator neighbours_it;
 
-	for (neighbours_it = close_entity_list.begin(); neighbours_it != close_entity_list.end(); ++neighbours_it) {
-		it = *neighbours_it;
-		MassCenter.x += it->position.x;
-		MassCenter.y += it->position.y;
-	}
-
-		MassCenter.x = MassCenter.x / (close_entity_list.size() + 1);
-		MassCenter.y = MassCenter.y / (close_entity_list.size() + 1);
-
-		cohesionSpeed.x = position.x - MassCenter.x;
-		cohesionSpeed.y = position.y - MassCenter.y;
-
-		float norm = sqrt(pow((cohesionSpeed.x), 2) + pow((cohesionSpeed.y), 2));
-
-		if (cohesionSpeed.x < 11 && cohesionSpeed.x > -11)
-		{
-			cohesionSpeed.x = 0;
-		}
-		else
-		{
-			cohesionSpeed.x = -1 * cohesionSpeed.x / norm;
-		}
-		if (cohesionSpeed.y < 11 && cohesionSpeed.y > -11)
-		{
-			cohesionSpeed.y = 0;
-		}
-		else
-		{
-			cohesionSpeed.y = -1 * cohesionSpeed.y / norm;
-		}
-	
 	return cohesionSpeed;
 }
 
@@ -188,34 +129,7 @@ fPoint j1GroupMov::GetDirectionSpeed(list<j1Entity*>close_entity_list)
 	// We add the direction vectors of our neighbours, then divide it, and then normalize it
 	// It's actually quite simple
 	fPoint directionSpeed{ 0,0 };
-	j1Entity* it;
-	list<j1Entity*>::iterator neighbours_it;
 
-	for (neighbours_it = close_entity_list.begin(); neighbours_it != close_entity_list.end(); ++neighbours_it) {
-
-		it = *neighbours_it;
-
-		directionSpeed.x += it->speed.x;
-
-		directionSpeed.y += it->speed.y;
-	}
-
-		directionSpeed.x = directionSpeed.x / close_entity_list.size();
-
-		directionSpeed.y = directionSpeed.y / close_entity_list.size();
-
-	
-
-		float norm = sqrt(pow((directionSpeed.x), 2) + pow((directionSpeed.y), 2));
-
-		if (norm != 0)
-
-		{
-			directionSpeed.x = directionSpeed.x / norm;
-			directionSpeed.y = directionSpeed.y / norm;
-		}
-
-		
 	
 	return directionSpeed;
 }
