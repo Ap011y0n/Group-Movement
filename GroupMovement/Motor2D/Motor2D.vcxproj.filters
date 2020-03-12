@@ -12,9 +12,6 @@
     <ClCompile Include="j1Timer.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="j1Audio.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1Input.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -35,9 +32,6 @@
     </ClCompile>
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Fonts.cpp">
-      <Filter>Modules\Gui</Filter>
     </ClCompile>
     <ClCompile Include="j1EntityManager.cpp">
       <Filter>Modules\EntitySystem</Filter>
@@ -79,9 +73,6 @@
     <ClInclude Include="j1Timer.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="j1Audio.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="j1Input.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -120,12 +111,6 @@
     </ClInclude>
     <ClInclude Include="PugiXml\src\pugixml.hpp">
       <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Fonts.h">
-      <Filter>Modules\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Url.h">
-      <Filter>Modules\Gui</Filter>
     </ClInclude>
     <ClInclude Include="j1EntityManager.h">
       <Filter>Modules\EntitySystem</Filter>
