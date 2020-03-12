@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-v7
+v8
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
@@ -195,3 +195,8 @@ If you got this far, congratulations, now your entities react between themselves
 But don't forget about walls, use a preventive collision system, so in case it is needed total speed value should be set to 0.
 I provided you a simple collision detection method in DynamicEnt class, just call CheckCollisions(). It will ask for the speed fPoint, be sure to send it as reference.
 
+<h2> Optional Homework </h2>
+I propose you three new areas to study.
+1- Try to prevent all the entities overlapping when they arrive at the target position. (Solved in my solution)
+2- Try to prevent some entities taking different paths because of a wall
+3- Try to add buildings or static entities. Pathfinding should detect them as not walkable. If an entity encounters a new building in it's path, it should recalculate it's path.
