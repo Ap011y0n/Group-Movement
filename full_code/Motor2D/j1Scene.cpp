@@ -46,7 +46,7 @@ bool j1Scene::Start()
 	LOG("Start scene");
 
 	current_level = "test.tmx";
-	
+	debug = false;
 	if (App->map->Load(current_level.GetString()) == true)
 	{
 		//App->audio->PlayMusic(App->map->data.music.GetString());
