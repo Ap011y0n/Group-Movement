@@ -1,10 +1,11 @@
 ---
 layout: default
 ---
-v16
-<iframe width="600" height="300" 
-src="https://www.youtube.com/embed/cT4O4mlXYSE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-</iframe>
+“I am <https://www.linkedin.com/in/albert-garcia-824359171/>(Albert Garcia), student of the
+<https://www.citm.upc.edu/ing/estudis/graus-videojocs/>(Bachelor’s Degree in
+Video Games by UPC at CITM). This content is generated for the second year’s
+subject Project 2, under supervision of lecturer
+<https://www.linkedin.com/in/mgarrigo/>(Marc Garrigó).”
 
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
@@ -97,18 +98,18 @@ These three vectors added, result in the final speed of each boid, so when they 
 
 <h3> Another concepts that can be taken into into account </h3>
 <dl>
-- Units in a group just move at the same speed. Usually, this sort of organization moves the group at the maximum speed of its slowest unit, but sometimes it's better to let a slow unit move a little faster when it's in a group (see Figure 1 below). Designers generally give units a slow movement speed for a reason, though; altering that speed can often create unbalanced game play by allowing a powerful unit to move around the map too quickly.</dt>
-
-- Units in a group move at the same speed and take the same path. This sort of organization prevents half of the group's units from walking one way around the forest while the other half takes a completely different route (see Figure 2 below). Later, we'll look at an easy way to implement this sort of organization.</dt>
-
-- Units in a group move at the same speed, take the same path, and arrive at the same time. This organization exhibits the most complex behavior that we'll apply to our group definition. In addition to combining the previous two options, it also requires that units farther ahead wait for other units to catch up and possibly allows slower units to get a temporary speed boost in order to catch up.</dt>
+- Units in a group just move at the same speed. Usually, this sort of organization moves the group at the maximum speed of its slowest unit, but sometimes it's better to let a slow unit move a little faster when it's in a group (see Figure 1 below). Designers generally give units a slow movement speed for a reason, though; altering that speed can often create unbalanced game play by allowing a powerful unit to move around the map too quickly.
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/moveatsamespeed.png?raw=true" height = "184" width = "350" ></img> </dt>
+- Units in a group move at the same speed and take the same path. This sort of organization prevents half of the group's units from walking one way around the forest while the other half takes a completely different route (see Figure 2 below). Later, we'll look at an easy way to implement this sort of organization.
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/take%20same%20path.png?raw=true" height = "288" width = "350" ></img> </dt>
+- Units in a group move at the same speed, take the same path, and arrive at the same time. This organization exhibits the most complex behavior that we'll apply to our group definition. In addition to combining the previous two options, it also requires that units farther ahead wait for other units to catch up and possibly allows slower units to get a temporary speed boost in order to catch up.
 </dl>
 
 <h2> My approach to flocking </h2>
 I'll try follow this process in a simple way, except for the Alignment part. In 2d RTS, where units follow 8 directions, it's not necessary to use a direction vector. I will however study how to apply it even tho we'll probably won't end using it.
 <h3> Flowchart </h3>
 
-<dl>- First, we'll need to select all troops when they receive a certain input. This, like in most, if not all the RTS will be clicking left mouse button and dragging to create a selection rectangle. All the units inside that rectangle will now be tagged as selected.
+<dl> First, we'll need to select all troops when they receive a certain input. This, like in most, if not all the RTS will be clicking left mouse button and dragging to create a selection rectangle. All the units inside that rectangle will now be tagged as selected.
 </dl>
 After that we create a path for those troops when a right click is detected.
 <dl> Now we calculate 3 different speeds:
