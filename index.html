@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-v10
+v11
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
@@ -137,25 +137,25 @@ Wich will make our troops repel between themselves
 
 <h2> Handout </h2>
 <h3> TODO 0 </h3>
-You don't really have to do anything here, it's just to start putting you in context.
-What this code will do is the following:
+<dl> You don't really have to do anything here, it's just to start putting you in context.
+What this code will do is the following:</dl>
 <dl>Every time we press leftclick button, we create a rect. The we check all entities with
 selectable bool activated. If selectable entity is inside the rectangle, we turn their isSelected bool to true.
  </dl>
 <h3> TODO 1 </h3>
-Here we'll check if this entity is selected, if true, it will create a path to the mouse position
-In order to follow that path, we need to store it in this entity dynamic array: path
+<dl> Here we'll check if this entity is selected, if true, it will create a path to the mouse position   
+In order to follow that path, we need to store it in this entity dynamic array: path </dl>
 First, order the pathfinding module to create a path with origin(unit position) and destination (mouse position) with CreatePath(origin, destination).
 Now it's time to save it, luckily for you i already created a method in pathfinding module that can do the trick, so you just need to call it by it's name, SavePath(path);
 
 <h3> TODO 2 </h3>
-  Now we'll start calculating speeds. Let's begin with pathfinding speed.
+ <dl>   Now we'll start calculating speeds. Let's begin with pathfinding speed.</dl>  
   The process it's almost finished, it will look for the next tile in the path, to find it's coordinates.
   Simply try to calculate if the speed in each axis needs to be positive or negative, depending on the coordinates fo the next tile. Don't give it a value too far from 1 and -1, and store it in an fpoint;
-  
+ <dl>   
   Then go to the second mark, where you'll need add the pathspeed we just calculated to the total speed. This speed will later be added to the unit position.
 You can multiply the pathspeed and every other speed we add here by a constant, to obtain different results and behaviours.
-  <h3> TODO 3 </h3>
+ </dl>   <h3> TODO 3 </h3>
 <dl>  Before we calculate the other speeds, we need to store this entity neighbours in two lists: </dl>
 <dl> Close neighbours (those which are near this entity), and colliding neighbours (those which are in contact with this entity) </dl>
   To do that, we'll use threedifferent radius for our entity; vision, body and collrange. </dl>
