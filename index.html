@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-v6
+v7
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
@@ -188,5 +188,10 @@ Before normalizing though, i recommend capping this distance in case it's inside
 Lets say if our colision range is 10, and the distance vector is inside -11 and 11, set cohesion speed to 0. After doing this, normalize it. Still be careful about dividing by 0.
 
 <h3> OPTIONAL TODO </h3>
+This todo will show you how to calculate the alignment speed in case you need one. We'll do the same as the other two, first call the function GetDirectionSpeed(), then in that function we'll store all the velocity vectors of our close entities.
+Then we can divide by the number of close entities and normalize it.In this way, all entities will have a similar movement.
 <h3> TODO 6 </h3>
+If you got this far, congratulations, now your entities react between themselves
+But don't forget about walls, use a preventive collision system, so in case it is needed total speed value should be set to 0.
+I provided you a simple collision detection method in DynamicEnt class, just call CheckCollisions(). It will ask for the speed fPoint, be sure to send it as reference.
 
