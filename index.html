@@ -56,7 +56,6 @@ This type of movement is the direct evolution of the movement in starcraft 1, ea
 Starcraft 2 uses an advanced algorithm that finds the fewest amount of waypoints and allows autonomous steering behaviour for units to smoothly hug their way around obstacles and other units. This differ from the grid based movement of StarCraft 
 
 This method, Flocking, is what we are going to use for our engine.
-
 <h2> Flocking </h2>
 
 Flocking is an appropriate method proposed by Craig Reynolds in 1986, with his artificial life program called “Boids”, which can be used to simulate natural group movement in computer games like swarms of birds, schools of fishes, military units, or crowds. 
@@ -81,4 +80,4 @@ These three vectors added, result in the final speed of each boid, so when they 
 <dt>- Units in a group move at the same speed, take the same path, and arrive at the same time. This organization exhibits the most complex behavior that we'll apply to our group definition. In addition to combining the previous two options, it also requires that units farther ahead wait for other units to catch up and possibly allows slower units to get a temporary speed boost in order to catch up.</dt>
 </dl>
 
-So, how can we achieve the last option? By implementing a hierarchical movement system, we can manage individual unit movement in a way that allows us to consider a group of units together. If we group units together to create a group object, we can store all of the necessary data, calculate the maximum speed for the group as a whole, and provide the basic decision making regarding when units will wait for other units
+So, how can we achieve the last option? By implementing a hierarchical movement system, we can manage individual unit movement in a way that allows us to consider a group of units together. If we group units together to create a group object, we can store all of the necessary data, calculate the maximum speed for the group as a whole, and provide the basic decision making regarding when units will wait for other units.
