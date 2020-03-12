@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-v15
+v16
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
@@ -15,17 +15,20 @@ Normally, videogames use one of two types of grids for thosE graphs.
 <dl>
 <h3> Regular Grids. </h3>
 <dt>- 2D square grid. </dt>
-	<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/e7cfb2b5366bb86adebac8c37e4baa23.png?raw=true" height = "375" width = "495" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/e7cfb2b5366bb86adebac8c37e4baa23.png?raw=true" height = "375" width = "495" ></img> </dt>
 <dt>- 2D hexagonal grid. </dt>
-<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/101d2b7597da979c1d80aac733ed0c51.png?raw=true" height = "375" width = "495" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/101d2b7597da979c1d80aac733ed0c51.png?raw=true" height = "375" width = "495" ></img> </dt>
 <dt>- 2D triangular grid. </dt>
-<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/2aeb58f7a734eba48b01b19116705c85.png?raw=true" height = "375" width = "495" ></img> </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/2aeb58f7a734eba48b01b19116705c85.png?raw=true" height = "375" width = "495" ></img> </dt>
 </dl>
 <dl>   
 <h3> Irregular Grids.  </h3>
 <dt>- Visibility graphs. </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/Visibility%20graph.png?raw=true" height = "479" width = "588" ></img> </dt>
 <dt>- Meshes navigation. </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/Navigation%20mesh.png?raw=true" height = "529" width = "520" ></img> </dt>
 <dt>- Waypoints. </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/Waypoint.jpg?raw=true" height = "457" width = "620" ></img> </dt>
 </dl>
 
 We can divide the movement behaviour in three approaches depending on how do we want our units or entities to behave, if as an individual or as a part of a group. Which are the following:
