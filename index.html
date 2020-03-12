@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-v8
+v9
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
@@ -175,8 +175,8 @@ Create another fpoint, just like we did with path speed. Theres a function in mo
 Also, we'll be using Iterate all colliding neighbours and add their relative position vectors in a FPoint. (iterator.position.x - position.x)
 Then divide it by the neighbours number to obtain the average vector.
 Before normalizing the resulting vector, remember to invert it multiplying by -1. We want a force that goes from the other entities to our entity, not reverse.
-WARNING! Do not normalize it if the norm is 0, instead return speed = 0
-	
+<dt> <dl> WARNING! Do not normalize it if the norm is 0, instead return speed = 0
+</dl>	</dt>
 <h3> TODO 5 </h3>
 The other speed we'll be actually using is cohesion speed. So in order to get it we'll use a similar method like in separation speed.
 <dl> Use close neighbours lists and GetCohesionSpeed().
