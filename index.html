@@ -1,7 +1,11 @@
 ---
 layout: default
 ---
-v15
+v16
+<iframe width="600" height="300" 
+src="https://www.youtube.com/embed/cT4O4mlXYSE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+
 <h2> Group Movement in RTS </h2>
 <h2> Intro to the problem </h2>
 In RTS games we’ll be moving a bunch of units across the map. This differs from any other genre, every unit will need to react to every other unit, in order to move coherently and at the same time follow the players orders. When using a pathfinding algorithm for your troops, like A*, you’ll notice that they will start overlapping against eachother. This problem can be treated in different ways, here we’ll talk about some of this methods, what methods did popular games used and apply one of them to our own game engine, so we can start developing a proper RTS videogame
@@ -12,56 +16,62 @@ But first, we have to understand how to set up a movement system. Before adding 
 
 Most RTS use A* (A-star), a best-first search, meaning that it is formulated in terms of weighted graphs: starting from a specific starting node of a graph, it aims to find a path to the given goal node having the smallest cost (least distance travelled, shortest time, etc.).
 Normally, videogames use one of two types of grids for thosE graphs.
-<dt><img src="https://raw.githubusercontent.com/Ap011y0n/2d-Platformer/master/WebpageContents/albert.jpg" height = "120" width = "160" ></img> </dt>
 <dl>
 <h3> Regular Grids. </h3>
 <dt>- 2D square grid. </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/e7cfb2b5366bb86adebac8c37e4baa23.png?raw=true" height = "375" width = "495" ></img> </dt>
 <dt>- 2D hexagonal grid. </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/101d2b7597da979c1d80aac733ed0c51.png?raw=true" height = "375" width = "495" ></img> </dt>
 <dt>- 2D triangular grid. </dt>
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/2aeb58f7a734eba48b01b19116705c85.png?raw=true" height = "375" width = "495" ></img> </dt>
 </dl>
 <dl>   
 <h3> Irregular Grids.  </h3>
 <dt>- Visibility graphs. </dt>
+Visibility graph is a graph of intervisible locations. Each node in the graph represents a point location, and each edge represents a visible connection between them. If the line segment connecting two locations does not pass through any obstacle, an edge is drawn between them in the graph.
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/Visibility%20graph.png?raw=true" height = "479" width = "588" ></img> </dt>
 <dt>- Meshes navigation. </dt>
+A navigation mesh is a collection of two-dimensional convex polygons (a polygon mesh) that define which areas of an environment are traversable by agents. Adjacent polygons are connected to each other in a graph.
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/Navigation%20mesh.png?raw=true" height = "529" width = "520" ></img> </dt>
 <dt>- Waypoints. </dt>
+A waypoint is an intermediate point or place on a route or line of travel, a stopping point or point at which course is changed.
+ <dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/grids/Waypoint.jpg?raw=true" height = "457" width = "620" ></img> </dt>
 </dl>
 
 We can divide the movement behaviour in three approaches depending on how do we want our units or entities to behave, if as an individual or as a part of a group. Which are the following:
 
 <dl>
-  <dt>- Flow-based Approach:</dt>
-It focus on the crowd as a whole rather than its components. individuals do not have any distinctive behaviors, and won’t be affected by any input from their surroundings or their behaviour.
-  <dt>- Entity-based Approach: </dt>
-Entities do not have the capacity to think for themselves. All movements are determined by the global laws being enforced on them. 
-  <dt>- Agent-based Approach: </dt>
-    </dl>
-Each agent of a crowd is given a degree of intelligence; they can react to each situation on their own based on a set of decision rules. Information used to decide on an action is obtained locally from the agent's’ surroundings. 
-
+  <dt>- Flow-based Approach:</dt> It focus on the crowd as a whole rather than its components. individuals do not have any distinctive behaviors, and won’t be affected by any input from their surroundings or their behaviour.
+  <dt>- Entity-based Approach: </dt> Entities do not have the capacity to think for themselves. All movements are determined by the global laws being enforced on them. 
+  <dt>- Agent-based Approach: </dt> Each agent of a crowd is given a degree of intelligence; they can react to each situation on their own based on a set of decision rules. Information used to decide on an action is obtained locally from the agent's’ surroundings. 
+   </dl>
 <h2> Approaches used in videogames </h2>
 
 <h3>Age of empires (1997) </h3>
 <dl> In age of empires, troops move to the position where the player sent them by using A* algorithm, but they gather into a formation, and then move as an entity. This formations are flexible, and depend on which and how many units are moving as a group. </dl>
 They upgraded the movement and pathfinding from Age of Empires 1 in its extended edition, in order to do that, a high-level pathfinder computes general routes across the world map, ignoring such trivial things as people walking, which were handled by lower-level pathfinders that could thread a path through a closely packed group of units.
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Uxodm9fKbyo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 <h3> Star craft </h3>
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0oJPPCaQeD4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 When a unit is issued a move command, their current location and the destination are sent to the pathfinding algorithm which spits out an array of path coordinates. The unit then moves along the path, but it only goes 1 square at a time. Each time it travels to a new square, it asks “is the next square along the path occupied?” If the answer is “no,” the unit keeps moving along the path. If the answer is “yes,” the unit waits a fraction of a second, and checks again. If the path is still occupied after a certain time increment, a new path is generated from the algorithm and the unit walks around the square that was unwalkable.
-<dl> <dt> Spam clicking </dt> (Another circumstance in which the path is re-calculated is when a new move command is issued while the unit is en route. This behavior has given rise to spam-clicking. The path is literally re-calculated each time you click, so technically a unit is finding the most efficient path at the point of time closest to the click. Because the grid (remember the starcraft map is just 1 big grid) which marks the walkable and unwalkable areas is constantly changing, so also are the results of the pathfinding algorithm. And the older those results are, the less efficient they will be. Hence: spam-clicking!)
+<dl> <h3> Spam clicking </h3> Another circumstance in which the path is re-calculated is when a new move command is issued while the unit is en route. This behavior has given rise to spam-clicking. The path is literally re-calculated each time you click, so technically a unit is finding the most efficient path at the point of time closest to the click. Because the grid (remember the starcraft map is just 1 big grid) which marks the walkable and unwalkable areas is constantly changing, so also are the results of the pathfinding algorithm. And the older those results are, the less efficient they will be. Hence: spam-clicking!)
 </dl>
 If the path the algorithm spits out is most accurate when it is newly created, why didn’t Blizzard automatically recalculate the path instead of only recalculating it on click or when a unit bangs into another? Because these calculations are expensive, even by modern computing standards. Depending on the size of the grid, and the algorithm used calculating hundreds of paths for hundreds of units 10 times a second adds up. Thus algorithms like A* are only run when needed, on click or when a unit gets stuck.
 
-<h3> Variations: Strike Tactics: </h3>
+<h3> Variations: Strike Tactics </h3>
 Instead of units constantly checking if the node they are about to walk to is occupied, the units simply maintain relative distance from each other when they walk, (similar to flocking, we’ll talk about that later).
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ptDfYoNae8E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 <h3> Dawn of War </h3>
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xUDEJcQdHEo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 Much like Starcraft 1, in Dawn of war, units will stop if there is something in their path, waiting for it to leave or recalculating their paths. The difference is that troops in this game form part of a squad. This means that when a unit moves, it will always try to be as close as possible to their squad members.
 Dawn of war also introduced a behaviour system, where you could order your squads to attack at sight and chase them, hold the position, attack all enemies in the area but don’t chase them, focus on the buildings or don’t attack at all.
 
-
 <h3> StarCraft 2 </h3>
 <dl>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fsIv2QWh3EQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 Starcraft 2 uses an AI pathfinding technique called flocking or swarm AI, the goal is to get a coordinated such as with a school of fish or a flock of birds. 
 This type of movement is the direct evolution of the movement in starcraft 1, each unit is still responsive to its environment, but in a more dynamic and natural way.
 Starcraft 2 uses an advanced algorithm that finds the fewest amount of waypoints and allows autonomous steering behaviour for units to smoothly hug their way around obstacles and other units. This differ from the grid based movement of StarCraft 
@@ -194,7 +204,10 @@ with more than 100 entities the game is still running at 60 stable fps.
 <dl>Using a profiler we can go deeper, and observe that, the time consumed by each entity is not relevant at all, when they all sum up it gets a bit noticeable. </dl>
 Each entity adds up 0.04 ms. That's not bad, but in a game where we use a much bigger quantity of entities this could consume a lot of time to process. considering that our entities don't use an animation system, sounds, etc.
 </dl>
+<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/Performance.png?raw=true" height = "661" width = "844" ></img> </dt>
+
 A way we could improve this is by dividing the map in sectors, so the entities would only take into account the other entities in the sector, reducing the time it takes for them to iterate all their equals in search of neighbours. </dl>
+<dt><img src="https://github.com/Ap011y0n/Group-Movement/blob/master/Documents/Performance%20with%20pathfinding.png?raw=true" height = "841" width = "844" ></img> </dt>
 
 <dl>
 Also, we can observe a brutal peak when we use pathfinding, even though it's just in on frame, it can get unpleasant for the player, (we drop from 60 fps). A* it's really useful, but drags some performance problems when called to much times or to calculate giant paths. Methods like Jump point search can fix this, so if you are interested serch about it, it may help you.
