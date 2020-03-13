@@ -234,7 +234,7 @@ bool Test_1::Update(float dt)
 
 	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesionSpeed.x + 0.1*directionSpeed.x;
 	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesionSpeed.y + 0.1*directionSpeed.y;
-	LOG("%f", directionSpeed.x);
+	
 	// TODO 6 ------------------------------------------------------------------
 	// If you got this far, congratulations, now your entities react between themselves
 	// But don't forget about walls, use a preventive collision system, so in case it is needed
