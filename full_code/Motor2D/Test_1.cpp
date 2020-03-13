@@ -213,17 +213,17 @@ bool Test_1::Update(float dt)
 	}
 
 	// OPTIONAL TODO ---------------------------------------------------------------- 
-	// Direction speed
+	// Alginment speed
 	// We'll use another fpoint, another method (GetDirectionSpeed()) and the close list
-	fPoint directionSpeed;
+	fPoint alignmentSpeed;
 	if (!close_entity_list.empty())
 	{
-		directionSpeed = App->movement->GetDirectionSpeed(close_entity_list);
+		alignmentSpeed = App->movement->GetDirectionSpeed(close_entity_list);
 	}
 	else
 	{
-		directionSpeed.x = 0;
-		directionSpeed.y = 0;
+		alignmentSpeed.x = 0;
+		alignmentSpeed.y = 0;
 	}
 
 
@@ -232,8 +232,8 @@ bool Test_1::Update(float dt)
 	// add it here
 	// To obtain different results, try using some constants to multiply each speed
 
-	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesionSpeed.x + 0.1*directionSpeed.x;
-	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesionSpeed.y + 0.1*directionSpeed.y;
+	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesionSpeed.x + 0.1*alignmentSpeed.x;
+	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesionSpeed.y + 0.1*alignmentSpeed.y;
 	
 	// TODO 6 ------------------------------------------------------------------
 	// If you got this far, congratulations, now your entities react between themselves

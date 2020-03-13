@@ -201,7 +201,7 @@ fPoint j1GroupMov::GetDirectionSpeed(list<j1Entity*>close_entity_list)
 	//OPTIONAL TODO
 	// We add the direction vectors of our neighbours, then divide it, and then normalize it
 	// It's actually quite simple
-	fPoint directionSpeed{ 0,0 };
+	fPoint alignmentSpeed{ 0,0 };
 	j1Entity* it;
 	list<j1Entity*>::iterator neighbours_it;
 
@@ -209,28 +209,28 @@ fPoint j1GroupMov::GetDirectionSpeed(list<j1Entity*>close_entity_list)
 
 		it = *neighbours_it;
 
-		directionSpeed.x += it->speed.x;
+		alignmentSpeed.x += it->speed.x;
 
-		directionSpeed.y += it->speed.y;
+		alignmentSpeed.y += it->speed.y;
 	}
 
-		directionSpeed.x = directionSpeed.x / close_entity_list.size();
+		alignmentSpeed.x = alignmentSpeed.x / close_entity_list.size();
 
-		directionSpeed.y = directionSpeed.y / close_entity_list.size();
+		alignmentSpeed.y = alignmentSpeed.y / close_entity_list.size();
 
 	
 
-		float norm = sqrt(pow((directionSpeed.x), 2) + pow((directionSpeed.y), 2));
+		float norm = sqrt(pow((alignmentSpeed.x), 2) + pow((alignmentSpeed.y), 2));
 
 		if (norm != 0)
 
 		{
-			directionSpeed.x = directionSpeed.x / norm;
-			directionSpeed.y = directionSpeed.y / norm;
+			alignmentSpeed.x = alignmentSpeed.x / norm;
+			alignmentSpeed.y = alignmentSpeed.y / norm;
 		}
 
 		
 	
-	return directionSpeed;
+	return alignmentSpeed;
 }
 

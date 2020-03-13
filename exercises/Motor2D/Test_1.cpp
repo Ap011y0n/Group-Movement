@@ -55,7 +55,7 @@ bool Test_1::Update(float dt)
 	// We need to store a path in this entity dynamic array: path
 	// First, order the pathfinding module to create a path with origin and mouse (destination);
 	// Luckily for you i already created a method in pathfinding module that can do the trick
-	// Just use SavePath() fucntion, and proceed to the next path
+	// Just  CreatePath and then SavePath() functions, and proceed to the next path
 
 	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
@@ -113,8 +113,8 @@ bool Test_1::Update(float dt)
 
 	// TODO 3 ----------------------------------------------------------------
 	// Before we calculate the other speeds, we need to store this entity neighbours in two lists. 
-	// Close neighbours (those which are near this entity) and colliding, thos which are in contact with this entity
-	// To do that, we'll use three radius, vision, body and collrange;
+	// Close neighbours (those which are near this entity) and colliding, those which are in contact with this entity
+	// To do that, we'll use three radius; vision, body and collrange;
 	// Use SaveNeighbours function, and pass the two lists as reference
 
 	if (App->scene->debug)
@@ -153,9 +153,9 @@ bool Test_1::Update(float dt)
 	// OPTIONAL TODO ---------------------------------------------------------------- 
 	// Direction speed
 	// We'll use another fpoint, another method (GetDirectionSpeed()) and the close list
-	fPoint directionSpeed;
-	directionSpeed.x = 0;
-	directionSpeed.y = 0;
+	fPoint alignmentSpeed;
+	alignmentSpeed.x = 0;
+	alignmentSpeed.y = 0;
 
 	//TODO 2 ---------------------------------------------------------------- 
 	// We need to add all new speed to the speed vector. Add pathSpeed, but everytime you calculate another speed
@@ -204,7 +204,7 @@ void Test_1::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>*
 {
 	//	TODO 3 -------------------------------------------------
 	//  First, clear both lists before adding new members to them
-	//  Then we should be iterating all entities in entity manager except for this entity
+	//  Then we should be iterating all selectable entities in entity manager except for this entity
 	//	Using the formulas, store those in vision range to close list, and those in collision range in colliding list
 	list<j1Entity*>::iterator entities_list;
 	j1Entity* it;

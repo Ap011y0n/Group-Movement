@@ -98,7 +98,7 @@ bool j1GroupMov::CleanUp() {
 fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoint position) 
 {
 	// TODO 4 Iterate all neighbours and add their relative position vectors in a FPoint.
-	// Then divide it by the neighbours number to obtain the average vector
+	// Then divide it by the totalneighbours number to obtain the average vector
 	// Before normalizing the resulting vector, remember to invert it multiplying by -1.
 	// Do not normalize it if the norm is 0, instead return speed = 0
 
@@ -114,7 +114,7 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 	// TODO 5 Pretty much like before, we iterate all close neighbours
 	// But there's an addition. We need another fPoint, the MassCenter, which will initially use this 
 	// entity position
-	// To calculate it we add all the neighbours positions and divideto get the average
+	// To calculate it we add all the neighbours positions and divide by the total neighbours number to get the average
 	// Now, we can get that cohesion speed, using mass center as reference, calculate a vector that will attract them
 	// Don't forget to normalize it
 	
@@ -126,11 +126,11 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 fPoint j1GroupMov::GetDirectionSpeed(list<j1Entity*>close_entity_list)
 {
 	//OPTIONAL TODO
-	// We add the direction vectors of our neighbours, then divide it, and then normalize it
+	// We add the speed vectors of our neighbours, then divide it, and then normalize it
 	// It's actually quite simple
-	fPoint directionSpeed{ 0,0 };
+	fPoint alignmentSpeed{ 0,0 };
 
 	
-	return directionSpeed;
+	return alignmentSpeed;
 }
 
