@@ -177,7 +177,7 @@ Use SaveNeighbours function, and pass the two lists as reference.
 <h3> TODO 4 </h3>
   Now you are ready to get the second speed, the separation one.
  <dl> Create another fpoint, just like we did with path speed. Theres a function in movement module called GetSeparationSpeed(), use it.
-Also, we'll be using Iterate all colliding neighbours and add their relative position vectors in a FPoint. (iterator.position.x - position.x)
+Also, we'll iterate all colliding neighbours and add their relative position vectors in a FPoint. (iterator.position.x - position.x)
 Then divide it by the neighbours number to obtain the average vector.
 Before normalizing the resulting vector, remember to invert it multiplying by -1. We want a force that goes from the other entities to our entity, not reverse.
 </dt> <dt> <dl> WARNING! Do not normalize it if the norm is 0, instead return speed = 0
