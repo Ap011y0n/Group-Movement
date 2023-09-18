@@ -1,5 +1,5 @@
 # Group Movement for RTS
-“Hi, I am  Albert Garcia, [https://www.linkedin.com/in/albert-garcia-824359171](https://www.linkedin.com/in/albert-garcia-belerda/), student of the Bachelor’s Degree in Video Games by UPC at CITM https://www.citm.upc.edu/ing/estudis/graus-videojocs. This content is generated for the second year’s subject Project 2, under supervision of lecturer Marc Garrigó https://www.linkedin.com/in/mgarrigo.
+“Hi, I am  Albert Garcia, https://www.linkedin.com/in/albert-garcia-belerda), student of the Bachelor’s Degree in Video Games by UPC at CITM https://www.citm.upc.edu/ing/estudis/graus-videojocs. This content is generated for the second year’s subject Project 2, under supervision of lecturer Marc Garrigó https://www.linkedin.com/in/mgarrigo.
 
 ## Me and my research
 This project is a Research about how to implement group movement for RTS videogames. It consists in a folder called "exercises" with the exercises to learn it's process and a folder called "full_code" with their solution.
